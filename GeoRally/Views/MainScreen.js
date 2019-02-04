@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, TouchableOpacity, Image } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import GooglePlacesSearchBar from '../Components/GooglePlacesSearchBar';
 
 class MainScreen extends React.Component
 {
@@ -14,7 +15,8 @@ class MainScreen extends React.Component
                 latitudeDelta: null,
                 longitudeDelta: null
             },
-            loading: true,
+            search:"",
+            loading: true
         };
     }
 
@@ -216,7 +218,7 @@ class MainScreen extends React.Component
         navigator.geolocation.getCurrentPosition(
             (position) =>
             {
-                this.map.animateToRegion({latitude:position.coords.latitude, longitude:position.coords.longitude, longitudeDelta:0.005, latitudeDelta:0.005}, 1000)
+                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000)
             }
         );
     }
@@ -245,8 +247,11 @@ class MainScreen extends React.Component
                         ref={component => this.map = component}
                     />
                 </View>
-                <TouchableOpacity onPress={this._centerMapOnSelf} style={{margin:10, elevation:4, alignItems:"center", justifyContent:'center', position:'absolute', bottom:0, right:1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white", shadowOffset: 2 }}>
-                    <Image style={{width:32, height:32}} source={require("../Resources/Images/target.png")}/>
+                <View style={{position:"absolute", top:0, left:0, backgroundColor:"white", width:"100%", flex:1, flexDirection:"row"}}>
+                    <GooglePlacesSearchBar onChangeText={(search) => this.setState({search})} value={this.state.search} onSearch={(searchInfos) => this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.001, latitudeDelta: 0.001 },1000)}/>
+                </View>
+                <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white", shadowOffset: 2 }}>
+                    <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                 </TouchableOpacity>
             </View>
 
