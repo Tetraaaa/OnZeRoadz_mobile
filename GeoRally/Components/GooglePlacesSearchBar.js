@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { TextInput, View, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
 import FetchRequest from "../Tools/FetchRequest"
 
 class GooglePlacesSearchBar extends React.Component
@@ -12,6 +12,11 @@ class GooglePlacesSearchBar extends React.Component
             focusOnBar: false
         }
         this.requests = []
+    }
+
+    componentDidMount()
+    {
+        Keyboard.addListener("keyboardDidHide", () => {this.searchBar.blur()})
     }
 
     _onSearch = (item) => 
