@@ -14,7 +14,7 @@ class Login extends React.Component
 
     _login = () =>
     {
-        this.props.navigation.navigate("MainScreen")
+        
     }
 
     render()
@@ -25,6 +25,8 @@ class Login extends React.Component
                 <TextInput onChange={(login) => this.setState({login})}  placeholder="Login"/>
                 <TextInput onChange={(password) => this.setState({password})} secureTextEntry={true} placeholder="Mot de passe"/>
                 <Button title="Connexion" style={{margin:5}} onPress={this._login}/>
+                <Text>Pas de compte ?</Text>
+                <Button title="S'inscrire" style={{margin:5}} onPress={() => {this.props.navigation.navigate("Signup")}}/>
             </View>
         );
     }
