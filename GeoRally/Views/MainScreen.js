@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GooglePlacesSearchBar from '../Components/GooglePlacesSearchBar';
 
 class MainScreen extends React.Component
@@ -12,10 +12,11 @@ class MainScreen extends React.Component
             region: {
                 latitude: null,
                 longitude: null,
-                latitudeDelta: null,
-                longitudeDelta: null
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
             },
-            search:"",
+            search: "",
+            followingCurrentPosition: true,
             loading: true
         };
     }
@@ -24,6 +25,17 @@ class MainScreen extends React.Component
 
     componentDidMount()
     {
+        this.tracker = navigator.geolocation.watchPosition(
+            (infos) => {
+                if(this.map && this.state.followingCurrentPosition)
+                {
+                    this._centerMapOnPoint(infos.coords.latitude, infos.coords.longitude)
+                }
+            },
+            () => { },
+            { enableHighAccuracy: true, distanceFilter: 1, timeout: 20000 }
+        )
+
         navigator.geolocation.getCurrentPosition(
             (position) =>
             {
@@ -31,13 +43,18 @@ class MainScreen extends React.Component
                     region: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta: 0.005,
-                        longitudeDelta: 0.005
+                        latitudeDelta:this.state.region.latitudeDelta,
+                        longitudeDelta:this.state.region.longitudeDelta
                     },
                     loading: false
                 });
             }
         );
+    }
+
+    componentWillUnmount()
+    {
+        navigator.geolocation.clearWatch(this.tracker)
     }
 
     _getMapStyleDependingOnCurrentTime = () =>
@@ -213,13 +230,21 @@ class MainScreen extends React.Component
         }
     }
 
+    _centerMapOnPoint = (latitude, longitude) =>
+    {
+        this.map.animateToRegion({ latitude: latitude, longitude: longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)
+    }
+
     _centerMapOnSelf = () =>
     {
+        this.setState({ followingCurrentPosition: true })
         navigator.geolocation.getCurrentPosition(
             (position) =>
             {
-                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000)
-            }
+                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)
+            },
+            () => { },
+            { enableHighAccuracy: true }
         );
     }
 
@@ -242,15 +267,20 @@ class MainScreen extends React.Component
                         style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
-                        onRegionChange={(region) => this.setState({ region })}
+                        onRegionChangeComplete={(region) => {this.setState({region})}}
                         customMapStyle={this._getMapStyleDependingOnCurrentTime()}
+                        showsUserLocation={true}
+                        loadingEnabled={true}
+                        onPanDrag={() => {if (this.state.followingCurrentPosition) this.setState({followingCurrentPosition:false})}}
+                        mapType={"hybrid"}
                         ref={component => this.map = component}
-                    />
+                    >
+                    </MapView>
                 </View>
-                <View style={{position:"absolute", top:0, left:0, backgroundColor:"white", width:"100%", flex:1, flexDirection:"row"}}>
-                    <GooglePlacesSearchBar onChangeText={(search) => this.setState({search})} value={this.state.search} onSearch={(searchInfos) => this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.001, latitudeDelta: 0.001 },1000)}/>
+                <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "white", width: "100%", flex: 1, flexDirection: "row" }}>
+                    <GooglePlacesSearchBar onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => {this.setState({followingCurrentPosition:false}, () => {this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000)})}} />
                 </View>
-                <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white", shadowOffset: 2 }}>
+                <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white"}}>
                     <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                 </TouchableOpacity>
             </View>
