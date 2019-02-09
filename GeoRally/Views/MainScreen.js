@@ -445,7 +445,7 @@ class MainScreen extends React.Component
                     >
                     </MapView>
                 </ScrollView>
-                <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "white", width: "100%", flex: 1, flexDirection: "row" }}>
+                <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "rgba(0,0,0,0)", width: "100%", flex: 1, flexDirection: "row" }}>
                     <GooglePlacesSearchBar onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => {this.setState({followingCurrentPosition:false}, () => {this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000)})}} />
                 </View>
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white"}}>
