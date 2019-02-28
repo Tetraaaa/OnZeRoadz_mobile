@@ -1,4 +1,4 @@
-let test = "https://www.onzeroadz.fr/index.php/"
+let test = "http://51.77.244.23:8001/index.php/"
 
 
 let domain = test;
