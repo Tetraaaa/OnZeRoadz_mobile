@@ -20,7 +20,13 @@ class GooglePlacesSearchBar extends React.Component
 
     componentDidMount()
     {
-        Keyboard.addListener("keyboardDidHide", () => { this.searchBar.blur() })
+        this.keyboardListener = Keyboard.addListener("keyboardDidHide", () => { this.searchBar.blur() })
+    }
+
+    componentWillUnmount()
+    {
+
+        this.keyboardListener.remove()
     }
 
     _onSearch = (item) => 
