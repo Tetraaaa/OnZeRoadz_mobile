@@ -3,6 +3,8 @@ import { TextInput, View, FlatList, Text, TouchableOpacity, Keyboard } from 'rea
 import FetchRequest from "../Tools/FetchRequest"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../Colors';
+import Config from "../Resources/Config";
+import Url from "../Resources/Url";
 
 class GooglePlacesSearchBar extends React.Component
 {
@@ -24,7 +26,7 @@ class GooglePlacesSearchBar extends React.Component
     _onSearch = (item) => 
     {
         this.requests.forEach(request => request.abort())
-        let f = new FetchRequest("https://maps.googleapis.com/maps/api/place/details/json?&placeid=" + item.place_id + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk")
+        let f = new FetchRequest(Url.googlePlaces + item.place_id + "&key=" + Config.apiKey)
         this.requests.push(f)
         f.open().then(response =>
         {
@@ -41,7 +43,7 @@ class GooglePlacesSearchBar extends React.Component
     _onChangeText = (text) =>
     {
         this.requests.forEach(request => request.abort())
-        let f = new FetchRequest("https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=" + text + "&key=AIzaSyAJiED9aRjJTSCUHmBE2pUZg4OifcAenpk");
+        let f = new FetchRequest(Url.googleAutocompletion + text + "&key=" + Config.apiKey);
         this.requests.push(f);
         f.open()
             .then(response =>
