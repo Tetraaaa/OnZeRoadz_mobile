@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import GooglePlacesSearchBar from '../Components/GooglePlacesSearchBar';
+import { connect } from 'react-redux'
 
 class MainScreen extends React.Component
 {
@@ -21,13 +22,12 @@ class MainScreen extends React.Component
         };
     }
 
-
-
     componentDidMount()
     {
         this.tracker = navigator.geolocation.watchPosition(
-            (infos) => {
-                if(this.map && this.state.followingCurrentPosition)
+            (infos) =>
+            {
+                if (this.map && this.state.followingCurrentPosition)
                 {
                     this._centerMapOnPoint(infos.coords.latitude, infos.coords.longitude)
                 }
@@ -43,8 +43,8 @@ class MainScreen extends React.Component
                     region: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta:this.state.region.latitudeDelta,
-                        longitudeDelta:this.state.region.longitudeDelta
+                        latitudeDelta: this.state.region.latitudeDelta,
+                        longitudeDelta: this.state.region.longitudeDelta
                     },
                     loading: false
                 });
@@ -57,6 +57,7 @@ class MainScreen extends React.Component
         navigator.geolocation.clearWatch(this.tracker)
     }
 
+
     _getMapStyleDependingOnCurrentTime = () =>
     {
         let hours = new Date().getHours()
@@ -64,339 +65,344 @@ class MainScreen extends React.Component
         {
             return [
                 {
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#1d2c4d"
-                    }
-                  ]
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#1d2c4d"
+                        }
+                    ]
                 },
                 {
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#8ec3b9"
-                    }
-                  ]
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#8ec3b9"
+                        }
+                    ]
                 },
                 {
-                  "elementType": "labels.text.stroke",
-                  "stylers": [
-                    {
-                      "color": "#1a3646"
-                    }
-                  ]
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#1a3646"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "administrative",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "administrative",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "administrative.country",
-                  "elementType": "geometry.stroke",
-                  "stylers": [
-                    {
-                      "color": "#4b6878"
-                    }
-                  ]
+                    "featureType": "administrative.country",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#4b6878"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "administrative.land_parcel",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#64779e"
-                    }
-                  ]
+                    "featureType": "administrative.land_parcel",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#64779e"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "administrative.province",
-                  "elementType": "geometry.stroke",
-                  "stylers": [
-                    {
-                      "color": "#4b6878"
-                    }
-                  ]
+                    "featureType": "administrative.province",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#4b6878"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "landscape",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "landscape",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "landscape.man_made",
-                  "elementType": "geometry.stroke",
-                  "stylers": [
-                    {
-                      "color": "#334e87"
-                    }
-                  ]
+                    "featureType": "landscape.man_made",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#334e87"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "landscape.natural",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#023e58"
-                    }
-                  ]
+                    "featureType": "landscape.natural",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#023e58"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi",
-                  "stylers": [
-                    {
-                      "visibility": "off"
-                    }
-                  ]
+                    "featureType": "poi",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#283d6a"
-                    }
-                  ]
+                    "featureType": "poi",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#283d6a"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#6f9ba5"
-                    }
-                  ]
+                    "featureType": "poi",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#6f9ba5"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi",
-                  "elementType": "labels.text.stroke",
-                  "stylers": [
-                    {
-                      "color": "#1d2c4d"
-                    }
-                  ]
+                    "featureType": "poi",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#1d2c4d"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi.park",
-                  "elementType": "geometry.fill",
-                  "stylers": [
-                    {
-                      "color": "#023e58"
-                    }
-                  ]
+                    "featureType": "poi.park",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        {
+                            "color": "#023e58"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi.park",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#3C7680"
-                    }
-                  ]
+                    "featureType": "poi.park",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#3C7680"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "road",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#304a7d"
-                    }
-                  ]
+                    "featureType": "road",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#304a7d"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#98a5be"
-                    }
-                  ]
+                    "featureType": "road",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#98a5be"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road",
-                  "elementType": "labels.text.stroke",
-                  "stylers": [
-                    {
-                      "color": "#1d2c4d"
-                    }
-                  ]
+                    "featureType": "road",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#1d2c4d"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road.highway",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#2c6675"
-                    }
-                  ]
+                    "featureType": "road.highway",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#2c6675"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road.highway",
-                  "elementType": "geometry.stroke",
-                  "stylers": [
-                    {
-                      "color": "#255763"
-                    }
-                  ]
+                    "featureType": "road.highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#255763"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road.highway",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#b0d5ce"
-                    }
-                  ]
+                    "featureType": "road.highway",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#b0d5ce"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road.highway",
-                  "elementType": "labels.text.stroke",
-                  "stylers": [
-                    {
-                      "color": "#023e58"
-                    }
-                  ]
+                    "featureType": "road.highway",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#023e58"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "transit",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#98a5be"
-                    }
-                  ]
+                    "featureType": "transit",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#98a5be"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit",
-                  "elementType": "labels.text.stroke",
-                  "stylers": [
-                    {
-                      "color": "#1d2c4d"
-                    }
-                  ]
+                    "featureType": "transit",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#1d2c4d"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit.line",
-                  "elementType": "geometry.fill",
-                  "stylers": [
-                    {
-                      "color": "#283d6a"
-                    }
-                  ]
+                    "featureType": "transit.line",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        {
+                            "color": "#283d6a"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit.station",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#3a4762"
-                    }
-                  ]
+                    "featureType": "transit.station",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#3a4762"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "water",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "water",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "water",
-                  "elementType": "geometry",
-                  "stylers": [
-                    {
-                      "color": "#0e1626"
-                    }
-                  ]
+                    "featureType": "water",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#0e1626"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "water",
-                  "elementType": "labels.text.fill",
-                  "stylers": [
-                    {
-                      "color": "#4e6d70"
-                    }
-                  ]
+                    "featureType": "water",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#4e6d70"
+                        }
+                    ]
                 }
-              ]
+            ]
         }
         else
         {
             return [
                 {
-                  "featureType": "administrative",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "administrative",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "landscape",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "landscape",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "poi",
-                  "stylers": [
-                    {
-                      "visibility": "off"
-                    }
-                  ]
+                    "featureType": "poi",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "road",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "road",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "transit",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "transit",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 },
                 {
-                  "featureType": "water",
-                  "stylers": [
-                    {
-                      "visibility": "on"
-                    }
-                  ]
+                    "featureType": "water",
+                    "stylers": [
+                        {
+                            "visibility": "on"
+                        }
+                    ]
                 }
-              ]
+            ]
         }
+    }
+
+    _downloadCircuit = (item) => {
+        let action = {type:'DOWNLOAD_CIRCUIT', value:item};
+        this.props.dispatch(action);
     }
 
     _centerMapOnPoint = (latitude, longitude) =>
@@ -431,24 +437,55 @@ class MainScreen extends React.Component
         }
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1 }} contentContainerStyle={{flex:1}}>
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
                     <MapView
-                        style={{flex: 1}}
+                        style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
-                        onRegionChangeComplete={(region) => {this.setState({region})}}
+                        onRegionChangeComplete={(region) => { this.setState({ region }) }}
                         customMapStyle={this._getMapStyleDependingOnCurrentTime()}
                         showsUserLocation={true}
                         loadingEnabled={true}
-                        onPanDrag={() => {if (this.state.followingCurrentPosition) this.setState({followingCurrentPosition:false})}}
+                        onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
                         ref={component => this.map = component}
                     >
+                        {
+                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map( (item, index) =>
+                            {
+                                return (
+                                    <Marker key={index} coordinate={{ longitude: item.step.longitude, latitude: item.step.latitude }} pinColor={"rgb(255, 0, 255)"}>
+                                        <Callout tooltip={false} onPress={() => {this._downloadCircuit(item)}}>
+                                            <View>
+                                                <Text style={{color:"black"}}>IUT Hard Parkour</Text>
+                                                <Text>14,3 km</Text>
+                                                <Button title="Télécharger" onPress={() => {console.log("swag")}}/>
+                                            </View>
+                                        </Callout>
+                                    </Marker>
+                                )
+                            })
+                        }
+                        {
+                            this.props.offlineReducer.circuits.map((item, index) => {
+                                return (
+                                    <Marker key={index} coordinate={{ longitude: item.step.longitude, latitude: item.step.latitude }} pinColor={"rgb(0, 255, 255)"}>
+                                        <Callout tooltip={false} >
+                                            <View>
+                                                <Text style={{color:"black"}}>IUT Hard Parkour</Text>
+                                                <Text>14,3 km</Text>
+                                                <Button title="Jouer" onPress={() => {console.log("swag")}}/>
+                                            </View>
+                                        </Callout>
+                                    </Marker>
+                                )
+                            })
+                        }
                     </MapView>
                 </ScrollView>
                 <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "rgba(0,0,0,0)", width: "100%", flex: 1, flexDirection: "row" }}>
-                    <GooglePlacesSearchBar onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => {this.setState({followingCurrentPosition:false}, () => {this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000)})}} />
+                    <GooglePlacesSearchBar onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => { this.setState({ followingCurrentPosition: false }, () => { this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000) }) }} />
                 </View>
-                <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white"}}>
+                <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                     <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                 </TouchableOpacity>
             </View>
@@ -457,4 +494,9 @@ class MainScreen extends React.Component
     }
 }
 
-export default MainScreen;
+const mapStateToProps = (state) =>
+{
+    return state
+}
+
+export default connect(mapStateToProps)(MainScreen)
