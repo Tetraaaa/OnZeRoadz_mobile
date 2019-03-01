@@ -1,17 +1,35 @@
 import React from 'react';
 import Color from "../Colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
 import MainScreen from '../Views/MainScreen';
 import Circuits from "../Views/Circuits";
 import Friends from "../Views/Friends";
+import PlayScreen from "../Views/PlayScreen";
 
+
+const MainScreenStackNavigator = createStackNavigator({
+    MainScreen:
+    {
+        screen: MainScreen,
+        navigationOptions: {
+            header:null
+        }
+    },
+    PlayScreen:
+    {
+        screen: PlayScreen,
+        navigationOptions: {
+            header:null
+        }
+    }
+})
 
 const MainStackNavigator = createMaterialBottomTabNavigator({
     MainScreen:
     {
-        screen: MainScreen,
+        screen: MainScreenStackNavigator,
         navigationOptions: {
             tabBarLabel: "Carte",
             tabBarIcon: (infos) =>
