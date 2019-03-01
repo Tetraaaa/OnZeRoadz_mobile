@@ -499,7 +499,7 @@ class MainScreen extends React.Component
                         ref={component => this.map = component}
                     >
                         {
-                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map((item, index) =>
+                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map((item) =>
                             {
                                 return (
                                     <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"red"} onPress={() => {this._selectCircuit(item)}} />
@@ -507,7 +507,7 @@ class MainScreen extends React.Component
                             })
                         }
                         {
-                            this.props.offlineReducer.circuits.map((item, index) =>
+                            this.props.offlineReducer.circuits.map((item) =>
                             {
                                 return (
                                     <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"blue"} onPress={() => {this._selectCircuit(item)} } />
@@ -528,7 +528,7 @@ class MainScreen extends React.Component
                             <Text style={{textAlign:"center", color:"black", fontSize:18, margin:3}}>{this.state.selectedMarker.name}</Text>
                             <Text style={{color:"black"}}>{this.state.selectedMarker.description}</Text>
                             <Text>{this.state.selectedMarker.length/1000 + " km"}</Text>
-                            <Button title={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? "Jouer" : "Télécharger"} onPress={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? () => { this.props.navigation.navigate("PlayScreen")} : () => { this._downloadCircuit(this.state.selectedMarker)}}/>
+                            <Button title={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? "Jouer" : "Télécharger"} onPress={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? () => { this.props.navigation.navigate("PlayScreen", {id:this.state.selectedMarker.id})} : () => { this._downloadCircuit(this.state.selectedMarker)}}/>
                         </Animated.View>
                         :
                         null

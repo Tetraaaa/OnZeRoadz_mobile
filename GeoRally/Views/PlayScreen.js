@@ -19,8 +19,11 @@ class PlayScreen extends React.Component
             },
             search: "",
             followingCurrentPosition: true,
+            currentStep:0,
+            inTransit:true,
             loading: true
         };
+        this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"))
     }
 
     componentDidMount()
@@ -445,13 +448,16 @@ class PlayScreen extends React.Component
                         loadingEnabled={true}
                         onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
                         ref={component => this.map = component}
-                    />
+                    >
+                        <Marker coordinate={{ longitude: this.circuit.transits[this.state.currentStep].step.longitude, latitude: this.circuit.transits[this.state.currentStep].step.latitude }} pinColor={"red"} />
+
+                    </MapView>
                     <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                         <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Text>Informations sur l'étape/transit en cours</Text>
+                    <Text style={{color:"black"}}>{this.state.inTransit ? this.circuit.transits[this.state.currentStep].description : this.circuit.transits[this.state.currentStep].step.description }</Text>
                 </View>
             </View>
 
