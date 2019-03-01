@@ -59,11 +59,8 @@ class Navigation extends React.Component
     }
 
     _fetchCircuits = () =>
-    {
-        let action = { type: "SET_CIRCUITS", value:[{id:1, step:{latitude:48.530, longitude:7.735}}]}
-        this.props.dispatch(action);
-        /*
-        new FetchRequest("url").open()
+    {  
+        new FetchRequest(Url.publishedCircuits).open()
             .then(response =>
             {
                 if (response.ok)
@@ -73,10 +70,9 @@ class Navigation extends React.Component
                         let action = { type: "SET_CIRCUITS", value: json }
                         this.props.dispatch(action)
                     })
-
                 }
             })
-            */
+            
     }
 
 
