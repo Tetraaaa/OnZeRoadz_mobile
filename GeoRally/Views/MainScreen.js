@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button } from "react-native";
+import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import GooglePlacesSearchBar from '../Components/GooglePlacesSearchBar';
 import { connect } from 'react-redux'
+import FetchRequest from "../Tools/FetchRequest";
+import Url from "../Resources/Url";
 
 class MainScreen extends React.Component
 {
@@ -18,6 +20,8 @@ class MainScreen extends React.Component
             },
             search: "",
             followingCurrentPosition: true,
+            selectedMarker: null,
+            modalHeight: new Animated.Value(0),
             loading: true
         };
     }
@@ -400,9 +404,31 @@ class MainScreen extends React.Component
         }
     }
 
-    _downloadCircuit = (item) => {
-        let action = {type:'DOWNLOAD_CIRCUIT', value:item};
-        this.props.dispatch(action);
+    _downloadCircuit = (item) =>
+    {
+        let f = new FetchRequest(Url.circuit + item.id);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "DOWNLOAD_CIRCUIT", value: json }
+                            this.props.dispatch(action);
+                        })
+
+                }
+                else
+                {
+                    Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
+                }
+            })
+            .catch(error =>
+            {
+                Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
+            })
     }
 
     _centerMapOnPoint = (latitude, longitude) =>
@@ -423,6 +449,28 @@ class MainScreen extends React.Component
         );
     }
 
+    _selectCircuit = (item) => 
+    {
+        this.setState({ selectedMarker: item , followingCurrentPosition:false});
+        Animated.spring(this.state.modalHeight, {
+            toValue: 150,
+            duration: 1500
+        }).start()
+    }
+
+    _unselectCircuit = () => 
+    {
+
+        Animated.timing(this.state.modalHeight, {
+            toValue: 0,
+            duration: 300
+        }).start(() =>
+        {
+            this.setState({ selectedMarker: null })
+        }
+        )
+    }
+
 
     render()
     {
@@ -439,6 +487,7 @@ class MainScreen extends React.Component
             <View style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
                     <MapView
+                        onPress={this._unselectCircuit}
                         style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
@@ -450,33 +499,18 @@ class MainScreen extends React.Component
                         ref={component => this.map = component}
                     >
                         {
-                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map( (item, index) =>
+                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map((item, index) =>
                             {
                                 return (
-                                    <Marker key={index} coordinate={{ longitude: item.step.longitude, latitude: item.step.latitude }} pinColor={"rgb(255, 0, 255)"}>
-                                        <Callout tooltip={false} onPress={() => {this._downloadCircuit(item)}}>
-                                            <View>
-                                                <Text style={{color:"black"}}>IUT Hard Parkour</Text>
-                                                <Text>14,3 km</Text>
-                                                <Button title="Télécharger" onPress={() => {console.log("swag")}}/>
-                                            </View>
-                                        </Callout>
-                                    </Marker>
+                                    <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"red"} onPress={() => {this._selectCircuit(item)}} />
                                 )
                             })
                         }
                         {
-                            this.props.offlineReducer.circuits.map((item, index) => {
+                            this.props.offlineReducer.circuits.map((item, index) =>
+                            {
                                 return (
-                                    <Marker key={index} coordinate={{ longitude: item.step.longitude, latitude: item.step.latitude }} pinColor={"rgb(0, 255, 255)"}>
-                                        <Callout tooltip={false} >
-                                            <View>
-                                                <Text style={{color:"black"}}>IUT Hard Parkour</Text>
-                                                <Text>14,3 km</Text>
-                                                <Button title="Jouer" onPress={() => {console.log("swag")}}/>
-                                            </View>
-                                        </Callout>
-                                    </Marker>
+                                    <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"blue"} onPress={() => {this._selectCircuit(item)} } />
                                 )
                             })
                         }
@@ -488,6 +522,18 @@ class MainScreen extends React.Component
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                     <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                 </TouchableOpacity>
+                {
+                    this.state.selectedMarker ?
+                        <Animated.View style={{ height: this.state.modalHeight, position: "absolute", bottom: 1, backgroundColor: "white", borderRadius: 10, width: "100%", elevation: 4 }}>
+                            <Text style={{textAlign:"center", color:"black", fontSize:18, margin:3}}>{this.state.selectedMarker.name}</Text>
+                            <Text style={{color:"black"}}>{this.state.selectedMarker.description}</Text>
+                            <Text>{this.state.selectedMarker.length/1000 + " km"}</Text>
+                            <Button title={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? "Jouer" : "Télécharger"} onPress={this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id) ? () => { this.props.navigation.navigate("PlayScreen")} : () => { this._downloadCircuit(this.state.selectedMarker)}}/>
+                        </Animated.View>
+                        :
+                        null
+
+                }
             </View>
 
         );
