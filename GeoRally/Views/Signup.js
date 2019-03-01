@@ -42,7 +42,7 @@ class Signup extends React.Component
             password: this.state.password1,
             email: this.state.email
         }
-        let f = new FetchRequest(Url.signup, "GET", JSON.stringify(body));
+        let f = new FetchRequest(Url.signup, "POST", JSON.stringify(body));
         this.requests.push(f);
         f.open()
             .then(response =>
