@@ -10,6 +10,7 @@ export default URL = {
     whoami:domain + "whoami",
     circuit:circuit,
     publishedCircuits:circuit + "published",
+    myCircuits: circuit+"my",
     googlePlaces:"https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
     googleAutocompletion:"https://maps.googleapis.com/maps/api/place/autocomplete/json?&input="
 }
