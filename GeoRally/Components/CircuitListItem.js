@@ -39,7 +39,7 @@ class CircuitListItem extends React.Component{
                 </View>
                 <View style={{flex:1}}>
                     {this.props.downloaded && 
-                        <Button onPress={() => console.log("play")}>
+                        <Button onPress={() => this.props.play(this.props.data.id)}>
                             <IconF name="play" size={24} color={Colors.secondary}/>
                         </Button>
                     }

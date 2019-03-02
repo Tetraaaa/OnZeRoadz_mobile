@@ -40,6 +40,10 @@ class Circuits extends React.Component
 
     }
 
+    _playCircuit = (id) => {
+        this.props.navigation.navigate("PlayScreen", {id:id})
+    }
+
     render()
     {
         return (
@@ -55,7 +59,7 @@ class Circuits extends React.Component
                     style={{margin:5}}
                     data={this.props.offlineReducer.circuits}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item}) => <CircuitListItem data={item} downloaded={true} />} />
+                    renderItem={({item}) => <CircuitListItem data={item} downloaded={true} play={(id) => this._playCircuit(id)} />} />
             </ScrollView>
         );
     }
