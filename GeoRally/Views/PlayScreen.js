@@ -4,6 +4,8 @@ import Url from "../Resources/Url";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import FetchRequest from "../Tools/FetchRequest";
 import { connect } from 'react-redux'
+import TransitView from './../Components/TransitView';
+import StepView from "./../Components/StepView";
 
 class PlayScreen extends React.Component
 {
@@ -14,23 +16,44 @@ class PlayScreen extends React.Component
             region: {
                 latitude: null,
                 longitude: null,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.005
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001
             },
             search: "",
             followingCurrentPosition: true,
-            currentStep:0,
+            currentTransitIndex:0,
             inTransit:true,
-            loading: true
+            loading: true,
+            okLatitude:false,
+            okLongitude:false,
+            okGeoLoc: false,
+            over: false
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"))
     }
 
     componentDidMount()
-    {
+    {                
         this.tracker = navigator.geolocation.watchPosition(
             (infos) =>
-            {
+            {                      
+                if(!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc){
+
+                    currentTransit = this.circuit.transits[this.state.currentTransitIndex];   
+                    
+                    if(infos.coords.latitude >= currentTransit.step.latitude-this.state.region.latitudeDelta && infos.coords.latitude <= currentTransit.step.latitude+this.state.region.latitudeDelta &&
+                        infos.coords.longitude >= currentTransit.step.longitude-this.state.region.longitudeDelta && infos.coords.longitude <= currentTransit.step.longitude+this.state.region.longitudeDelta){
+                        if(!this.state.okGeoLoc){
+                            this.setState({
+                                okGeoLoc:true
+                            },() => {
+                                Alert.alert("ok geoloc");
+                            })
+                        }
+                    }                  
+                    
+                }
+
                 if (this.map && this.state.followingCurrentPosition)
                 {
                     this._centerMapOnPoint(infos.coords.latitude, infos.coords.longitude)
@@ -62,7 +85,32 @@ class PlayScreen extends React.Component
         navigator.geolocation.clearWatch(this.tracker)
     }
 
+    _validTransit(over){    
+        if(over){
+            this.props.navigation.navigate('MainScreen')
+        }else{
+            this.setState({
+                okGeoLoc: false,
+                okLatitude: false,
+                okLongitude: false,
+                inTransit: false
+            })                
+        }
+    }
 
+    _validStep(){
+        if(this.circuit.transits[this.state.currentTransitIndex+1].step === null){
+            over = true;       
+        }else{
+            over = false;
+        }
+        
+        this.setState({
+            inTransit: true,
+            currentTransitIndex: this.state.currentTransitIndex+1,
+            over
+        })        
+    }
 
     _getMapStyleDependingOnCurrentTime = () =>
     {
@@ -404,15 +452,15 @@ class PlayScreen extends React.Component
                 }
             ]
         }
-    }
+    }    
 
     _centerMapOnSelf = () =>
     {
         this.setState({ followingCurrentPosition: true })
         navigator.geolocation.getCurrentPosition(
             (position) =>
-            {
-                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)
+            {                
+                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)             
             },
             () => { },
             { enableHighAccuracy: true }
@@ -449,16 +497,16 @@ class PlayScreen extends React.Component
                         onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
                         ref={component => this.map = component}
                     >
-                        <Marker coordinate={{ longitude: this.circuit.transits[this.state.currentStep].step.longitude, latitude: this.circuit.transits[this.state.currentStep].step.latitude }} pinColor={"red"} />
+                        {!this.state.over && <Marker coordinate={{ longitude: this.circuit.transits[this.state.currentTransitIndex].step.longitude, latitude: this.circuit.transits[this.state.currentTransitIndex].step.latitude }} pinColor={"red"} />}
 
                     </MapView>
                     <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                         <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                     </TouchableOpacity>
-                </View>
+                </View>               
                 <View style={{ flex: 1 }}>
-                    <Text style={{color:"black"}}>{this.state.inTransit ? this.circuit.transits[this.state.currentStep].description : this.circuit.transits[this.state.currentStep].step.description }</Text>
-                </View>
+                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)}/> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={() => this._validStep()} /> }
+                </View>               
             </View>
 
         );
