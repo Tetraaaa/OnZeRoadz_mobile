@@ -16,7 +16,7 @@ class TransitView extends React.Component {
         }
 
         return(
-            <View>
+            <View style={{flex:1}}>
                 <Text>{this.props.transit.description}</Text>
                 <Button disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)}/>                
             </View>

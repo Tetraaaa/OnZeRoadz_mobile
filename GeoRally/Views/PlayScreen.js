@@ -533,9 +533,7 @@ class PlayScreen extends React.Component
                         <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
                     </TouchableOpacity>
                 </View>               
-                <View style={{ flex: 1 }}>
-                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)}/> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} /> }
-                </View>               
+                {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)}/> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} /> }
             </View>
 
         );
