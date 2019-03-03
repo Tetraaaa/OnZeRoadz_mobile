@@ -8,7 +8,7 @@ class StepView extends React.Component {
             <View>
                 <Text>{this.props.step.name}</Text>
                 <Text>{this.props.step.description}</Text>
-                <Button title="Valider l'étape" onPress={() => this.props.validStep()}/>
+                <Button title="Valider l'étape" onPress={() => this.props.validStep(0)}/>
             </View>
         );
     }

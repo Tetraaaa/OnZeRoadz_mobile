@@ -16,18 +16,18 @@ class PlayScreen extends React.Component
             region: {
                 latitude: null,
                 longitude: null,
-                latitudeDelta: 0.001,
-                longitudeDelta: 0.001
+                latitudeDelta: 0.00005,
+                longitudeDelta: 0.00005
             },
             search: "",
             followingCurrentPosition: true,
             currentTransitIndex:0,
             inTransit:true,
             loading: true,
-            okLatitude:false,
-            okLongitude:false,
             okGeoLoc: false,
-            over: false
+            over: false,
+            score:0,
+            startTime: null
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"))
     }
@@ -85,31 +85,60 @@ class PlayScreen extends React.Component
         navigator.geolocation.clearWatch(this.tracker)
     }
 
-    _validTransit(over){    
+    _validTransit = (over) => {    
         if(over){
             this.props.navigation.navigate('MainScreen')
         }else{
             this.setState({
                 okGeoLoc: false,
-                okLatitude: false,
-                okLongitude: false,
                 inTransit: false
             })                
         }
     }
 
-    _validStep(){
+    _validStep = (score) => {
         if(this.circuit.transits[this.state.currentTransitIndex+1].step === null){
             over = true;       
         }else{
             over = false;
         }
-        
+
+        let startTime = this.state.startTime;
+        if(this.circuit.transits[this.state.currentTransitIndex].transitIndex === 1){
+            startTime = Date.now();
+        }
+
         this.setState({
             inTransit: true,
             currentTransitIndex: this.state.currentTransitIndex+1,
-            over
-        })        
+            over,
+            score: score+this.state.score,
+            startTime
+        }, () => this._sendProgress())                
+    }
+
+    _sendProgress = () => {
+        let timeInterval = 0;        
+        if(this.state.startTime != null){            
+            timeInterval = Date.now()/1000 - this.state.startTime/1000;
+        }
+        body = {
+            score: this.state.score,
+            time: timeInterval
+        }
+        let f = new FetchRequest(Url.updateProgress.replace('{idCircuit}',this.circuit.id)+this.circuit.transits[this.state.currentTransitIndex-1].step.id,'POST',JSON.stringify(body));
+        f.open()
+        .then(response =>
+        {
+            if (!response.ok)
+            {
+                Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
+            }
+        })
+        .catch(error =>
+        {
+            Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
+        })
     }
 
     _getMapStyleDependingOnCurrentTime = () =>
@@ -505,7 +534,7 @@ class PlayScreen extends React.Component
                     </TouchableOpacity>
                 </View>               
                 <View style={{ flex: 1 }}>
-                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)}/> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={() => this._validStep()} /> }
+                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)}/> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} /> }
                 </View>               
             </View>
 
