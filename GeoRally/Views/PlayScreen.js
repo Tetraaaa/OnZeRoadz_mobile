@@ -6,6 +6,7 @@ import FetchRequest from "../Tools/FetchRequest";
 import { connect } from 'react-redux'
 import TransitView from './../Components/TransitView';
 import StepView from "./../Components/StepView";
+import { GeoLocConfig } from './../Resources/GeoLoc';
 
 class PlayScreen extends React.Component
 {
@@ -16,8 +17,8 @@ class PlayScreen extends React.Component
             region: {
                 latitude: null,
                 longitude: null,
-                latitudeDelta: 0.00005,
-                longitudeDelta: 0.00005
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
             },
             search: "",
             followingCurrentPosition: true,
@@ -38,16 +39,12 @@ class PlayScreen extends React.Component
             (infos) =>
             {                      
                 if(!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc){
-
-                    currentTransit = this.circuit.transits[this.state.currentTransitIndex];   
                     
-                    if(infos.coords.latitude >= currentTransit.step.latitude-this.state.region.latitudeDelta && infos.coords.latitude <= currentTransit.step.latitude+this.state.region.latitudeDelta &&
-                        infos.coords.longitude >= currentTransit.step.longitude-this.state.region.longitudeDelta && infos.coords.longitude <= currentTransit.step.longitude+this.state.region.longitudeDelta){
+                    if(infos.coords.latitude >= this.circuit.transits[this.state.currentTransitIndex].step.latitude-GeoLocConfig.latitudeDelta && infos.coords.latitude <= this.circuit.transits[this.state.currentTransitIndex].step.latitude+GeoLocConfig.latitudeDelta &&
+                        infos.coords.longitude >= this.circuit.transits[this.state.currentTransitIndex].step.longitude-GeoLocConfig.longitudeDelta && infos.coords.longitude <= this.circuit.transits[this.state.currentTransitIndex].step.longitude+GeoLocConfig.longitudeDelta){
                         if(!this.state.okGeoLoc){
                             this.setState({
                                 okGeoLoc:true
-                            },() => {
-                                Alert.alert("ok geoloc");
                             })
                         }
                     }                  
