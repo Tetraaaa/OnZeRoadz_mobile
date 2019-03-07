@@ -52,7 +52,7 @@ class Login extends React.Component
             <View style={{ flex: 1 }}>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                     <Icon size={48} name="near-me" color={Colors.secondary} />
-                    <Text style={{ fontSize: 48, textAlign: "center", color: Colors.secondary, fontFamily: "Billabong" }}>GeoRally</Text>
+                    <Text style={{ fontSize: 48, textAlign: "center", color: Colors.secondary, fontFamily: "Billabong" }}>OnZeRoadz</Text>
                 </View>
 
                 <TextInput onChangeText={(login) => this.setState({ login })} placeholder="Login" />
