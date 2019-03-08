@@ -10,7 +10,7 @@ class TransitView extends React.Component {
         let title = "Valider le transit";
 
         if(this.props.transit.transitIndex == 0){
-            title = "Après avoir validé ce transit le circuit vas commencer";
+            title = "Après avoir validé ce transit le circuit va commencer";
         }
         if(this.props.transit.step === null){
             over = true;
