@@ -1,5 +1,5 @@
 import React from "react";
-import {PermissionsAndroid, Text, View} from "react-native";
+import { PermissionsAndroid, Text, View } from "react-native";
 import NavigationOffline from "../Navigation/NavigationOffline";
 import NavigationOnline from "../Navigation/NavigationOnline";
 import { connect } from 'react-redux'
@@ -18,18 +18,19 @@ class Navigation extends React.Component
     componentDidMount()
     {
         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS["ACCESS_FINE_LOCATION"])
-        .then(granted => {
-            if(granted === "granted")
+            .then(granted =>
             {
-                this.permissionsGranted = true;
-                this._whoami();
-                this._fetchCircuits();
-            }
-            else
-            {
-                this.permissionsGranted = false;
-            }
-        })
+                if (granted === "granted")
+                {
+                    this.permissionsGranted = true;
+                    this._whoami();
+                    this._fetchCircuits();
+                }
+                else
+                {
+                    this.permissionsGranted = false;
+                }
+            })
     }
 
     _whoami = () =>
@@ -59,7 +60,7 @@ class Navigation extends React.Component
     }
 
     _fetchCircuits = () =>
-    {  
+    {
         new FetchRequest(Url.publishedCircuits).open()
             .then(response =>
             {
@@ -72,17 +73,24 @@ class Navigation extends React.Component
                     })
                 }
             })
-            
+
     }
 
 
 
     render()
     {
-        if(!this.permissionsGranted) return (<View><Text>Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser.</Text></View>)
-        return (
-            this.props.connectionReducer.connected ? <NavigationOnline /> : <NavigationOffline />
-        )
+        if (!this.permissionsGranted)
+        {
+            return (<View style={{alignItems:"center", justifyContent:"center"}}><Text style={{textAlign:"center"}}>Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser.</Text></View>)
+        }
+        else
+        {
+            return (
+                this.props.connectionReducer.connected ? <NavigationOnline /> : <NavigationOffline />
+            )
+        }
+
     }
 }
 
