@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated, PermissionsAndroid } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import GooglePlacesSearchBar from '../Components/GooglePlacesSearchBar';
+import GooglePlacesSearchBar from '../../Components/GooglePlacesSearchBar';
 import { connect } from 'react-redux'
-import FetchRequest from "../Tools/FetchRequest";
-import Url from "../Resources/Url";
-import Colors from '../Colors';
-import MapStyles from "../Resources/MapStyles";
-import CircuitModal from "../Components/CircuitModal";
+import FetchRequest from "../../Tools/FetchRequest";
+import Url from "../../Resources/Url";
+import MapStyles from "../../Resources/MapStyles";
+import CircuitModal from "../../Components/CircuitModal";
 
 class MainScreen extends React.Component
 {
@@ -184,7 +183,7 @@ class MainScreen extends React.Component
                     <GooglePlacesSearchBar onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => { this.setState({ followingCurrentPosition: false }, () => { this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000) }) }} />
                 </View>
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
-                    <Image style={{ width: 32, height: 32 }} source={require("../Resources/Images/target.png")} />
+                    <Image style={{ width: 32, height: 32 }} source={require("../../Resources/Images/target.png")} />
                 </TouchableOpacity>
                 <CircuitModal marker={this.state.selectedMarker} downloadingCircuit={this.state.downloadingCircuit} open={this.state.selectedMarker !== null} playable={this.state.selectedMarker && this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id)} onPlay={() => { this.props.navigation.navigate("PlayScreen", { id: this.state.selectedMarker.id }) }} onDownload={() => { this._downloadCircuit(this.state.selectedMarker) }} />
             </View>

@@ -3,9 +3,9 @@ import Color from "../Colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
-import Login from '../Views/Login';
-import MainScreen from '../Views/MainScreen';
-import Signup from "../Views/Signup";
+import Login from '../Components/Views/Login';
+import MainScreen from '../Components/Views/MainScreen';
+import Signup from "../Components/Views/Signup";
 
 const SigninSignupStackNavigator = createStackNavigator({
     Login:{

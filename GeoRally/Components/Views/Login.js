@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, Button} from "react-native";
-import TextInput from "../Components/TextInput";
+import { Text, View, Button } from "react-native";
+import TextInput from "../../Components/TextInput";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Colors from '../Colors';
-import FetchRequest from "../Tools/FetchRequest";
-import Url from "../Resources/Url";
+import Colors from '../../Colors';
+import FetchRequest from "../../Tools/FetchRequest";
+import Url from "../../Resources/Url";
 import { connect } from 'react-redux'
 
 class Login extends React.Component

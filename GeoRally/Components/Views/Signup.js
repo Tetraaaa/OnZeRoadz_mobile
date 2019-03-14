@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Button, Text, ScrollView, ActivityIndicator, Animated, TouchableOpacity, Image } from "react-native";
-import TextInput from "../Components/TextInput";
-import Colors from "../Colors";
-import FetchRequest from "../Tools/FetchRequest";
-import Url from "../Resources/Url";
+import TextInput from "../../Components/TextInput";
+import Colors from "../../Colors";
+import FetchRequest from "../../Tools/FetchRequest";
+import Url from "../../Resources/Url";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class Signup extends React.Component

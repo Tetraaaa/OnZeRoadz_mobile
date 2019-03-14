@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, FlatList, ScrollView, ActivityIndicator } from "react-native";
 import { connect } from 'react-redux'
-import FetchRequest from "../Tools/FetchRequest";
-import Url from "../Resources/Url";
-import CircuitListItem from './../Components/CircuitListItem';
-import Colors from "../Colors";
+import FetchRequest from "../../Tools/FetchRequest";
+import Url from "../../Resources/Url";
+import CircuitListItem from './../../Components/CircuitListItem';
+import Colors from "../../Colors";
 
 class Circuits extends React.Component
 {

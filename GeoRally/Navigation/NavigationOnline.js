@@ -1,12 +1,13 @@
 import React from 'react';
-import Color from "../Colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
-import MainScreen from '../Views/MainScreen';
-import Circuits from "../Views/Circuits";
-import Friends from "../Views/Friends";
-import PlayScreen from "../Views/PlayScreen";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import Color from "../Colors";
+import Account from "../Components/Views/Account";
+import Friends from "../Components/Views/Friends";
+import Circuits from "../Components/Views/Circuits";
+import MainScreen from '../Components/Views/MainScreen';
+import PlayScreen from "../Components/Views/PlayScreen";
 
 
 const MainScreenStackNavigator = createStackNavigator({

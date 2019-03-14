@@ -1,14 +1,14 @@
 import React from "react";
 import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated } from "react-native";
-import Url from "../Resources/Url";
+import Url from "../../Resources/Url";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import FetchRequest from "../Tools/FetchRequest";
+import FetchRequest from "../../Tools/FetchRequest";
 import { connect } from 'react-redux'
-import TransitView from './../Components/TransitView';
-import StepView from "./../Components/StepView";
-import GeoLocConfig from './../Resources/GeoLoc';
-import MapStyles from "../Resources/MapStyles";
-import PlayModal from "../Components/PlayModal";
+import TransitView from './../../Components/TransitView';
+import StepView from "./../../Components/StepView";
+import GeoLocConfig from './../../Resources/GeoLoc';
+import MapStyles from "../../Resources/MapStyles";
+import PlayModal from "../../Components/PlayModal";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class PlayScreen extends React.Component
@@ -221,7 +221,7 @@ class PlayScreen extends React.Component
 
                 <PlayModal expanded={this.state.expanded}>
                     <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })} style={{elevation: 4, alignItems: "center", justifyContent: 'center'}}>
-                        <Animated.Image style={{width:16, height:16, margin:1, padding:0, transform:[{rotate:this.state.expanded ? "180deg" : "0deg"}]}} source={require("../Resources/Images/expand.png")}/>
+                        <Animated.Image style={{width:16, height:16, margin:1, padding:0, transform:[{rotate:this.state.expanded ? "180deg" : "0deg"}]}} source={require("../../Resources/Images/expand.png")}/>
                     </TouchableOpacity>
                     {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} />}
                 </PlayModal>
