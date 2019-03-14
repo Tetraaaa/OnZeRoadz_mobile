@@ -77,7 +77,7 @@ class Signup extends React.Component
 
     _previousStep = () =>
     {
-        if (this.state.currentStep > 0)
+        if (this.state.currentStep > 0 && this.state.currentStep < 3)
         {
             Animated.timing(this.state.fadeAnimation, { toValue: 0, duration: 300 }).start(() =>
             {
