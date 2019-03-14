@@ -32,6 +32,7 @@ class Navigation extends React.Component
                     })
                     this._whoami();
                     this._fetchCircuits();
+                    this._fetchMyCircuits();
                 }
                 else
                 {
@@ -46,7 +47,7 @@ class Navigation extends React.Component
     _whoami = () =>
     {
         if(!this.props.connectionReducer.lastConnectedUser) return;
-        
+
         new FetchRequest(Url.whoami).open()
             .then(response =>
             {
@@ -86,6 +87,33 @@ class Navigation extends React.Component
                 }
             })
 
+    }
+
+    _fetchMyCircuits = () =>
+    {
+        this.setState({ isLoadingCircuits: true })
+        let f = new FetchRequest(Url.myCircuits);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "SET_MY_CIRCUITS", value: json };
+                            this.props.dispatch(action);
+                        });
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+                }
+            })
+            .catch(error =>
+            {
+                throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+            })
     }
 
 

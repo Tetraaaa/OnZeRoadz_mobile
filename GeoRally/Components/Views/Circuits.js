@@ -13,13 +13,14 @@ class Circuits extends React.Component
     {
         super(props);
         this.state = {
-            myCircuits: [],
-            isLoadingCircuits: true
+            isLoadingCircuits: false
         }
     }
 
-    componentDidMount()
+
+    _fetchMyCircuits = () =>
     {
+        this.setState({ isLoadingCircuits: true })
         let f = new FetchRequest(Url.myCircuits);
         f.open()
             .then(response =>
@@ -29,7 +30,9 @@ class Circuits extends React.Component
                     response.json()
                         .then(json =>
                         {
-                            this.setState({ myCircuits: json, isLoadingCircuits:false })
+                            let action = { type: "SET_MY_CIRCUITS", value: json };
+                            this.props.dispatch(action);
+                            this.setState({ isLoadingCircuits: false })
                         });
                 }
                 else
@@ -41,7 +44,6 @@ class Circuits extends React.Component
             {
                 this.setState({ isLoadingCircuits: false })
             })
-
     }
 
     _playCircuit = (id) =>
@@ -62,7 +64,9 @@ class Circuits extends React.Component
                         </View>
                         :
                         <FlatList
-                            data={this.state.myCircuits}
+                            onRefresh={this._fetchMyCircuits}
+                            refreshing={this.state.isLoadingCircuits}
+                            data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item }) => <CircuitListItem data={item} />} />
                     }
