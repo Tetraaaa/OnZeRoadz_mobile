@@ -15,14 +15,14 @@ const MainScreenStackNavigator = createStackNavigator({
     {
         screen: MainScreen,
         navigationOptions: {
-            header:null
+            header: null
         }
     },
     PlayScreen:
     {
         screen: PlayScreen,
         navigationOptions: {
-            header:null
+            header: null
         }
     }
 })
@@ -52,9 +52,9 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     },
     Friends:
     {
-        screen: Friends,
+        screen: Account,
         navigationOptions: {
-            tabBarLabel: "Mes amis",
+            tabBarLabel: "Mon compte",
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="user" size={18} />

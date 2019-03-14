@@ -45,6 +45,8 @@ class Navigation extends React.Component
 
     _whoami = () =>
     {
+        if(!this.props.connectionReducer.lastConnectedUser) return;
+        
         new FetchRequest(Url.whoami).open()
             .then(response =>
             {
