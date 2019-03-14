@@ -7,6 +7,7 @@ import FetchRequest from "../../Tools/FetchRequest";
 import Url from "../../Resources/Url";
 import MapStyles from "../../Resources/MapStyles";
 import CircuitModal from "../../Components/CircuitModal";
+import Colors from '../../Colors';
 
 class MainScreen extends React.Component
 {
@@ -140,11 +141,11 @@ class MainScreen extends React.Component
         let markers = [];
         if(this.props.connectionReducer.connected)
         {
-            markers = markers.concat(this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map(item =>  Object.assign(item, {color:"blue"})), this.props.offlineReducer.circuits.map(item =>  Object.assign(item, {color:"red"})))
+            markers = markers.concat(this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map(item =>  Object.assign(item, {color:Colors.secondary})), this.props.offlineReducer.circuits.map(item =>  Object.assign(item, {color:Colors.primary})))
         }
         else
         {
-            markers = markers.concat(this.props.circuitsReducer.circuits.map(item => Object.assign(item, {color:"red"})))
+            markers = markers.concat(this.props.circuitsReducer.circuits.map(item => Object.assign(item, {color:Colors.secondary})))
         }
 
 
