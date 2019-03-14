@@ -64,7 +64,7 @@ class CircuitModal extends React.Component
         }
         else
         {
-            return <Text>Pas encore noté !</Text>
+            return <View style={{alignItems:"center", justifyContent:"center", flex:1}}><Text>Pas encore noté !</Text></View>
         }
 
     }
