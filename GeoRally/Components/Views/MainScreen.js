@@ -137,6 +137,17 @@ class MainScreen extends React.Component
 
     render()
     {
+        let markers = [];
+        if(this.props.connectionReducer.connected)
+        {
+            markers = markers.concat(this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map(item =>  Object.assign(item, {color:"blue"})), this.props.offlineReducer.circuits.map(item =>  Object.assign(item, {color:"red"})))
+        }
+        else
+        {
+            markers = markers.concat(this.props.circuitsReducer.circuits.map(item => Object.assign(item, {color:"red"})))
+        }
+
+
         if (this.state.loading)
         {
             return (
@@ -161,22 +172,12 @@ class MainScreen extends React.Component
                         onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
                         ref={component => this.map = component}
                     >
-                        {
-                            this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map((item) =>
-                            {
-                                return (
-                                    <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"red"} onPress={() => { this._selectCircuit(item) }} />
-                                )
-                            })
-                        }
-                        {
-                            this.props.offlineReducer.circuits.map((item) =>
-                            {
-                                return (
-                                    <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={"blue"} onPress={() => { this._selectCircuit(item) }} />
-                                )
-                            })
-                        }
+                    {
+                        markers.map(item => 
+                            <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
+                        )
+                    }
+                        
                     </MapView>
                 </ScrollView>
                 <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "rgba(0,0,0,0)", width: "100%", flex: 1, flexDirection: "row" }}>
@@ -185,7 +186,7 @@ class MainScreen extends React.Component
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                     <Image style={{ width: 32, height: 32 }} source={require("../../Resources/Images/target.png")} />
                 </TouchableOpacity>
-                <CircuitModal marker={this.state.selectedMarker} downloadingCircuit={this.state.downloadingCircuit} open={this.state.selectedMarker !== null} playable={this.state.selectedMarker && this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id)} onPlay={() => { this.props.navigation.navigate("PlayScreen", { id: this.state.selectedMarker.id }) }} onDownload={() => { this._downloadCircuit(this.state.selectedMarker) }} />
+                <CircuitModal marker={this.state.selectedMarker} connected={this.props.connectionReducer.connected} downloadingCircuit={this.state.downloadingCircuit} open={this.state.selectedMarker !== null} playable={this.state.selectedMarker && this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id)} onPlay={() => { this.props.navigation.navigate("PlayScreen", { id: this.state.selectedMarker.id }) }} onDownload={() => { this._downloadCircuit(this.state.selectedMarker) }} />
             </View>
 
         );

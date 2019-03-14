@@ -51,12 +51,12 @@ class CircuitModal extends React.Component
             }
 
             return (
-                <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
+                <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                     {
                         starGauge.map(item => item)
                     }
                     <Text>{"(" + this.props.marker.averageRatings + ")"}</Text>
-                    
+
                 </View>
 
 
@@ -64,7 +64,7 @@ class CircuitModal extends React.Component
         }
         else
         {
-            return <View style={{alignItems:"center", justifyContent:"center", flex:1}}><Text>Pas encore noté !</Text></View>
+            return <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}><Text>Pas encore noté !</Text></View>
         }
 
     }
@@ -103,25 +103,25 @@ class CircuitModal extends React.Component
                         <View style={{ flex: 1 }}>
                             <Text style={{ textAlign: "center", color: Colors.secondaryDark, fontSize: 18, margin: 3, borderWidth: 0, borderBottomWidth: 1, borderColor: Colors.secondaryLight }}>{this.props.marker.name}</Text>
                         </View >
-                        <View style={{ flex: 2, flexDirection: "row", borderColor:"black", justifyContent:"center" }}>
-                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems:"center", justifyContent:"center" }}>
+                        <View style={{ flex: 2, flexDirection: "row", borderColor: "black", justifyContent: "center" }}>
+                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconMC name="map-marker-distance" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />
-                                <Text style={{fontSize:16}}>{this.props.marker.length / 1000 + " km"}</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.marker.length / 1000 + " km"}</Text>
                             </View>
-                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems:"center", justifyContent:"center" }}>
+                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconF name="clock-o" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />
-                                <Text style={{fontSize:16}}>{this.props.marker.duration + " min"}</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.marker.duration + " min"}</Text>
                             </View>
-                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems:"center", justifyContent:"center" }}>
+                            <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconM name="trending-up" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />
-                                <Text style={{fontSize:16}}>{this.props.marker.slope + " m"}</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.marker.slope + " m"}</Text>
                             </View>
                         </View>
                         <View style={{ flex: 1, flexDirection: "row" }}>
-                            <View style={{flex:1, justifyContent:"center"}}>
-                                <Text style={{color:Colors.secondaryLight, fontSize:15, marginLeft:5}}>{"Créé par : " + this.props.marker.creator.username}</Text>
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <Text style={{ color: Colors.secondaryLight, fontSize: 15, marginLeft: 5 }}>{"Créé par : " + this.props.marker.creator.username}</Text>
                             </View>
-                            <View style={{ flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 {
                                     this._renderRatings()
                                 }
@@ -130,8 +130,13 @@ class CircuitModal extends React.Component
 
 
 
+                        {
+                            this.props.connected ?
+                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? "Jouer" : "Télécharger"} onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
+                                :
+                                null
+                        }
 
-                        <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? "Jouer" : "Télécharger"} onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
                     </Animated.View>
                 :
                 <Animated.View style={{ height: this.state.modalHeight, position: "absolute", bottom: 1, backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, width: "100%", elevation: 4 }}>
