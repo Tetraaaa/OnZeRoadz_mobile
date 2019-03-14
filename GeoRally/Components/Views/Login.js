@@ -61,7 +61,7 @@ class Login extends React.Component
                             this.setState({
                                 errMess: ""
                             })
-                        }, 1500)
+                        }, 4500)
                     })
             }
         })
@@ -72,29 +72,33 @@ class Login extends React.Component
     {
         return (
             <View style={{ flex: 1 }}>
-                {
-                    this.state.loading ?
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height:"15%" }}>
-                            <ActivityIndicator size="large" color={Colors.secondary} />
-                        </View>
-                        :
-                        this.state.errMess ?
-                            <View style={{alignItems: "center", justifyContent: "center", height:"15%" }}>
-                                <Icon name="clear" size={32} color={Colors.error} />
-                                <Text>{this.state.errMess}</Text>
-                            </View>
-                            :
-                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height:"15%" }}>
-                                <Icon size={48} name="near-me" color={Colors.secondary} />
-                                <Text style={{ fontSize: 48, textAlign: "center", color: Colors.secondary, fontFamily: "Billabong", marginTop: 5 }}>OnZeRoadz</Text>
-                            </View>
 
-                }
+
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>
+                    <Icon size={48} name="near-me" color={Colors.secondary} />
+                    <Text style={{ fontSize: 48, textAlign: "center", color: Colors.secondary, fontFamily: "Billabong", marginTop: 5 }}>OnZeRoadz</Text>
+                </View>
+
+
                 <TextInput onChangeText={(login) => this.setState({ login })} placeholder="Login" />
                 <TextInput onChangeText={(password) => this.setState({ password })} secureTextEntry={true} placeholder="Mot de passe" />
                 <Button title="Connexion" onPress={this._login} color={Colors.secondaryDark} style={{ margin: 5 }} />
                 <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16, color: "black" }}>Pas de compte ?</Text>
                 <Button title="S'inscrire" onPress={() => { this.props.navigation.navigate("Signup") }} color={Colors.secondaryLight} style={{ margin: 5 }} />
+                {
+                    this.state.loading ?
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>
+                            <ActivityIndicator size="large" color={Colors.secondary} />
+                        </View>
+                        :
+                        this.state.errMess ?
+                            <View style={{ alignItems: "center", justifyContent: "center", height: "15%" }}>
+                                <Icon name="clear" size={32} color={Colors.error} />
+                                <Text>{this.state.errMess}</Text>
+                            </View>
+                            :
+                        null
+                }
             </View>
         );
     }
