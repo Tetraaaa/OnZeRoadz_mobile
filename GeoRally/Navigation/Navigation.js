@@ -1,5 +1,5 @@
 import React from "react";
-import { PermissionsAndroid, Text, View } from "react-native";
+import { PermissionsAndroid, Text, View, Image } from "react-native";
 import NavigationOffline from "../Navigation/NavigationOffline";
 import NavigationOnline from "../Navigation/NavigationOnline";
 import { connect } from 'react-redux'
@@ -82,7 +82,12 @@ class Navigation extends React.Component
     {
         if (!this.permissionsGranted)
         {
-            return (<View style={{alignItems:"center", justifyContent:"center"}}><Text style={{textAlign:"center"}}>Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser.</Text></View>)
+            return (
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                    <Image style={{width:64, height:64, margin:5}} source={require("../Resources/Images/sad.png")}/>
+                    <Text style={{ textAlign: "center", color: "black", fontSize: 16 }}>Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser.</Text>
+                </View>
+            )
         }
         else
         {
