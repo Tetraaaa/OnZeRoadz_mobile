@@ -1,10 +1,11 @@
 import React from "react";
-import { PermissionsAndroid, Text, View, Image } from "react-native";
+import { PermissionsAndroid, Text, View, Image, ActivityIndicator } from "react-native";
 import NavigationOffline from "../Navigation/NavigationOffline";
 import NavigationOnline from "../Navigation/NavigationOnline";
 import { connect } from 'react-redux'
 import FetchRequest from "../Tools/FetchRequest";
 import Url from "../Resources/Url";
+import Colors from "../Colors";
 
 class Navigation extends React.Component
 {
@@ -12,7 +13,10 @@ class Navigation extends React.Component
     constructor(props)
     {
         super(props)
-        this.permissionsGranted = false;
+        this.state = {
+            permissionsAsked:false,
+            permissionsGranted:false
+        }
     }
 
     componentDidMount()
@@ -22,13 +26,19 @@ class Navigation extends React.Component
             {
                 if (granted === "granted")
                 {
-                    this.permissionsGranted = true;
+                    this.setState({
+                        permissionsAsked:true,
+                        permissionsGranted:true
+                    })
                     this._whoami();
                     this._fetchCircuits();
                 }
                 else
                 {
-                    this.permissionsGranted = false;
+                    this.setState({
+                        permissionsAsked:true,
+                        permissionsGranted:false
+                    })
                 }
             })
     }
@@ -80,7 +90,13 @@ class Navigation extends React.Component
 
     render()
     {
-        if (!this.permissionsGranted)
+        if(!this.state.permissionsAsked)
+        {
+            return <View>
+                <ActivityIndicator color={Colors.primary} size="large"/>
+            </View>;
+        }
+        else if (!this.state.permissionsGranted)
         {
             return (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
