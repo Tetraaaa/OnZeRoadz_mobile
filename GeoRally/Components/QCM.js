@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button } from "react-native";
+import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
 import Colors from './../Colors';
+import HTML from "react-native-render-html";
+import Button from './Button';
 
-class QCM extends React.Component {
+class QCM extends React.Component
+{
 
-    constructor(props){
+    constructor(props)
+    {
         super(props);
         this.state = {
             borderColor: Colors.primary,
@@ -12,13 +16,15 @@ class QCM extends React.Component {
         }
     }
 
-    _checkAnswer = (answerId) => {
-        
-        if(answerId === this.props.question.answer.id){
+    _checkAnswer = (answer) =>
+    {
+        if (this.props.question.rightAnswers.includes(answer))
+        {
             color = "green";
             score = this.props.question.points;
-        }else{
-            color= Colors.error;
+        } else
+        {
+            color = Colors.error;
             score = 0;
         }
         this.setState({
@@ -28,16 +34,34 @@ class QCM extends React.Component {
         this.props.sendScore(score)
     }
 
-    render(){
-        return(
-            <View style={{borderRadius:5, borderColor: this.state.borderColor, borderWidth: 2, borderStyle:"solid" }}>
-            <Text>{this.props.question.text}</Text>
-                {this.props.question.answers.map((answer, index) => {
-                    color = index % 2 ? Colors.primaryDark : Colors.primaryLight;
-                    return <Button color={color} disabled={this.state.disabled} key={answer.id} title={answer.label} onPress={() => this._checkAnswer(answer.id)}/>
-                })}
+    render()
+    {
+        let answers = [];
+        answers = answers.concat(this.props.question.falseAnswers, this.props.question.rightAnswers)
+        return (
+            <View style={{ flex: 1 }}>
+                <ScrollView>
+                    <HTML
+                        html={this.props.question.text}
+                    />
+                </ScrollView>
+
+                <View>
+
+                    {answers.map((answer, index) =>
+                    {
+                        if (answer)
+                        {
+                            let color = index % 2 ? Colors.primaryDark : Colors.primaryLight;
+                            return <Button disabled={this.state.disabled} color={color} title={answer.toString()} key={index} onPress={() => this._checkAnswer(answer)} />
+                        }
+
+                    })}
+                </View>
+
             </View>
-        );
+
+        )
     }
 }
 

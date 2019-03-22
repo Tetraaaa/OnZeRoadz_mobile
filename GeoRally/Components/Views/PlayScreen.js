@@ -1,15 +1,13 @@
 import React from "react";
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated } from "react-native";
+import { ActivityIndicator, Alert, Text, View, TouchableOpacity, Image } from "react-native";
+import { connect } from 'react-redux';
 import Url from "../../Resources/Url";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import FetchRequest from "../../Tools/FetchRequest";
-import { connect } from 'react-redux'
-import TransitView from './../../Components/TransitView';
 import StepView from "./../../Components/StepView";
+import TransitView from './../../Components/TransitView';
 import GeoLocConfig from './../../Resources/GeoLoc';
-import MapStyles from "../../Resources/MapStyles";
-import PlayModal from "../../Components/PlayModal";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Colors from "../../Colors";
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class PlayScreen extends React.Component
 {
@@ -27,7 +25,6 @@ class PlayScreen extends React.Component
             followingCurrentPosition: true,
             currentTransitIndex: 0,
             inTransit: true,
-            loading: true,
             okGeoLoc: false,
             over: false,
             score: 0,
@@ -77,8 +74,7 @@ class PlayScreen extends React.Component
                         longitude: position.coords.longitude,
                         latitudeDelta: this.state.region.latitudeDelta,
                         longitudeDelta: this.state.region.longitudeDelta
-                    },
-                    loading: false
+                    }
                 });
             }
         );
@@ -155,80 +151,33 @@ class PlayScreen extends React.Component
             {
                 Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
             })
-    }
-
-    _getMapStyleDependingOnCurrentTime = () =>
-    {
-        let hours = new Date().getHours()
-        if (hours > 21 || hours < 6)
-        {
-            return MapStyles.night;
-        }
-        else
-        {
-            return MapStyles.day;
-        }
-    }
-
-    _centerMapOnSelf = () =>
-    {
-        this.setState({ followingCurrentPosition: true })
-        navigator.geolocation.getCurrentPosition(
-            (position) =>
-            {
-                this.map.animateToRegion({ latitude: position.coords.latitude, longitude: position.coords.longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)
-            },
-            () => { },
-            { enableHighAccuracy: true }
-        );
-    }
-
-    _centerMapOnPoint = (latitude, longitude) =>
-    {
-        this.map.animateToRegion({ latitude: latitude, longitude: longitude, longitudeDelta: this.state.region.longitudeDelta, latitudeDelta: this.state.region.latitudeDelta }, 1000)
+        let action = {type:"SET_PROGRESS", value:{id:this.circuit.id, progress:{currentTransitIndex:this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score:this.state.score, time:timeInterval}}};
+        this.props.dispatch(action);
     }
 
     render()
     {
-        if (this.state.loading)
-        {
-            return (
-                <View style={{ alignItems: 'center' }}>
-                    <ActivityIndicator size={"large"} />
-                    <Text>Chargement des cartes en cours...</Text>
-                </View>
-            );
-        }
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ flex: 2 }}>
-                    <MapView
-                        style={{ flex: 1 }}
-                        provider={PROVIDER_GOOGLE}
-                        showsMyLocationButton={false}
-                        initialRegion={this.state.region}
-                        onRegionChangeComplete={(region) => { this.setState({ region }) }}
-                        customMapStyle={this._getMapStyleDependingOnCurrentTime()}
-                        showsUserLocation={true}
-                        loadingEnabled={true}
-                        onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
-                        ref={component => this.map = component}
-                    >
-                        {!this.state.over && <Marker coordinate={{ longitude: this.circuit.transits[this.state.currentTransitIndex].step.longitude, latitude: this.circuit.transits[this.state.currentTransitIndex].step.latitude }} pinColor={"red"} />}
-
-                    </MapView>
-                </View>
-
-                <PlayModal expanded={this.state.expanded}>
-                    <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })} style={{elevation: 4, alignItems: "center", justifyContent: 'center'}}>
-                        <Animated.Image style={{width:16, height:16, margin:1, padding:0, transform:[{rotate:this.state.expanded ? "180deg" : "0deg"}]}} source={require("../../Resources/Images/expand.png")}/>
-                    </TouchableOpacity>
+                <View style={{ flex: 11 }}>
                     {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} />}
-                </PlayModal>
+                </View>
+                <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection:"row" }}>
+                    <Text style={{ color: Colors.primary, fontSize: 16 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex+1) + "/" + this.circuit.transits.length}</Text>
+                    <View style={{ flex: 1, flexDirection:"row", justifyContent:"flex-end", alignItems:"center" }}>
+                        <TouchableOpacity style={{ width: 32, borderWidth:1, borderColor:"black", borderRadius:2, marginRight:5 }}>
+                            <Icon name="pause" size={32} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: 32, borderWidth:1, borderColor:"black", borderRadius:2, marginRight:5  }}>
+                            <Icon name="flag" size={32} />
+                        </TouchableOpacity>
+                    </View>
 
-
-
+                </View>
             </View>
+
+
+
 
         );
     }

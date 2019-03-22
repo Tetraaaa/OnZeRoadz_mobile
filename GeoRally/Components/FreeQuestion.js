@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView, Button } from "react-native";
+import { Image, View, Dimensions } from "react-native";
+import HTML from "react-native-render-html";
 import Colors from './../Colors';
+import TextInput from "./TextInput";
+import Button from './Button';
+import { ScrollView } from 'react-native-gesture-handler';
 
-class FreeQuestion extends React.Component {
+class FreeQuestion extends React.Component
+{
 
-    constructor(props){
+    constructor(props)
+    {
         super(props);
         this.state = {
             userAnswer: '',
@@ -13,13 +19,91 @@ class FreeQuestion extends React.Component {
         }
     }
 
-    _checkAnswer = () => {
-        upperAnswer = this.props.question.response.toUpperCase();
-        if(this.state.userAnswer.toUpperCase().includes(upperAnswer)){
+    _banalizeString(string)
+    {
+        let correspondances = {
+            "é": "e",
+            "è": "e",
+            "ê": "e",
+            "ë": "e",
+            "-": " ",
+            "ô": "o",
+            "à": "a",
+            "â": "a",
+            "ù": "u",
+            "ü": "u"
+        }
+        let final = ""
+        for (let i = 0; i < string.length; i++)
+        {
+            let char = string[i].toLowerCase()
+            if (correspondances[char]) 
+            {
+                final += correspondances[char]
+            }
+            else
+            {
+                final += char
+            }
+        }
+        return final;
+
+    }
+
+    _normalize = (keywords) =>
+    {
+        return keywords.map(word => this._banalizeString(word.toLowerCase()))
+    }
+
+    _matchWithTolerance = (string1, string2, tolerance = 1) =>
+    {
+        let s1 = this._banalizeString(string1);
+        let s2 = this._banalizeString(string2);
+
+        let diff = s1.length - s2.length;
+
+        if (diff < 0)
+        {
+            s1 = s1.padEnd(string2.length, "a")
+        }
+        else if (diff > 0)
+        {
+            s2 = s2.padEnd(string1.length, "a")
+        }
+        let remainingErrors = tolerance;
+        for (let i = 0; i < s1.length; i++)
+        {
+            if (s1[i] !== s2[i])
+            {
+                remainingErrors--;
+            }
+        }
+        return remainingErrors >= 0
+    }
+
+
+    _checkAnswer = () =>
+    {
+        let normalizedKeywords = this._normalize(this.props.question.keywords)
+        let normalizedAnswer = this._banalizeString(this.state.userAnswer)
+
+        let rightAnswer = false;
+        normalizedKeywords.forEach(keyword =>
+        {
+            if (this._matchWithTolerance(keyword, normalizedAnswer))
+            {
+                rightAnswer = true;
+                return;
+            }
+        })
+
+        if (rightAnswer)
+        {
             color = "green";
             score = this.props.question.points;
-        }else{
-            color= Colors.error;
+        } else
+        {
+            color = Colors.error;
             score = 0;
         }
         this.setState({
@@ -29,12 +113,23 @@ class FreeQuestion extends React.Component {
         this.props.sendScore(score)
     }
 
-    render(){
-        return(
-            <View style={{borderRadius:5, borderColor: this.state.borderColor, borderWidth: 2, borderStyle:"solid" }}>
-                <Text>{this.props.question.text}</Text>
-                <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder="Réponse" />
-                <Button color={Colors.primary} disabled={this.state.disabled} title="Valider la réponse" onPress={() => this._checkAnswer()}/>
+    render()
+    {
+        return (
+            <View style={{ borderRadius: 5, borderColor: this.state.borderColor, borderWidth: 2, borderStyle: "solid", flex: 1 }}>
+                <ScrollView>
+                    <HTML
+                        containerStyle={{ margin: 5 }}
+                        imagesMaxWidth={Dimensions.get('window').width * 0.95}
+                        html={this.props.question.text}
+                    />
+                </ScrollView>
+                <View>
+                    <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder="Réponse" />
+                    <Button color={Colors.primary} disabled={this.state.disabled} title="Valider la réponse" onPress={this._checkAnswer} />
+                </View>
+
+
             </View>
         );
     }
