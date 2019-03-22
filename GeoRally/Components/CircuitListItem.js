@@ -10,10 +10,9 @@ class CircuitListItem extends React.Component{
 
     render(){
         return(
-            <View style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1}}>
+            <View style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1, margin:5}}>
                 <View style={{flex:6}}>
                     <Text style={{color:Colors.secondary, fontWeight:"bold"}}>{this.props.data.name}</Text>
-                    <Text>{this.props.data.description}</Text>
 
                     <View style={{flexDirection:'row', justifyContent:"space-between", marginTop:5}}>
                         <View style={{flexDirection:"row"}}>
