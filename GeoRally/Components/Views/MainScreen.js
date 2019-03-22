@@ -90,7 +90,10 @@ class MainScreen extends React.Component
                     response.json()
                         .then(json =>
                         {
-                            let action = { type: "DOWNLOAD_CIRCUIT", value: json }
+                            let circuit = json.circuit;
+                            let progress = json.progress;
+                            Object.assign(circuit, progress);
+                            let action = { type: "DOWNLOAD_CIRCUIT", value: circuit }
                             this.props.dispatch(action);
                             this.setState({ downloadingCircuit: false })
                         })

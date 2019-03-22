@@ -1,10 +1,9 @@
 import React from 'react';
-import { Image, View, Dimensions } from "react-native";
+import { Image, View, Dimensions, ScrollView } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from './../Colors';
 import TextInput from "./TextInput";
 import Button from './Button';
-import { ScrollView } from 'react-native-gesture-handler';
 
 class FreeQuestion extends React.Component
 {

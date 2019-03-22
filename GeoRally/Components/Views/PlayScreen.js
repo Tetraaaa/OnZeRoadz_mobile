@@ -8,6 +8,7 @@ import TransitView from './../../Components/TransitView';
 import GeoLocConfig from './../../Resources/GeoLoc';
 import Colors from "../../Colors";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Button from "../Button";
 
 class PlayScreen extends React.Component
 {
@@ -29,7 +30,8 @@ class PlayScreen extends React.Component
             over: false,
             score: 0,
             startTime: null,
-            expanded: false
+            expanded: false,
+            currentQuestionIndex: 0
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         this.requests = [];
@@ -151,8 +153,26 @@ class PlayScreen extends React.Component
             {
                 Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
             })
-        let action = {type:"SET_PROGRESS", value:{id:this.circuit.id, progress:{currentTransitIndex:this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score:this.state.score, time:timeInterval}}};
+        let action = { type: "SET_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval } } };
         this.props.dispatch(action);
+    }
+
+    _previousQuestion = () =>
+    {
+        if (this.state.currentQuestionIndex > 0)
+        {
+            this.setState({ currentQuestionIndex: this.state.currentQuestionIndex - 1 })
+        }
+    }
+
+    _nextQuestion = () =>
+    {
+        
+        let maxIndex = this.circuit.transits[this.state.currentTransitIndex].step.questions.length - 1;
+        if (this.state.currentQuestionIndex < maxIndex)
+        {
+            this.setState({ currentQuestionIndex: this.state.currentQuestionIndex + 1 })
+        }
     }
 
     render()
@@ -160,15 +180,31 @@ class PlayScreen extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
-                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} validStep={(score) => this._validStep(score)} />}
+                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} validStep={(score) => this._validStep(score)} />}
                 </View>
-                <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection:"row" }}>
-                    <Text style={{ color: Colors.primary, fontSize: 16 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex+1) + "/" + this.circuit.transits.length}</Text>
-                    <View style={{ flex: 1, flexDirection:"row", justifyContent:"flex-end", alignItems:"center" }}>
-                        <TouchableOpacity style={{ width: 32, borderWidth:1, borderColor:"black", borderRadius:2, marginRight:5 }}>
+                <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems:"center" }}>
+                    <Text style={{ color: Colors.primary, fontSize: 16, flex:1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>
+                    {
+                        !this.state.inTransit ?
+                            <View style={{flexDirection:"row", alignItems:"center"}}>
+                                <TouchableOpacity style={{ width: 32}} onPress={this._previousQuestion} disabled={this.state.currentQuestionIndex <= 0}>
+                                    <Icon name="navigate-before" size={32} color={this.state.currentQuestionIndex <= 0 ? "rgba(0,0,0,0)" : "grey"} />
+                                </TouchableOpacity>
+                                <Text style={{fontSize:16, color:Colors.primary}}>{!this.state.inTransit ? "Question " + (this.state.currentQuestionIndex + 1) : null}</Text>
+                                <TouchableOpacity style={{ width: 32}} onPress={this._nextQuestion} disabled={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length -1}>
+                                    <Icon name="navigate-next" size={32} color={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length -1 ? "rgba(0,0,0,0)" : "grey"} />
+                                </TouchableOpacity>
+
+                            </View>
+                            :
+                            null
+                    }
+
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
+                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }}>
                             <Icon name="pause" size={32} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ width: 32, borderWidth:1, borderColor:"black", borderRadius:2, marginRight:5  }}>
+                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }}>
                             <Icon name="flag" size={32} />
                         </TouchableOpacity>
                     </View>

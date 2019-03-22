@@ -19,22 +19,7 @@ class StepView extends React.Component
         }
     }
 
-    _previousQuestion = () =>
-    {
-        if (this.state.currentQuestionIndex > 0)
-        {
-            this.setState({ currentQuestionIndex: this.state.currentQuestionIndex - 1 })
-        }
-    }
 
-    _nextQuestion = () =>
-    {
-        let maxIndex = this.props.step.questions.length - 1;
-        if (this.state.currentQuestionIndex < maxIndex)
-        {
-            this.setState({ currentQuestionIndex: this.state.currentQuestionIndex + 1 })
-        }
-    }
 
     _addScore = (score) =>
     {
@@ -52,7 +37,7 @@ class StepView extends React.Component
 
     render()
     {
-        let question = this.props.step.questions[this.state.currentQuestionIndex]
+        let question = this.props.step.questions[this.props.currentQuestionIndex]
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ margin: 5, flex:9}}>
@@ -65,10 +50,6 @@ class StepView extends React.Component
                     {
                         this.state.currentQuestionIndex === this.props.step.questions.length - 1 && <Button style={{margin:5}} disabled={this.state.disabled} color={Colors.secondary} title="Valider l'étape" onPress={() => this.props.validStep(this.state.score)} />
                     }
-                </View>
-                <View style={{flexDirection: "row", padding: 5, flex:1 }}>
-                    <Button style={{ margin: 5 }} color={Colors.secondaryLight} title="Question précédente" onPress={this._previousQuestion} />
-                    <Button style={{ margin: 5 }} color={Colors.secondaryLight} title="Question suivante" onPress={this._nextQuestion} />
                 </View>
             </View>
         );

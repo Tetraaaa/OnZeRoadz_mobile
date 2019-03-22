@@ -83,7 +83,7 @@ class Login extends React.Component
                 <TextInput onChangeText={(login) => this.setState({ login })} placeholder="Login" />
                 <TextInput onChangeText={(password) => this.setState({ password })} secureTextEntry={true} placeholder="Mot de passe" />
                 <Button title="Connexion" onPress={this._login} color={Colors.secondaryDark} style={{ margin: 5 }} />
-                <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16, color: "black" }}>Pas de compte ?</Text>
+                <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16 }}>Pas de compte ?</Text>
                 <Button title="S'inscrire" onPress={() => { this.props.navigation.navigate("Signup") }} color={Colors.secondaryLight} style={{ margin: 5 }} />
                 {
                     this.state.loading ?
