@@ -115,7 +115,7 @@ class FreeQuestion extends React.Component
     render()
     {
         return (
-            <View style={{ borderRadius: 5, borderColor: this.state.borderColor, borderWidth: 2, borderStyle: "solid", flex: 1 }}>
+            <View style={{flex: 1 }}>
                 <ScrollView>
                     <HTML
                         containerStyle={{ margin: 5 }}
@@ -124,8 +124,8 @@ class FreeQuestion extends React.Component
                     />
                 </ScrollView>
                 <View>
-                    <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder="Réponse" />
-                    <Button color={Colors.primary} disabled={this.state.disabled} title="Valider la réponse" onPress={this._checkAnswer} />
+                    <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder="Réponse" editable={this.props.question.questionProgress ? false : true}/>
+                    <Button color={Colors.primary} disabled={this.props.question.questionProgress ? true : false} disabledColor={this.score >= 0 ? "green" : Colors.error} title="Valider la réponse" onPress={this._checkAnswer} />
                 </View>
 
 

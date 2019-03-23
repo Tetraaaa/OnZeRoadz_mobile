@@ -13,13 +13,14 @@ class QCM extends React.Component
         this.state = {
             borderColor: Colors.primary,
             selectedAnswers: [],
-            score:null,
-            disabled: false
+            disabled: this.props.question.questionProgress ? true : false
         }
     }
 
     _checkAnswer = () =>
     {
+        if(this.state.selectedAnswers.length === 0 ) return;
+
         let correct = true;
         this.state.selectedAnswers.forEach(answer =>
         {
@@ -36,16 +37,10 @@ class QCM extends React.Component
         }
         else
         {
-            color = Colors.error;
             score = 0;
         }
 
         this.props.sendScore(score)
-        this.setState({
-            score:score,
-            borderColor: color,
-            disabled: true
-        })
 
     }
 
@@ -78,8 +73,8 @@ class QCM extends React.Component
 
             jsx.push(
                 <View key={i} style={{ flexDirection: "row", flex: 1 }}>
-                    <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.state.disabled} color={this.state.selectedAnswers.includes(answer1) ? Colors.primaryLight : Colors.primaryDark} title={answer1.toString()} key={i} onPress={() => this._selectUnselect(answer1)} />
-                    {answer2 ? <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.state.disabled} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
+                    <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer1) ? Colors.primaryLight : Colors.primaryDark} title={answer1.toString()} key={i} onPress={() => this._selectUnselect(answer1)} />
+                    {answer2 ? <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
                 </View>
             )
             i += 2;
@@ -94,6 +89,7 @@ class QCM extends React.Component
 
     render()
     {
+        console.log(this.props.question.questionProgress)
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
@@ -103,7 +99,7 @@ class QCM extends React.Component
                     {this._renderButtons()}
                 </ScrollView>
                 <View>
-                    <Button color={Colors.primary} disabledColor={this.state.score === 0 ? Colors.error : "green" } disabled={this.state.disabled} title="Valider la réponse" onPress={this._checkAnswer} />
+                    <Button color={Colors.primary} disabledColor={this.props.score === 0 ? Colors.error : "green" } disabled={this.props.question.questionProgress ? true : false} title="Valider la réponse" onPress={this._checkAnswer} />
                 </View>
             </View>
 

@@ -157,6 +157,12 @@ class PlayScreen extends React.Component
         this.props.dispatch(action);
     }
 
+    _questionProgress = (transitId, questionId, progress) =>
+    {
+        let action = {type:"QUESTION_PROGRESS", value:{circuitId: this.circuit.id, transitId:transitId, questionId:questionId, questionProgress:progress}};
+        this.props.dispatch(action);
+    }
+
     _previousQuestion = () =>
     {
         if (this.state.currentQuestionIndex > 0)
@@ -180,7 +186,7 @@ class PlayScreen extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
-                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} validStep={(score) => this._validStep(score)} />}
+                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
                 <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems:"center" }}>
                     <Text style={{ color: Colors.primary, fontSize: 16, flex:1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>

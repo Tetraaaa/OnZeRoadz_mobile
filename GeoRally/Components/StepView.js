@@ -21,7 +21,7 @@ class StepView extends React.Component
 
 
 
-    _addScore = (score) =>
+    _addScore = (questionId, score) =>
     {
         disabled = this.state.disabled;
         if (this.state.nbResponse + 1 === this.props.step.questions.length)
@@ -33,6 +33,7 @@ class StepView extends React.Component
             nbResponse: this.state.nbResponse + 1,
             disabled: disabled
         })
+        this.props.answerQuestion(this.props.transitId, questionId,  {id:questionId, score:score});
     }
 
     render()
@@ -43,9 +44,9 @@ class StepView extends React.Component
                 <View style={{ margin: 5, flex:9}}>
                     {
                         question.type === "Free" ?
-                            <FreeQuestion key={question.id} question={question} sendScore={(score) => this._addScore(score)} />
+                            <FreeQuestion key={question.id} question={question} sendScore={(score) => this._addScore(question.id, score)} />
                             :
-                            <QCM key={question.id} question={question} sendScore={(score) => this._addScore(score)} />
+                            <QCM key={question.id} question={question} sendScore={(score) => this._addScore(question.id, score)} />
                     }
                     {
                         this.state.currentQuestionIndex === this.props.step.questions.length - 1 && <Button style={{margin:5}} disabled={this.state.disabled} color={Colors.secondary} title="Valider l'étape" onPress={() => this.props.validStep(this.state.score)} />
