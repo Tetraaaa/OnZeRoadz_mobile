@@ -1,14 +1,13 @@
 import React from "react";
-import { ActivityIndicator, Alert, Text, View, TouchableOpacity, Image } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+import Colors from "../../Colors";
 import Url from "../../Resources/Url";
 import FetchRequest from "../../Tools/FetchRequest";
 import StepView from "./../../Components/StepView";
 import TransitView from './../../Components/TransitView';
 import GeoLocConfig from './../../Resources/GeoLoc';
-import Colors from "../../Colors";
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Button from "../Button";
 
 class PlayScreen extends React.Component
 {
@@ -24,14 +23,15 @@ class PlayScreen extends React.Component
             },
             search: "",
             followingCurrentPosition: true,
-            currentTransitIndex: 0,
-            inTransit: true,
+            currentTransitIndex: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.currentProgressIndex || 0,
+            inTransit: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.inTransit || true,
             okGeoLoc: false,
             over: false,
             score: 0,
             startTime: null,
             expanded: false,
-            currentQuestionIndex: 0
+            currentQuestionIndex: 0,
+            answeredQuestions:0
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         this.requests = [];
@@ -149,11 +149,7 @@ class PlayScreen extends React.Component
                     Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
                 }
             })
-            .catch(error =>
-            {
-                Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
-            })
-        let action = { type: "SET_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval } } };
+        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval, inTransit:this.state.inTransit } } };
         this.props.dispatch(action);
     }
 
@@ -161,6 +157,18 @@ class PlayScreen extends React.Component
     {
         let action = {type:"QUESTION_PROGRESS", value:{circuitId: this.circuit.id, transitId:transitId, questionId:questionId, questionProgress:progress}};
         this.props.dispatch(action);
+        this.setState({
+            answeredQuestions:this.state.answeredQuestions + 1
+        }, () => {
+            if(this.state.answeredQuestions === this.circuit.transits[this.state.currentTransitIndex].step.questions.length)
+            {
+                let totalScore = 0;
+                this.circuit.transits[this.state.currentTransitIndex].step.questions.forEach(question => {
+                    totalScore+=question.questionProgress.score
+                })
+                this._validStep(totalScore);
+            }
+        })
     }
 
     _previousQuestion = () =>
@@ -179,6 +187,16 @@ class PlayScreen extends React.Component
         {
             this.setState({ currentQuestionIndex: this.state.currentQuestionIndex + 1 })
         }
+    }
+
+    _pauseCircuit = () =>
+    {
+        this.props.navigation.navigate("MainScreen");
+    }
+
+    _abandonCircuit = () =>
+    {
+        this.props.navigation.navigate("MainScreen");
     }
 
     render()
@@ -207,10 +225,10 @@ class PlayScreen extends React.Component
                     }
 
                     <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }}>
+                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={this._pauseCircuit}>
                             <Icon name="pause" size={32} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }}>
+                        <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={this._abandonCircuit} >
                             <Icon name="flag" size={32} />
                         </TouchableOpacity>
                     </View>
