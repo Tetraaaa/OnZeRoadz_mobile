@@ -30,9 +30,14 @@ class Navigation extends React.Component
                         permissionsAsked:true,
                         permissionsGranted:true
                     })
-                    this._whoami();
-                    this._fetchCircuits();
-                    this._fetchMyCircuits();
+                    navigator.geolocation.getCurrentPosition(
+                        (position) =>
+                        {
+                            this._fetchCircuits(position.coords.longitude, position.coords.latitude);
+                            this._whoami();
+                            this._fetchMyCircuits();
+                        }
+                    );
                 }
                 else
                 {
@@ -72,9 +77,13 @@ class Navigation extends React.Component
             })
     }
 
-    _fetchCircuits = () =>
+    _fetchCircuits = (longitude, latitude) =>
     {
-        new FetchRequest(Url.publishedCircuits).open()
+        let body = {
+            longitude:longitude,
+            latitude:latitude
+        }
+        new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
             .then(response =>
             {
                 if (response.ok)
