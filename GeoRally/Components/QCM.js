@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView } from "react-native";
-import Colors from './../Colors';
+import { ScrollView, View } from "react-native";
 import HTML from "react-native-render-html";
+import Colors from './../Colors';
 import Button from './Button';
 
 class QCM extends React.Component
@@ -19,7 +19,11 @@ class QCM extends React.Component
 
     _checkAnswer = () =>
     {
-        if(this.state.selectedAnswers.length === 0 ) return;
+        if(this.state.selectedAnswers.length === 0 ) 
+        {
+            this.props.sendScore(0);
+            return;
+        }
 
         let correct = true;
         this.state.selectedAnswers.forEach(answer =>
@@ -89,7 +93,6 @@ class QCM extends React.Component
 
     render()
     {
-        console.log(this.props.question.questionProgress)
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
