@@ -90,7 +90,6 @@ class CircuitModal extends React.Component
     render()
     {
 
-
         return (
             this.props.marker ?
                 this.props.downloadingCircuit ?
@@ -132,7 +131,7 @@ class CircuitModal extends React.Component
 
                         {
                             this.props.connected ?
-                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? "Jouer" : "Télécharger"} onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
+                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? this.props.marker.progress ? "Reprendre" : "Jouer" : "Télécharger"} onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
                                 :
                                 null
                         }
