@@ -48,9 +48,6 @@ class StepView extends React.Component
                             :
                             <QCM key={question.id} question={question} sendScore={(score) => this._addScore(question.id, score)} />
                     }
-                    {
-                        this.state.currentQuestionIndex === this.props.step.questions.length - 1 && <Button style={{margin:5}} disabled={this.state.disabled} color={Colors.secondary} title="Valider l'étape" onPress={() => this.props.validStep(this.state.score)} />
-                    }
                 </View>
             </View>
         );
