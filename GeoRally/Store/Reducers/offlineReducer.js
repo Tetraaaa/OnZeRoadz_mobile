@@ -1,6 +1,7 @@
 
 
 
+
 let initialState = {
     circuits:[]
 }
@@ -20,13 +21,12 @@ function offlineReducer(state = initialState, action) {
         case 'UPDATE_PROGRESS':
             dc = state.circuits.slice(0);
             circuit = dc.find(circuit => circuit.id === action.value.id);
-            dc = dc.filter(item => item.id !== action.value.id);
-            newCircuit = Object.assign({}, circuit, {progress:action.value.progress})
-            dc = dc.concat(newCircuit);
+            Object.assign(circuit, {progress:action.value.progress})
             nextState ={
                 ...state,
                 circuits:dc
             }
+            return nextState;
         case 'QUESTION_PROGRESS':
             dc = state.circuits.slice(0);
             circuit = dc.find(circuit => circuit.id === action.value.circuitId)
@@ -37,6 +37,7 @@ function offlineReducer(state = initialState, action) {
                 ...state,
                 circuits:dc
             }
+            return nextState;
         default:
             return state;
     }
