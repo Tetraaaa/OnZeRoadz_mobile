@@ -13,7 +13,8 @@ class Circuits extends React.Component
     {
         super(props);
         this.state = {
-            isLoadingCircuits: false
+            isLoadingCircuits: false,
+            downloadingCircuit:false
         }
     }
 
@@ -51,6 +52,38 @@ class Circuits extends React.Component
         this.props.navigation.navigate("PlayScreen", { id: id })
     }
 
+    _downloadCircuit = (id) =>
+    {
+        this.setState({ downloadingCircuit: true })
+        let f = new FetchRequest(Url.circuit + id);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let circuit = json.circuit;
+                            let progress = json.progress;
+                            Object.assign(circuit, progress);
+                            let action = { type: "DOWNLOAD_CIRCUIT", value: circuit }
+                            this.props.dispatch(action);
+                            this.setState({ downloadingCircuit: false })
+                        })
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la récupération du circuit")
+                }
+            })
+            .catch(error =>
+            {
+                Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
+                this.setState({ downloadingCircuit: false })
+            })
+    }
+
     render()
     {
         return (
@@ -68,7 +101,9 @@ class Circuits extends React.Component
                             refreshing={this.state.isLoadingCircuits}
                             data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item }) => <CircuitListItem data={item} />} />
+                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id)}/>}
+                            ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
+                             />
                     }
 
                 </View>
@@ -77,7 +112,10 @@ class Circuits extends React.Component
                     <FlatList
                         data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
                         keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} play={(id) => this._playCircuit(id)} />} />
+                        renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} play={(id) => this._playCircuit(id)} />} 
+                        ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
+                        />
+                        
                 </View>
             </ScrollView>
         );
