@@ -43,7 +43,7 @@ class CircuitListItem extends React.Component{
                         </Button>
                     }
                     {!this.props.downloaded && 
-                        <Button onPress={() => console.log("download")}>
+                        <Button onPress={() => this.props.download(this.props.data.id)}>
                             <IconF name="download" size={24} color={Colors.secondary}/>
                         </Button>
                     }
