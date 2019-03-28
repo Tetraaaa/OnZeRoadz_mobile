@@ -39,8 +39,7 @@ class PlayScreen extends React.Component
 
     componentDidMount()
     {
-        
-        /*navigator.geolocation.getCurrentPosition(
+        navigator.geolocation.getCurrentPosition(
             (infos) =>
             {
                 if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
@@ -48,28 +47,31 @@ class PlayScreen extends React.Component
                     this.setState({ okGeoLoc: true })
                 }
             }
-        );*/
+        );
 
-        if(this.getAnsweredQuestions())
+        if (this.getAnsweredQuestions())
         {
-            this.setState({currentTransitIndex:this.state.currentTransitIndex+1})
+            this.setState({ currentTransitIndex: this.state.currentTransitIndex + 1 })
         }
 
-        this.trackPosition(true);
+        this.trackPosition(this.state.inTransit);
     }
 
     trackPosition = (on) => 
     {
-        if(on)
+        if (on)
         {
             this.tracker = navigator.geolocation.watchPosition(
                 (infos) =>
                 {
-                    if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
+                    if (this.circuit.transits[this.state.currentTransitIndex].step)
                     {
-                        if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
+                        if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
                         {
-                            this.setState({ okGeoLoc: true })
+                            if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
+                            {
+                                this.setState({ okGeoLoc: true })
+                            }
                         }
                     }
                 },
@@ -82,12 +84,14 @@ class PlayScreen extends React.Component
             navigator.geolocation.clearWatch(this.tracker)
         }
 
+
+
     }
 
     getTransitIndexFromProgress()
     {
         let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
-        if(circuit.progress && circuit.progress.step)
+        if (circuit.progress && circuit.progress.step)
         {
             let stepId = circuit.progress.step.id;
             let transit = circuit.transits.find(transit => transit.step.id === stepId);
@@ -103,12 +107,15 @@ class PlayScreen extends React.Component
     getAnsweredQuestions()
     {
         let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
-        return circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress !== null).length
+        return circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress).length === this.circuit.transits[this.state.currentTransitIndex].step.questions.length
     }
 
     checkPosition = (lat, lng) =>
     {
-        if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005) this._validTransit();
+        if (this.circuit.transits[this.state.currentTransitIndex].step)
+        {
+            if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005) this._validTransit();
+        }
     }
 
 
@@ -130,7 +137,7 @@ class PlayScreen extends React.Component
                 inTransit: false
             })
             this.trackPosition(false);
-            
+
         }
     }
 
@@ -181,7 +188,7 @@ class PlayScreen extends React.Component
                     Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
                 }
             })
-        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { step: this.circuit.transits[this.state.currentTransitIndex].step, score: this.state.score, time: timeInterval} } };
+        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { step: this.circuit.transits[this.state.currentTransitIndex].step, score: this.state.score, time: timeInterval } } };
         this.props.dispatch(action);
     }
 
@@ -230,6 +237,8 @@ class PlayScreen extends React.Component
 
     _abandonCircuit = () =>
     {
+        let action = { type: "REMOVE_PROGRESS", value: { id: this.circuit.id }};
+        this.props.dispatch(action);
         this.props.navigation.navigate("MainScreen");
     }
 

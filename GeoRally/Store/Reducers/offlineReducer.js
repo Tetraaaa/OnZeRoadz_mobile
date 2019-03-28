@@ -1,7 +1,3 @@
-
-
-
-
 let initialState = {
     circuits:[]
 }
@@ -33,6 +29,23 @@ function offlineReducer(state = initialState, action) {
             let transit = circuit.transits.find(transit => transit.id === action.value.transitId);
             let question = transit.step.questions.find(question => question.id === action.value.questionId);
             Object.assign(question, {questionProgress:action.value.questionProgress})
+            nextState ={
+                ...state,
+                circuits:dc
+            }
+            return nextState;
+        case 'REMOVE_PROGRESS':
+            dc = state.circuits.slice(0);
+            circuit = dc.find(circuit => circuit.id === action.value.id);
+            circuit.progress = null;
+            circuit.transits.forEach(transit => {
+                if(transit.step)
+                {
+                    transit.step.questions.forEach(question => {
+                        question.questionProgress = null;
+                    })
+                }
+            });
             nextState ={
                 ...state,
                 circuits:dc
