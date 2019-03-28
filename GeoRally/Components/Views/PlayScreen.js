@@ -23,15 +23,15 @@ class PlayScreen extends React.Component
             },
             search: "",
             followingCurrentPosition: true,
-            currentTransitIndex: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.currentProgressIndex || 0,
-            inTransit: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.inTransit || true,
+            currentTransitIndex: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress ? this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.step.id : 0,
+            inTransit: true,
             okGeoLoc: false,
             over: false,
             score: 0,
             startTime: null,
             expanded: false,
             currentQuestionIndex: 0,
-            answeredQuestions:0
+            answeredQuestions: 0
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         this.requests = [];
@@ -44,23 +44,10 @@ class PlayScreen extends React.Component
             {
                 if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
                 {
-
-                    if (infos.coords.latitude >= this.circuit.transits[this.state.currentTransitIndex].step.latitude - GeoLocConfig.latitudeDelta && infos.coords.latitude <= this.circuit.transits[this.state.currentTransitIndex].step.latitude + GeoLocConfig.latitudeDelta &&
-                        infos.coords.longitude >= this.circuit.transits[this.state.currentTransitIndex].step.longitude - GeoLocConfig.longitudeDelta && infos.coords.longitude <= this.circuit.transits[this.state.currentTransitIndex].step.longitude + GeoLocConfig.longitudeDelta)
+                    if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
                     {
-                        if (!this.state.okGeoLoc)
-                        {
-                            this.setState({
-                                okGeoLoc: true
-                            })
-                        }
+                        this.setState({ okGeoLoc: true })
                     }
-
-                }
-
-                if (this.map && this.state.followingCurrentPosition)
-                {
-                    this._centerMapOnPoint(infos.coords.latitude, infos.coords.longitude)
                 }
             },
             () => { },
@@ -68,18 +55,19 @@ class PlayScreen extends React.Component
         )
 
         navigator.geolocation.getCurrentPosition(
-            (position) =>
+            (infos) =>
             {
-                this.setState({
-                    region: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: this.state.region.latitudeDelta,
-                        longitudeDelta: this.state.region.longitudeDelta
-                    }
-                });
+                if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
+                {
+                    this.setState({ okGeoLoc: true })
+                }
             }
         );
+    }
+
+    checkPosition = (lat, lng) =>
+    {
+        if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005) this._validTransit();
     }
 
 
@@ -149,26 +137,28 @@ class PlayScreen extends React.Component
                     Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
                 }
             })
-        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval, inTransit:this.state.inTransit } } };
+        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval, inTransit: this.state.inTransit } } };
         this.props.dispatch(action);
     }
 
     _questionProgress = (transitId, questionId, progress) =>
     {
-        let action = {type:"QUESTION_PROGRESS", value:{circuitId: this.circuit.id, transitId:transitId, questionId:questionId, questionProgress:progress}};
+        let action = { type: "QUESTION_PROGRESS", value: { circuitId: this.circuit.id, transitId: transitId, questionId: questionId, questionProgress: progress } };
         this.props.dispatch(action);
         this.setState({
-            answeredQuestions:this.state.answeredQuestions + 1
-        }, () => {
-            if(this.state.answeredQuestions === this.circuit.transits[this.state.currentTransitIndex].step.questions.length)
+            answeredQuestions: this.state.answeredQuestions + 1
+        }, () =>
             {
-                let totalScore = 0;
-                this.circuit.transits[this.state.currentTransitIndex].step.questions.forEach(question => {
-                    totalScore+=question.questionProgress.score
-                })
-                this._validStep(totalScore);
-            }
-        })
+                if (this.state.answeredQuestions === this.circuit.transits[this.state.currentTransitIndex].step.questions.length)
+                {
+                    let totalScore = 0;
+                    this.circuit.transits[this.state.currentTransitIndex].step.questions.forEach(question =>
+                    {
+                        totalScore += question.questionProgress.score
+                    })
+                    this._validStep(totalScore);
+                }
+            })
     }
 
     _previousQuestion = () =>
@@ -181,7 +171,7 @@ class PlayScreen extends React.Component
 
     _nextQuestion = () =>
     {
-        
+
         let maxIndex = this.circuit.transits[this.state.currentTransitIndex].step.questions.length - 1;
         if (this.state.currentQuestionIndex < maxIndex)
         {
@@ -201,22 +191,23 @@ class PlayScreen extends React.Component
 
     render()
     {
+        console.log(this.state.okGeoLoc)
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
                     {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
-                <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems:"center" }}>
-                    <Text style={{ color: Colors.primary, fontSize: 16, flex:1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>
+                <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ color: Colors.primary, fontSize: 16, flex: 1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>
                     {
                         !this.state.inTransit ?
-                            <View style={{flexDirection:"row", alignItems:"center"}}>
-                                <TouchableOpacity style={{ width: 32}} onPress={this._previousQuestion} disabled={this.state.currentQuestionIndex <= 0}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <TouchableOpacity style={{ width: 32 }} onPress={this._previousQuestion} disabled={this.state.currentQuestionIndex <= 0}>
                                     <Icon name="navigate-before" size={32} color={this.state.currentQuestionIndex <= 0 ? "rgba(0,0,0,0)" : "grey"} />
                                 </TouchableOpacity>
-                                <Text style={{fontSize:16, color:Colors.primary}}>{!this.state.inTransit ? "Question " + (this.state.currentQuestionIndex + 1) : null}</Text>
-                                <TouchableOpacity style={{ width: 32}} onPress={this._nextQuestion} disabled={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length -1}>
-                                    <Icon name="navigate-next" size={32} color={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length -1 ? "rgba(0,0,0,0)" : "grey"} />
+                                <Text style={{ fontSize: 16, color: Colors.primary }}>{!this.state.inTransit ? "Question " + (this.state.currentQuestionIndex + 1) : null}</Text>
+                                <TouchableOpacity style={{ width: 32 }} onPress={this._nextQuestion} disabled={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length - 1}>
+                                    <Icon name="navigate-next" size={32} color={this.state.currentQuestionIndex >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length - 1 ? "rgba(0,0,0,0)" : "grey"} />
                                 </TouchableOpacity>
 
                             </View>
