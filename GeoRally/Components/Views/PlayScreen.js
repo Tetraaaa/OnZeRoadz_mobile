@@ -23,7 +23,7 @@ class PlayScreen extends React.Component
             },
             search: "",
             followingCurrentPosition: true,
-            currentTransitIndex: this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress ? this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id")).progress.step.id : 0,
+            currentTransitIndex: this.getTransitIndexFromProgress(),
             inTransit: true,
             okGeoLoc: false,
             over: false,
@@ -39,22 +39,8 @@ class PlayScreen extends React.Component
 
     componentDidMount()
     {
-        this.tracker = navigator.geolocation.watchPosition(
-            (infos) =>
-            {
-                if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
-                {
-                    if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
-                    {
-                        this.setState({ okGeoLoc: true })
-                    }
-                }
-            },
-            () => { },
-            { enableHighAccuracy: true, distanceFilter: 1, timeout: 20000 }
-        )
-
-        navigator.geolocation.getCurrentPosition(
+        
+        /*navigator.geolocation.getCurrentPosition(
             (infos) =>
             {
                 if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
@@ -62,7 +48,62 @@ class PlayScreen extends React.Component
                     this.setState({ okGeoLoc: true })
                 }
             }
-        );
+        );*/
+
+        if(this.getAnsweredQuestions())
+        {
+            this.setState({currentTransitIndex:this.state.currentTransitIndex+1})
+        }
+
+        this.trackPosition(true);
+    }
+
+    trackPosition = (on) => 
+    {
+        if(on)
+        {
+            this.tracker = navigator.geolocation.watchPosition(
+                (infos) =>
+                {
+                    if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
+                    {
+                        if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
+                        {
+                            this.setState({ okGeoLoc: true })
+                        }
+                    }
+                },
+                () => { },
+                { enableHighAccuracy: true, distanceFilter: 1, timeout: 20000 }
+            )
+        }
+        else
+        {
+            navigator.geolocation.clearWatch(this.tracker)
+        }
+
+    }
+
+    getTransitIndexFromProgress()
+    {
+        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
+        if(circuit.progress && circuit.progress.step)
+        {
+            let stepId = circuit.progress.step.id;
+            let transit = circuit.transits.find(transit => transit.step.id === stepId);
+            return transit.transitIndex;
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
+    getAnsweredQuestions()
+    {
+        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
+        return circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress !== null).length
     }
 
     checkPosition = (lat, lng) =>
@@ -88,6 +129,8 @@ class PlayScreen extends React.Component
                 okGeoLoc: false,
                 inTransit: false
             })
+            this.trackPosition(false);
+            
         }
     }
 
@@ -114,6 +157,7 @@ class PlayScreen extends React.Component
             score: score + this.state.score,
             startTime
         }, () => this._sendProgress())
+        this.trackPosition(true);
     }
 
     _sendProgress = () =>
@@ -137,7 +181,7 @@ class PlayScreen extends React.Component
                     Alert.alert("Erreur lors de la mise à jour de la progression", "Impossible de mettre à jour la progression.")
                 }
             })
-        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { currentTransitIndex: this.circuit.transits[this.state.currentTransitIndex - 1].step.id, score: this.state.score, time: timeInterval, inTransit: this.state.inTransit } } };
+        let action = { type: "UPDATE_PROGRESS", value: { id: this.circuit.id, progress: { step: this.circuit.transits[this.state.currentTransitIndex].step, score: this.state.score, time: timeInterval} } };
         this.props.dispatch(action);
     }
 
@@ -191,7 +235,6 @@ class PlayScreen extends React.Component
 
     render()
     {
-        console.log(this.state.okGeoLoc)
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
