@@ -10,6 +10,7 @@ export default URL = {
     login:domain + "login",
     whoami:domain + "whoami",
     circuit:circuit,
+    checkCircuitsVersion: circuit+'checkVersion',
     publishedCircuits:circuit + "published/area",
     myCircuits: user+"myCircuits",
     updateProgress: circuit+"{idCircuit}/progress/",
