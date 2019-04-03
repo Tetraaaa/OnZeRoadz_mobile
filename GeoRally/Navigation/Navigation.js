@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import FetchRequest from "../Tools/FetchRequest";
 import Url from "../Resources/Url";
 import Colors from "../Colors";
+import Strings from "../Resources/i18n";
 
 class Navigation extends React.Component
 {
@@ -140,7 +141,7 @@ class Navigation extends React.Component
             return (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <Image style={{width:64, height:64, margin:5}} source={require("../Resources/Images/sad.png")}/>
-                    <Text style={{ textAlign: "center", color: "black", fontSize: 16 }}>Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser.</Text>
+                    <Text style={{ textAlign: "center", color: "black", fontSize: 16 }}>{Strings("init", "allow")}</Text>
                 </View>
             )
         }

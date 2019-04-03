@@ -8,6 +8,7 @@ import Friends from "../Components/Views/Friends";
 import Circuits from "../Components/Views/Circuits";
 import MainScreen from '../Components/Views/MainScreen';
 import PlayScreen from "../Components/Views/PlayScreen";
+import Strings from '../Resources/i18n';
 
 
 const MainScreenStackNavigator = createStackNavigator({
@@ -32,7 +33,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     {
         screen: MainScreenStackNavigator,
         navigationOptions: {
-            tabBarLabel: "Carte",
+            tabBarLabel: Strings("navigation", "map"),
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="map" size={18} />
@@ -43,7 +44,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     {
         screen: Circuits,
         navigationOptions: {
-            tabBarLabel: "Mes circuits",
+            tabBarLabel: Strings("navigation", "circuits"),
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="user" size={18} />
@@ -54,7 +55,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     {
         screen: Account,
         navigationOptions: {
-            tabBarLabel: "Mon compte",
+            tabBarLabel: Strings("navigation", "account"),
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="user" size={18} />

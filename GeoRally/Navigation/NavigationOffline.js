@@ -6,6 +6,7 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import Login from '../Components/Views/Login';
 import MainScreen from '../Components/Views/MainScreen';
 import Signup from "../Components/Views/Signup";
+import Strings from '../Resources/i18n';
 
 const SigninSignupStackNavigator = createStackNavigator({
     Login:{
@@ -27,7 +28,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     {
         screen: MainScreen,
         navigationOptions: {
-            tabBarLabel: "Carte",
+            tabBarLabel: Strings("navigation", "map"),
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="map" size={18} />
@@ -38,7 +39,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     {
         screen: SigninSignupStackNavigator,
         navigationOptions: {
-            tabBarLabel: "Connexion/Inscription",
+            tabBarLabel: Strings("navigation", "acc"),
             tabBarIcon: (infos) =>
             {
                 return <Icon color={infos.tintColor} name="user" size={18} />

@@ -6,6 +6,7 @@ import Url from "../../Resources/Url";
 import CircuitListItem from './../../Components/CircuitListItem';
 import UpdateModal from './../UpdateModal';
 import Colors from "../../Colors";
+import Strings from "../../Resources/i18n";
 
 class Circuits extends React.Component
 {
@@ -94,10 +95,10 @@ class Circuits extends React.Component
         return (
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>Mes circuits</Text>
+                    <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "myCircuits")}</Text>
                     {this.state.isLoadingCircuits ?
                         <View style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Text>Chargement de vos circuits...</Text>
+                            <Text>{Strings("circuits", "loading")}</Text>
                             <ActivityIndicator size="large" color={Colors.primary} />
                         </View>
                         :
@@ -107,18 +108,18 @@ class Circuits extends React.Component
                             data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")}/>}
-                            ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
+                            ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>{Strings("circuits", "noCircuits")}</Text>}
                              />
                     }
 
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>Circuits téléchargés</Text>
+                    <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "downloaded")}</Text>
                     <FlatList
                         data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({selectedCircuit: id})} play={(id) => this._playCircuit(id)} />} 
-                        ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
+                        ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>{Strings("circuits", "noCircuits")}</Text>}
                         />
                         
                 </View>

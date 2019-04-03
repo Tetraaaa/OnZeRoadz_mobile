@@ -1,0 +1,45 @@
+{
+    "init":{
+        "allow":"Please allow the app to access your position."
+    },
+    "navigation":{
+        "map":"Map",
+        "acc":"Signin/Sign up",
+        "circuits":"My circuits",
+        "account":"My account"
+    },
+    "placeholders":{
+        "searchbar":"Search a place..."
+    },
+    "texts":{
+        "distance":"Distance",
+        "duration":"Duration",
+        "minimalNote":"Minimal rating",
+        "between":"Between",
+        "and":" and ",
+        "meters":" meters.",
+        "minutes":" minutes.",
+        "stars":" stars."
+    },
+    "login":{
+        "login":"Signin",
+        "signup":"Sign up",
+        "username":"Username",
+        "password":"Password",
+        "noAcc":"Need an account ?"
+    },
+    "map":{
+        "loading":"Maps are loading..."
+    },
+    "circuits":{
+        "myCircuits":"My circuits",
+        "downloaded":"Downloaded circuits",
+        "noCircuits":"Nothing to show !",
+        "loading":"Your circuits are loading..."
+    },
+    "account":{
+        "logout":"Logout",
+        "account":"My account",
+        "language":"Language: "
+    }
+}

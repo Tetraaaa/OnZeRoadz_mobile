@@ -1,6 +1,7 @@
 let initialState = {
     connected:false,
-    lastConnectedUser:null
+    lastConnectedUser:null,
+    locale:"fr"
 }
 
 function connectionReducer(state = initialState, action) {
@@ -15,6 +16,12 @@ function connectionReducer(state = initialState, action) {
             return nextState;
         case 'LOGOUT':
             return initialState;
+        case 'LANGUAGE':
+            nextState = {
+                ...state,
+                locale:action.value
+            }
+            return nextState;
         default:
             return state;
     }

@@ -7,6 +7,7 @@ import FetchRequest from "../../Tools/FetchRequest";
 import Url from "../../Resources/Url";
 import Button from "../Button"
 import { connect } from 'react-redux'
+import Strings from '../../Resources/i18n';
 
 class Login extends React.Component
 {
@@ -80,11 +81,11 @@ class Login extends React.Component
                 </View>
 
 
-                <TextInput onChangeText={(login) => this.setState({ login })} placeholder="Login" />
-                <TextInput onChangeText={(password) => this.setState({ password })} secureTextEntry={true} placeholder="Mot de passe" />
-                <Button title="Connexion" onPress={this._login} color={Colors.secondaryDark} style={{ margin: 5 }} />
-                <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16 }}>Pas de compte ?</Text>
-                <Button title="S'inscrire" onPress={() => { this.props.navigation.navigate("Signup") }} color={Colors.secondaryLight} style={{ margin: 5 }} />
+                <TextInput onChangeText={(login) => this.setState({ login })} placeholder={Strings("login", "username")} />
+                <TextInput onChangeText={(password) => this.setState({ password })} secureTextEntry={true} placeholder={Strings("login", "password")} />
+                <Button title={Strings("login", "login")} onPress={this._login} color={Colors.secondaryDark} style={{ margin: 5 }} />
+                <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16 }}>{Strings("login", "noAcc")}</Text>
+                <Button title={Strings("login", "signup")} onPress={() => { this.props.navigation.navigate("Signup") }} color={Colors.secondaryLight} style={{ margin: 5 }} />
                 {
                     this.state.loading ?
                         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>

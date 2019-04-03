@@ -1,0 +1,45 @@
+{
+    "init":{
+        "allow":"Merci d'autoriser l'application à accéder à votre géolocalisation afin de pouvoir l'utiliser."
+    },
+    "navigation":{
+        "map":"Carte",
+        "acc":"Connexion/Inscription",
+        "circuits":"Mes circuits",
+        "account":"Mon compte"
+    },
+    "placeholders":{
+        "searchbar":"Rechercher un lieu..."
+    },
+    "texts":{
+        "distance":"Distance",
+        "duration":"Durée",
+        "minimalNote":"Note minimale",
+        "between":"Entre",
+        "and":" et ",
+        "meters":" mètres.",
+        "minutes":" minutes.",
+        "stars":" étoiles."
+    },
+    "login":{
+        "login":"Connexion",
+        "signup":"S'inscrire",
+        "username":"Nom d'utilisateur",
+        "password":"Mot de passe",
+        "noAcc":"Pas de compte ?"
+    },
+    "map":{
+        "loading":"Chargement des cartes en cours..."
+    },
+    "circuits":{
+        "myCircuits":"Mes circuits",
+        "downloaded":"Circuits téléchargés",
+        "noCircuits":"Aucun circuit !",
+        "loading":"Chargement de vos circuits..."
+    },
+    "account":{
+        "logout":"Déconnexion",
+        "account":"Mon compte",
+        "language":"Langue de l'application : "
+    }
+}

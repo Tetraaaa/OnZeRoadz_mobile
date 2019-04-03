@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../Colors';
 import Config from "../Resources/Config";
 import Url from "../Resources/Url";
+import Strings from '../Resources/i18n';
 
 class GooglePlacesSearchBar extends React.Component
 {
@@ -107,7 +108,7 @@ class GooglePlacesSearchBar extends React.Component
                     <View style={{ flex: 1, margin: 5, borderRadius: 30, backgroundColor: "white" }}>
                         <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "flex-start", padding: 3 }}>
                             <View style={{ flex: 9 }}>
-                                <TextInput style={{ padding: 0 }} ref={component => this.searchBar = component} onBlur={() => { this.setState({ focusOnBar: false }) }} onFocus={() => { this.setState({ focusOnBar: true }) }} value={this.props.value} onChangeText={this._onChangeText} placeholder={"Rechercher un lieu..."} selectTextOnFocus={true} />
+                                <TextInput style={{ padding: 0 }} ref={component => this.searchBar = component} onBlur={() => { this.setState({ focusOnBar: false }) }} onFocus={() => { this.setState({ focusOnBar: true }) }} value={this.props.value} onChangeText={this._onChangeText} placeholder={Strings("placeholders", "searchbar")} selectTextOnFocus={true} />
                             </View>
                             <View style={{ flex: 1, alignItems: "flex-end" }}>
                                 <Icon color={Colors.primaryDark} name="search" size={36} />
@@ -118,25 +119,25 @@ class GooglePlacesSearchBar extends React.Component
                 <Animated.View style={{ flex: 1, backgroundColor: "white", height: this.state.height, overflow: "hidden" }}>
                     <Text style={{color:"black", fontWeight:"bold", margin:5}}>Distance</Text>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
-                        <Text> Entre </Text>
+                        <Text>{Strings("texts", "between")} </Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.minDistance.toString()} onChangeText={(minDistance) => this.setState({ minDistance })} />
-                        <Text> et </Text>
+                        <Text>{Strings("texts", "and")}</Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.maxDistance.toString()} onChangeText={(maxDistance) => this.setState({ maxDistance })} />
-                        <Text> mètres </Text>
+                        <Text> {Strings("texts", "meters")} </Text>
                     </View>
 
                     <Text style={{color:"black", fontWeight:"bold", margin:5}}>Durée</Text>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
-                        <Text> Entre </Text>
+                        <Text>{Strings("texts", "between")}</Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.minDuration.toString()} onChangeText={(minDuration) => this.setState({ minDuration })} />
-                        <Text> et </Text>
+                        <Text> {Strings("texts", "and")} </Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.maxDuration.toString()} onChangeText={(maxDuration) => this.setState({ maxDuration })} />
-                        <Text> minutes </Text>
+                        <Text> {Strings("texts", "minutes")} </Text>
                     </View>
-                    <Text style={{color:"black", fontWeight:"bold", margin:5}}>Note minimale</Text>
+                    <Text style={{color:"black", fontWeight:"bold", margin:5}}>{Strings("texts", "minimalNote")}</Text>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
                         <Slider style={{width:"50%"}} value={this.state.minNote} onValueChange={(minNote) => this.setState({ minNote })} maximumValue={5} />
-                        <Text>{this.state.minNote.toFixed(2) + " étoiles"} </Text>
+                        <Text>{this.state.minNote.toFixed(2) + Strings("texts", "stars")} </Text>
                     </View>
 
                 </Animated.View>

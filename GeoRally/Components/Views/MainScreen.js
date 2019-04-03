@@ -8,6 +8,7 @@ import Url from "../../Resources/Url";
 import MapStyles from "../../Resources/MapStyles";
 import CircuitModal from "../../Components/CircuitModal";
 import Colors from '../../Colors';
+import Strings from '../../Resources/i18n';
 
 class MainScreen extends React.Component
 {
@@ -167,7 +168,7 @@ class MainScreen extends React.Component
         })
         .catch(error =>
         {
-            Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
+            Alert.alert("Erreur lors de la récupération des mises à jour des circuits", "Il est possible que certains de vos circuits ne soient pas à jour.")
             this.setState({ downloadingCircuit: false })
         })
     }
@@ -206,7 +207,7 @@ class MainScreen extends React.Component
             return (
                 <View style={{ alignItems: 'center' }}>
                     <ActivityIndicator size={"large"} />
-                    <Text>Chargement des cartes en cours...</Text>
+                    <Text>{Strings("map", "loading")}</Text>
                 </View>
             );
         }
