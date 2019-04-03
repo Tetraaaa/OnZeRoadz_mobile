@@ -9,6 +9,7 @@ import Colors from "../Colors";
 class CircuitListItem extends React.Component{
 
     render(){
+        console.log(this.props.data)
         return(
             <View style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1, margin:5}}>
                 <View style={{flex:6}}>
@@ -37,9 +38,14 @@ class CircuitListItem extends React.Component{
                     </View>
                 </View>
                 <View style={{flex:1}}>
-                    {this.props.downloaded && 
+                    {this.props.downloaded && !this.props.data.needUpdate && 
                         <Button onPress={() => this.props.play(this.props.data.id)}>
                             <IconF name="play" size={24} color={Colors.secondary}/>
+                        </Button>
+                    }
+                    {this.props.downloaded && this.props.data.needUpdate && 
+                        <Button onPress={() => this.props.update(this.props.data.id)}>
+                            <IconF name="play" size={24} color={Colors.primaryLight}/>
                         </Button>
                     }
                     {!this.props.downloaded && 

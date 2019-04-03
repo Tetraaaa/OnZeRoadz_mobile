@@ -57,6 +57,8 @@ class MainScreen extends React.Component
                 });
             }
         );
+
+        this._checkDownloadedCircuitsVersion();
     }
 
     componentWillUnmount()
@@ -138,6 +140,37 @@ class MainScreen extends React.Component
         this.setState({selectedMarker:null})
     }
 
+    _checkDownloadedCircuitsVersion = () => {
+        circuits = [];
+        this.props.offlineReducer.circuits.map((circuit) => circuits.push({
+            "circuitId": circuit.id,
+            "version": circuit.versionId
+        }))
+        let body = {"circuits" : circuits};
+        let f = new FetchRequest(Url.checkCircuitsVersion,"POST",JSON.stringify(body));
+        f.open()
+        .then(response =>
+        {
+            if (response.ok)
+            {
+                response.json()
+                    .then(json =>
+                    {
+                        let action = { type: "CHECK_UPDATE", value: json }
+                        this.props.dispatch(action);
+                    })
+            }
+            else
+            {
+                throw new Error("Erreur lors de la vérification des mises à jour")
+            }
+        })
+        .catch(error =>
+        {
+            Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
+            this.setState({ downloadingCircuit: false })
+        })
+    }
     _filterSelection = (filters) =>
     {
         new FetchRequest(Url.filterCircuits, "POST", JSON.stringify(filters)).open()

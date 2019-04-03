@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, FlatList, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, ScrollView, ActivityIndicator, } from "react-native";
 import { connect } from 'react-redux'
 import FetchRequest from "../../Tools/FetchRequest";
 import Url from "../../Resources/Url";
 import CircuitListItem from './../../Components/CircuitListItem';
+import UpdateModal from './../UpdateModal';
 import Colors from "../../Colors";
 
 class Circuits extends React.Component
@@ -14,7 +15,8 @@ class Circuits extends React.Component
         super(props);
         this.state = {
             isLoadingCircuits: false,
-            downloadingCircuit:false
+            downloadingCircuit:false,
+            selectedCircuit: null
         }
     }
 
@@ -49,10 +51,13 @@ class Circuits extends React.Component
 
     _playCircuit = (id) =>
     {
-        this.props.navigation.navigate("PlayScreen", { id: id })
+        this.setState({
+            selectedCircuit: null
+        }, () => this.props.navigation.navigate("PlayScreen", { id: id }))
+        
     }
 
-    _downloadCircuit = (id) =>
+    _downloadCircuit = (id, type) =>
     {
         this.setState({ downloadingCircuit: true })
         let f = new FetchRequest(Url.circuit + id);
@@ -67,9 +72,9 @@ class Circuits extends React.Component
                             let circuit = json.circuit;
                             let progress = json.progress;
                             Object.assign(circuit, progress);
-                            let action = { type: "DOWNLOAD_CIRCUIT", value: circuit }
+                            let action = { type: type, value: circuit }
                             this.props.dispatch(action);
-                            this.setState({ downloadingCircuit: false })
+                            this.setState({ downloadingCircuit: false, selectedCircuit: null })
                         })
                 }
                 else
@@ -80,7 +85,7 @@ class Circuits extends React.Component
             .catch(error =>
             {
                 Alert.alert("Erreur lors de la récupération du circuit", "Impossible de télécharger le circuit sélectionné.")
-                this.setState({ downloadingCircuit: false })
+                this.setState({ downloadingCircuit: false, selectedCircuit: null })
             })
     }
 
@@ -101,7 +106,7 @@ class Circuits extends React.Component
                             refreshing={this.state.isLoadingCircuits}
                             data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id)}/>}
+                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")}/>}
                             ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
                              />
                     }
@@ -112,11 +117,12 @@ class Circuits extends React.Component
                     <FlatList
                         data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
                         keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} play={(id) => this._playCircuit(id)} />} 
+                        renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({selectedCircuit: id})} play={(id) => this._playCircuit(id)} />} 
                         ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>Aucun circuit !</Text>}
                         />
                         
                 </View>
+                <UpdateModal open={this.state.selectedCircuit !== null} circuitId = {this.state.selectedCircuit} wantUpdate={(choice) => choice ? this._downloadCircuit(this.state.selectedCircuit, "UPDATE_CIRCUIT") : this._playCircuit(this.state.selectedCircuit)}/>
             </ScrollView>
         );
     }

@@ -14,6 +14,27 @@ function offlineReducer(state = initialState, action) {
                 circuits:[...state.circuits, action.value]
             }
             return nextState;
+        case 'UPDATE_CIRCUIT':
+            dc = state.circuits.filter((circuit) => circuit.id != action.value.id)
+            nextState = {
+                ...state,
+                circuits:[...dc, action.value]
+            }
+            return nextState;
+        case 'CHECK_UPDATE':
+            dc = state.circuits.slice(0);
+            dc.forEach(circuit => {
+                action.value.forEach(id => {
+                    if(circuit.id === id){
+                        Object.assign(circuit, {needUpdate: true});
+                    }
+                })
+            })
+            nextState = {
+                ...state,
+                circuits: dc
+            }
+            return nextState;
         case 'UPDATE_PROGRESS':
             dc = state.circuits.slice(0);
             circuit = dc.find(circuit => circuit.id === action.value.id);
