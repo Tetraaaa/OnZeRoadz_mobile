@@ -7,7 +7,6 @@ import Url from "../../Resources/Url";
 import FetchRequest from "../../Tools/FetchRequest";
 import StepView from "./../../Components/StepView";
 import TransitView from './../../Components/TransitView';
-import GeoLocConfig from './../../Resources/GeoLoc';
 
 class PlayScreen extends React.Component
 {
@@ -41,7 +40,7 @@ class PlayScreen extends React.Component
     {
         navigator.geolocation.getCurrentPosition(
             (infos) =>
-            {
+            {                             
                 if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
                 {
                     this.setState({ okGeoLoc: true })
@@ -63,11 +62,11 @@ class PlayScreen extends React.Component
         {
             this.tracker = navigator.geolocation.watchPosition(
                 (infos) =>
-                {
+                {                    
                     if (this.circuit.transits[this.state.currentTransitIndex].step)
                     {
                         if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
-                        {
+                        {                            
                             if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
                             {
                                 this.setState({ okGeoLoc: true })
@@ -114,7 +113,7 @@ class PlayScreen extends React.Component
     {
         if (this.circuit.transits[this.state.currentTransitIndex].step)
         {
-            if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005) this._validTransit();
+            if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005)return true;
         }
     }
 

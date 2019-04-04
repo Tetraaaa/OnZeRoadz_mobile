@@ -40,8 +40,8 @@ class TransitView extends React.Component
 
                     <View style={{ flex: 1 }}>
                         {
-                            this.props.transit.step && !this.props.transit.step.geoLoc && <Button style={{ margin: 5 }} color={Colors.secondary} disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)} />
-                        }
+                            this.props.transit.step && <Button style={{ margin: 5 }} color={Colors.secondary} disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)} />
+                        }                        
                     </View>
 
 
