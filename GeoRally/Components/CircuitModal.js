@@ -110,7 +110,7 @@ class CircuitModal extends React.Component
                             </View>
                             <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconF name="clock-o" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />
-                                <Text style={{ fontSize: 16 }}>{this.props.marker.duration + " min"}</Text>
+                                <Text style={{ fontSize: 16 }}>{Math.floor(this.props.marker.duration/1000/60) + " min"}</Text>
                             </View>
                             <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconM name="trending-up" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />

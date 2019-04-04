@@ -9,7 +9,6 @@ import Colors from "../Colors";
 class CircuitListItem extends React.Component{
 
     render(){
-        console.log(this.props.data)
         return(
             <View style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1, margin:5}}>
                 <View style={{flex:6}}>
@@ -18,7 +17,7 @@ class CircuitListItem extends React.Component{
                     <View style={{flexDirection:'row', justifyContent:"space-between", marginTop:5}}>
                         <View style={{flexDirection:"row"}}>
                             <IconF name="clock-o" size={24} color={Colors.secondary}/>
-                            <Text> {this.props.data.duration}s</Text>
+                            <Text> {Math.floor(this.props.data.duration/1000/60)}s</Text>
                         </View>
                         
                         <View style={{flexDirection:"row"}}>

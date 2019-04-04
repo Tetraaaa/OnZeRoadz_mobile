@@ -30,7 +30,7 @@ class UpdateModal extends React.Component
         if (this.props.open)
         {
             Animated.spring(this.state.modalHeight, {
-                toValue: 75,
+                toValue: 150,
                 duration: 1500
             }).start()
         }

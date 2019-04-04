@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from '../Colors';
 import Button from "../Components/Button";
@@ -28,20 +28,23 @@ class TransitView extends React.Component
             okGeoLoc = true;
         }
 
+
         if (this.props.transit.transitType.id === 1)
         {
             return (
                 <View style={{ flex: 1 }}>
-                    <View style={{ flex: 9}}>
-                        <HTML
-                            html={this.props.transit.description}
-                        />
+                    <View style={{ flex: 9 }}>
+                        <ScrollView>
+                            <HTML
+                                html={this.props.transit.description}
+                            />
+                        </ScrollView>
                     </View>
 
                     <View style={{ flex: 1 }}>
                         {
                             this.props.transit.step && <Button style={{ margin: 5 }} color={Colors.secondary} disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)} />
-                        }                        
+                        }
                     </View>
 
 

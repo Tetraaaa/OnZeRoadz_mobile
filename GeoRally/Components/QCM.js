@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Dimensions } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from './../Colors';
 import Button from './Button';
@@ -19,7 +19,7 @@ class QCM extends React.Component
 
     _checkAnswer = () =>
     {
-        if(this.state.selectedAnswers.length === 0 ) 
+        if (this.state.selectedAnswers.length === 0) 
         {
             this.props.sendScore(0);
             return;
@@ -97,12 +97,14 @@ class QCM extends React.Component
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <HTML
+                        containerStyle={{ margin: 5 }}
+                        imagesMaxWidth={Dimensions.get('window').width * 0.95}
                         html={this.props.question.text}
                     />
                     {this._renderButtons()}
                 </ScrollView>
                 <View>
-                    <Button color={Colors.primary} disabledColor={this.props.score === 0 ? Colors.error : "green" } disabled={this.props.question.questionProgress ? true : false} title="Valider la réponse" onPress={this._checkAnswer} />
+                    <Button color={Colors.primary} disabledColor={this.props.score === 0 ? Colors.error : "green"} disabled={this.props.question.questionProgress ? true : false} title="Valider la réponse" onPress={this._checkAnswer} />
                 </View>
             </View>
 

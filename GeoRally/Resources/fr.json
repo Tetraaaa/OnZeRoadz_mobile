@@ -49,5 +49,9 @@
         "createdBy":"Crée par : ",
         "notRated":"Pas encore noté !",
         "downloading":"Téléchargement du circuit..."
+    },
+    "playScreen":{
+        "goToQuestions":"Répondre aux questions",
+        "nextStep":"Étape suivante"
     }
 }
