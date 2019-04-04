@@ -93,7 +93,7 @@ class Circuits extends React.Component
     render()
     {
         return (
-            <ScrollView style={{ flex: 1 }}>
+            <View style={{flex:1}}>
                 <View style={{ flex: 1 }}>
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "myCircuits")}</Text>
                     {this.state.isLoadingCircuits ?
@@ -124,7 +124,7 @@ class Circuits extends React.Component
                         
                 </View>
                 <UpdateModal open={this.state.selectedCircuit !== null} circuitId = {this.state.selectedCircuit} wantUpdate={(choice) => choice ? this._downloadCircuit(this.state.selectedCircuit, "UPDATE_CIRCUIT") : this._playCircuit(this.state.selectedCircuit)}/>
-            </ScrollView>
+            </View>
         );
     }
 }

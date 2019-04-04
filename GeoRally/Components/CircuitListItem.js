@@ -17,7 +17,7 @@ class CircuitListItem extends React.Component{
                     <View style={{flexDirection:'row', justifyContent:"space-between", marginTop:5}}>
                         <View style={{flexDirection:"row"}}>
                             <IconF name="clock-o" size={24} color={Colors.secondary}/>
-                            <Text> {Math.floor(this.props.data.duration/1000/60)}s</Text>
+                            <Text> {Math.floor(this.props.data.duration/1000/60)}min</Text>
                         </View>
                         
                         <View style={{flexDirection:"row"}}>
@@ -32,7 +32,7 @@ class CircuitListItem extends React.Component{
                         
                         <View style={{flexDirection:"row"}}>
                             <IconM name="star" size={24} color={Colors.secondary}/>
-                            <Text>{this.props.data.averageRatings != null && this.props.data.averageRatings} {this.props.data.averageRatings === null && '-'}</Text>
+                            <Text>{this.props.data.averageRatings != null && this.props.data.averageRatings.toFixed(2)} {this.props.data.averageRatings === null && '-'}</Text>
                         </View>
                     </View>
                 </View>

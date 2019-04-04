@@ -56,7 +56,7 @@ class CircuitModal extends React.Component
                     {
                         starGauge.map(item => item)
                     }
-                    <Text>{"(" + this.props.marker.averageRatings + ")"}</Text>
+                    <Text>{"(" + this.props.marker.averageRatings.toFixed(2) + ")"}</Text>
 
                 </View>
 
