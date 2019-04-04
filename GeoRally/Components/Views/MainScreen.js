@@ -219,7 +219,7 @@ class MainScreen extends React.Component
                         style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
-                        onRegionChangeComplete={(region) => { this.setState({ region }) }}
+                        onRegionChangeComplete={(region) => {this.setState({region})}}
                         customMapStyle={this._getMapStyleDependingOnCurrentTime()}
                         showsUserLocation={true}
                         loadingEnabled={true}

@@ -5,6 +5,7 @@ import IconF from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from "../Colors";
+import Strings from "../Resources/i18n";
 
 
 class CircuitModal extends React.Component
@@ -64,7 +65,7 @@ class CircuitModal extends React.Component
         }
         else
         {
-            return <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}><Text>Pas encore noté !</Text></View>
+            return <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}><Text>{Strings("circuitModal", "notRated") }</Text></View>
         }
 
     }
@@ -95,7 +96,7 @@ class CircuitModal extends React.Component
                 this.props.downloadingCircuit ?
                     <Animated.View style={{ height: this.state.modalHeight, position: "absolute", bottom: 1, backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, width: "100%", elevation: 4 }}>
                         <ActivityIndicator size="large" color={Colors.primary} />
-                        <Text style={{ textAlign: "center" }}>Téléchargement du circuit...</Text>
+                        <Text style={{ textAlign: "center" }}>{Strings("circuitModal", "downloading") }</Text>
                     </Animated.View>
                     :
                     <Animated.View style={{ height: this.state.modalHeight.interpolate({ inputRange: [0, 150], outputRange: ["0%", "35%"] }), position: "absolute", bottom: 1, backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, width: "100%", elevation: 4 }}>
@@ -118,7 +119,7 @@ class CircuitModal extends React.Component
                         </View>
                         <View style={{ flex: 1, flexDirection: "row" }}>
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Text style={{ color: Colors.secondaryLight, fontSize: 15, marginLeft: 5 }}>{"Créé par : " + this.props.marker.creator.username}</Text>
+                                <Text style={{ color: Colors.secondaryLight, fontSize: 15, marginLeft: 5 }}>{Strings("circuitModal", "createdBy") + this.props.marker.creator.username}</Text>
                             </View>
                             <View style={{ flex: 1 }}>
                                 {
@@ -131,7 +132,7 @@ class CircuitModal extends React.Component
 
                         {
                             this.props.connected ?
-                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? this.props.marker.progress ? "Reprendre" : "Jouer" : "Télécharger"} onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
+                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? this.props.marker.progress ? Strings("circuitModal", "resume")  : Strings("circuitModal", "play")  : Strings("circuitModal", "download") } onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
                                 :
                                 null
                         }

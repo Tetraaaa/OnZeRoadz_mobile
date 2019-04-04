@@ -81,7 +81,7 @@ class GooglePlacesSearchBar extends React.Component
                 toValue: 0,
                 duration: 350
             }).start()
-            this.props.onFilterSelection({distanceMin:this.state.minDistance, distanceMax:this.state.maxDistance, durationMin:this.state.minDuration, durationMax:this.state.maxDuration, note:this.state.minNote})
+            this.props.onFilterSelection({ distanceMin: this.state.minDistance, distanceMax: this.state.maxDistance, durationMin: this.state.minDuration, durationMax: this.state.maxDuration, note: this.state.minNote })
         }
         else
         {
@@ -117,8 +117,8 @@ class GooglePlacesSearchBar extends React.Component
                     </View>
                 </View>
                 <Animated.View style={{ flex: 1, backgroundColor: "white", height: this.state.height, overflow: "hidden" }}>
-                    <Text style={{color:"black", fontWeight:"bold", margin:5}}>Distance</Text>
-                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
+                    <Text style={{ color: "black", fontWeight: "bold", margin: 5 }}>Distance</Text>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <Text>{Strings("texts", "between")} </Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.minDistance.toString()} onChangeText={(minDistance) => this.setState({ minDistance })} />
                         <Text>{Strings("texts", "and")}</Text>
@@ -126,17 +126,17 @@ class GooglePlacesSearchBar extends React.Component
                         <Text> {Strings("texts", "meters")} </Text>
                     </View>
 
-                    <Text style={{color:"black", fontWeight:"bold", margin:5}}>Durée</Text>
-                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
+                    <Text style={{ color: "black", fontWeight: "bold", margin: 5 }}>Durée</Text>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <Text>{Strings("texts", "between")}</Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.minDuration.toString()} onChangeText={(minDuration) => this.setState({ minDuration })} />
                         <Text> {Strings("texts", "and")} </Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.maxDuration.toString()} onChangeText={(maxDuration) => this.setState({ maxDuration })} />
                         <Text> {Strings("texts", "minutes")} </Text>
                     </View>
-                    <Text style={{color:"black", fontWeight:"bold", margin:5}}>{Strings("texts", "minimalNote")}</Text>
-                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent:"center" }}>
-                        <Slider style={{width:"50%"}} value={this.state.minNote} onValueChange={(minNote) => this.setState({ minNote })} maximumValue={5} />
+                    <Text style={{ color: "black", fontWeight: "bold", margin: 5 }}>{Strings("texts", "minimalNote")}</Text>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                        <Slider style={{ width: "50%" }} value={this.state.minNote} onValueChange={(minNote) => this.setState({ minNote })} maximumValue={5} />
                         <Text>{this.state.minNote.toFixed(2) + Strings("texts", "stars")} </Text>
                     </View>
 

@@ -41,5 +41,13 @@
         "logout":"Déconnexion",
         "account":"Mon compte",
         "language":"Langue de l'application : "
+    },
+    "circuitModal":{
+        "play":"Jouer",
+        "download":"Télécharger",
+        "resume":"Reprendre",
+        "createdBy":"Crée par : ",
+        "notRated":"Pas encore noté !",
+        "downloading":"Téléchargement du circuit..."
     }
 }
