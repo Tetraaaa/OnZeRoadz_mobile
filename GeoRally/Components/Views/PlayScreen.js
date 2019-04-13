@@ -7,6 +7,7 @@ import Url from "../../Resources/Url";
 import FetchRequest from "../../Tools/FetchRequest";
 import StepView from "./../../Components/StepView";
 import TransitView from './../../Components/TransitView';
+import GeoLocTools from './../../Resources/GeoLoc';
 
 class PlayScreen extends React.Component
 {
@@ -31,7 +32,9 @@ class PlayScreen extends React.Component
             expanded: false,
             currentQuestionIndex: 0,
             answeredQuestions: 0,
-            showDescription: true
+            showDescription: true,
+            userLat: 0,
+            userLng: 0
         };
         this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         this.requests = [];
@@ -43,10 +46,10 @@ class PlayScreen extends React.Component
         navigator.geolocation.getCurrentPosition(
             (infos) =>
             {
-                if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
-                {
-                    this.setState({ okGeoLoc: true })
-                }
+                this.setState({
+                    userLat: infos.coords.latitude,
+                    userLng: infos.coords.longitude
+                }, () => this.checkPosition())
             }
         );
         if (this.getAnsweredQuestions())
@@ -70,10 +73,10 @@ class PlayScreen extends React.Component
                     {
                         if (!this.state.over && this.circuit.transits[this.state.currentTransitIndex].step.geoLoc)
                         {
-                            if (this.checkPosition(infos.coords.latitude, infos.coords.longitude))
-                            {
-                                this.setState({ okGeoLoc: true })
-                            }
+                            this.setState({
+                                userLat: infos.coords.latitude,
+                                userLng: infos.coords.longitude
+                            }, () => this.checkPosition())                            
                         }
                     }
                 },
@@ -108,11 +111,12 @@ class PlayScreen extends React.Component
         return circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress).length === this.circuit.transits[this.state.currentTransitIndex].step.questions.length
     }
 
-    checkPosition = (lat, lng) =>
+    checkPosition = () =>
     {
         if (this.circuit.transits[this.state.currentTransitIndex].step)
         {
-            if (Math.abs(lat.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.latitude.toFixed(3)) + Math.abs(lng.toFixed(3) - this.circuit.transits[this.state.currentTransitIndex].step.longitude.toFixed(3)) < 0.005) return true;
+            distance = GeoLocTools.distanceBetween(this.state.userLat, this.state.userLng, this.circuit.transits[this.state.currentTransitIndex].step.latitude, this.circuit.transits[this.state.currentTransitIndex].step.longitude)
+            if (distance<=GeoLocTools.delta) this.setState({okGeoLoc: true});
         }
     }
 
@@ -270,7 +274,7 @@ class PlayScreen extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
-                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} validTransit={(over) => this._validTransit(over)} /> : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
+                    {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} userLat={this.state.userLat} userLng={this.state.userLng} validTransit={(over) => this._validTransit(over)} /> : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
                 <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
                     <Text style={{ color: Colors.primary, fontSize: 16, flex: 1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>
