@@ -36,7 +36,7 @@ class PlayScreen extends React.Component
             userLat: 0,
             userLng: 0
         };
-        this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
+        this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));        
         this.requests = [];
     }
 
@@ -53,7 +53,7 @@ class PlayScreen extends React.Component
             }
         );
         if (this.getAnsweredQuestions())
-        {
+        {            
             this.setState({ currentTransitIndex: this.state.currentTransitIndex + 1 })
         }
 
@@ -96,7 +96,7 @@ class PlayScreen extends React.Component
         if (circuit.progress && circuit.progress.step)
         {
             let stepId = circuit.progress.step.id;
-            let transit = circuit.transits.find(transit => transit.step.id === stepId);
+            let transit = circuit.transits.find(transit => transit.step.id === stepId);            
             return transit.transitIndex;
         }
         else
@@ -107,16 +107,17 @@ class PlayScreen extends React.Component
 
     getAnsweredQuestions()
     {
-        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
-        return circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress).length === this.circuit.transits[this.state.currentTransitIndex].step.questions.length
+        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));        
+        return circuit.transits[this.state.currentTransitIndex].step.questions.length > 0 && circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress).length === this.circuit.transits[this.state.currentTransitIndex].step.questions.length
     }
 
     checkPosition = () =>
     {
         if (this.circuit.transits[this.state.currentTransitIndex].step)
         {
-            distance = GeoLocTools.distanceBetween(this.state.userLat, this.state.userLng, this.circuit.transits[this.state.currentTransitIndex].step.latitude, this.circuit.transits[this.state.currentTransitIndex].step.longitude)
+            distance = GeoLocTools.distanceBetween(this.state.userLat, this.state.userLng, this.circuit.transits[this.state.currentTransitIndex].step.latitude, this.circuit.transits[this.state.currentTransitIndex].step.longitude)            
             if (distance<=GeoLocTools.delta) this.setState({okGeoLoc: true});
+            else if (this.state.okGeoLoc) this.setState({okGeoLoc: false});
         }
     }
 
@@ -128,7 +129,7 @@ class PlayScreen extends React.Component
     }
 
     _validTransit = (over) =>
-    {
+    {        
         if (over)
         {
             this.props.navigation.navigate('MainScreen')

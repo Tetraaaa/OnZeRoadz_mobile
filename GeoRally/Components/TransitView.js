@@ -3,6 +3,7 @@ import { Text, View, ScrollView } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from '../Colors';
 import Button from "../Components/Button";
+import TransitViewTemperature from './TransitViewTemperature';
 
 class TransitView extends React.Component
 {
@@ -24,39 +25,42 @@ class TransitView extends React.Component
             over = true;
             title = "Terminer le circuit et retourner au menu principal";
         } else if (!okGeoLoc && !this.props.transit.step.geoLoc)
-        {
+        {            
             okGeoLoc = true;
         }
 
-
+        let view = null;
         if (this.props.transit.transitType.id === 1)
         {
-            return (
-                <View style={{ flex: 1 }}>
-                    <View style={{ flex: 9 }}>
-                        <ScrollView>
-                            <HTML
-                                html={this.props.transit.description}
-                            />
-                        </ScrollView>
-                    </View>
-
-                    <View style={{ flex: 1 }}>
-                        {
-                            this.props.transit.step && <Button style={{ margin: 5 }} color={Colors.secondary} disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)} />
-                        }
-                    </View>
-
-
-                </View>
-            )
+            
+            view =             
+            <ScrollView>
+                <HTML
+                    html={this.props.transit.description}
+                />
+            </ScrollView>                   
+        }
+        else if(this.props.transit.transitType.id === 3)//température
+        {
+            view = <TransitViewTemperature transit={this.props.transit} userLat={this.props.userLat} userLng={this.props.userLng} />
         }
         else
-        {
-            return (
-                <Text>Type de transit invalide</Text>
-            )
+        {            
+            view = <Text>Type de transit invalide</Text>
         }
+
+        return(
+            <View style={{flex:1}}>                
+                <View style={{flex:9}}>
+                    {view}
+                </View>
+                <View style={{ flex: 1 }}>
+                    {
+                        this.props.transit.step && <Button style={{ margin: 5 }} color={Colors.secondary} disabled={!okGeoLoc} title={title} onPress={() => this.props.validTransit(over)} />
+                    }
+                </View>
+            </View>
+        )
     }
 }
 
