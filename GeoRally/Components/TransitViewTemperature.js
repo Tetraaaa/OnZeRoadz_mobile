@@ -40,7 +40,7 @@ class TransitViewTemperature extends React.Component
         let red = 0;
         let blue = 255;
         let nbDiv = 100;
-        let size = Math.round((Dimensions.get("window").height * 0.5)/nbDiv);
+        let size = Math.round((Dimensions.get("window").height * 0.42)/nbDiv);
         for(k=0;k<nbDiv;k++){
             rgb = "rgb("+red.toFixed()+",0,"+blue.toFixed()+")";              
             if(ratioDistance >= k/(nbDiv/2)){
@@ -59,16 +59,16 @@ class TransitViewTemperature extends React.Component
                     <Text>Distance cible: {currentDistance - GeoLocTools.delta} </Text>                
                 </View>
                 <View style={{flex:1}}>
-                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
+                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
                     <Icon name="arrow-up" color="red" size={50}/></>}
-                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
+                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
                     <Icon name="arrow-down" color="blue" size={50}/></>}
                 </View>
                 <View style={{flex:5}}>
-                    <View style={{flex:1, flexDirection:"column-reverse"}}>
+                    <View style={{flex:1, flexDirection:"column-reverse", marginBottom:30, width:80, alignSelf:"flex-end", margin:15}}>
                         {thermo}
                     </View>
-                    <Image style={{width:250,height: Math.round(Dimensions.get("window").height * 0.55), position:"absolute",resizeMode:"contain"}} source={require("../Resources/Images/thermometer.png")}/>
+                    <Image style={{width:100,height: Math.round(Dimensions.get("window").height * 0.60), position:"absolute",resizeMode:"contain", right:1, bottom:0}} source={require("../Resources/Images/thermometer.png")}/>
                 </View>                
             </View>
         )
