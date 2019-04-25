@@ -37,18 +37,18 @@ class TransitViewTemperature extends React.Component
         let ratioDistance = currentDistance/this.state.originalDistance;
 
         let thermo =[];
-        let red = 0;
-        let blue = 255;
+        let red = 255;
+        let blue = 0;
         let nbDiv = 100;
         let size = Math.round((Dimensions.get("window").height * 0.42)/nbDiv);
         for(k=0;k<nbDiv;k++){
-            rgb = "rgb("+red.toFixed()+",0,"+blue.toFixed()+")";              
-            if(ratioDistance >= k/(nbDiv/2)){
+            rgb = "rgb("+red.toFixed()+",0,"+blue.toFixed()+")";            
+            if(ratioDistance <= k/(nbDiv/2)){
                 thermo.push(<View key={k} style={{height:size, backgroundColor:rgb}}></View>);
             }
             
-            red += 255/nbDiv;
-            blue -= 255/nbDiv;
+            red -= 255/nbDiv;
+            blue += 255/nbDiv;
         }
         return(
             <View style={{flex:1}}>
@@ -66,7 +66,7 @@ class TransitViewTemperature extends React.Component
                 </View>
                 <View style={{flex:5}}>
                     <View style={{flex:1, flexDirection:"column-reverse", marginBottom:30, width:80, alignSelf:"flex-end", margin:15}}>
-                        {thermo}
+                        {thermo.reverse()}
                     </View>
                     <Image style={{width:100,height: Math.round(Dimensions.get("window").height * 0.60), position:"absolute",resizeMode:"contain", right:1, bottom:0}} source={require("../Resources/Images/thermometer.png")}/>
                 </View>                
