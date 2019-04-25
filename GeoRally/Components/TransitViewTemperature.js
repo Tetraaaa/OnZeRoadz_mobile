@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, Image, Dimensions } from "react-native";
 import GeoLocTools from './../Resources/GeoLoc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -36,6 +36,20 @@ class TransitViewTemperature extends React.Component
         let currentDistance = GeoLocTools.distanceBetween(this.props.userLat, this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude);
         let ratioDistance = currentDistance/this.state.originalDistance;
 
+        let thermo =[];
+        let red = 0;
+        let blue = 255;
+        let nbDiv = 100;
+        let size = Math.round((Dimensions.get("window").height * 0.5)/nbDiv);
+        for(k=0;k<nbDiv;k++){
+            rgb = "rgb("+red.toFixed()+",0,"+blue.toFixed()+")";              
+            if(ratioDistance >= k/(nbDiv/2)){
+                thermo.push(<View key={k} style={{height:size, backgroundColor:rgb}}></View>);
+            }
+            
+            red += 255/nbDiv;
+            blue -= 255/nbDiv;
+        }
         return(
             <View style={{flex:1}}>
                 <View style={{flex:1}}>
@@ -44,27 +58,18 @@ class TransitViewTemperature extends React.Component
                     <Text>Distance: {currentDistance}</Text>
                     <Text>Distance cible: {currentDistance - GeoLocTools.delta} </Text>                
                 </View>
-                <View style={{flex:5, flexDirection:"row"}}>
-                    <View style={{flex:1}}>
-                        {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
-                        <Icon name="arrow-up" color="red" size={50}/></>}
-                        {this.state.previousDistance < currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
-                        <Icon name="arrow-down" color="blue" size={50}/></>}
-                    </View>                                       
-                    <View style={{flex:1}}>
-                        { ratioDistance <= 0.1 ? <View style={{flex:1, backgroundColor: "rgb(255,0,0)"}}></View> : <View style={{flex:1}}/> }
-                        { ratioDistance <= 0.2 ? <View style={{flex:1, backgroundColor: "rgb(229.4, 0, 24.6)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 0.4 ? <View style={{flex:1, backgroundColor: "rgb(202.8, 0, 50.2)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 0.6 ? <View style={{flex:1, backgroundColor: "rgb(178.2, 0, 75.8)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 0.8 ? <View style={{flex:1, backgroundColor: "rgb(152.6, 0, 101.4)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1 ? <View style={{flex:1, backgroundColor: "rgb(127, 0, 127)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1.2 ? <View style={{flex:1, backgroundColor: "rgb(101.4, 0, 152.6)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1.4 ? <View style={{flex:1, backgroundColor: "rgb(75.8, 0, 178.2)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1.6 ? <View style={{flex:1, backgroundColor: "rgb(50.2, 0, 202.8)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1.8 ? <View style={{flex:1, backgroundColor: "rgb(24.6, 0, 229.4)"}}></View> : <View style={{flex:1}}/>}
-                        { ratioDistance <= 1.9 ? <View style={{flex:1, backgroundColor: "rgb(0, 0, 255)"}}></View> : <View style={{flex:1}}/>}
-                    </View>
+                <View style={{flex:1}}>
+                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
+                    <Icon name="arrow-up" color="red" size={50}/></>}
+                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
+                    <Icon name="arrow-down" color="blue" size={50}/></>}
                 </View>
+                <View style={{flex:5}}>
+                    <View style={{flex:1, flexDirection:"column-reverse"}}>
+                        {thermo}
+                    </View>
+                    <Image style={{width:250,height: Math.round(Dimensions.get("window").height * 0.55), position:"absolute",resizeMode:"contain"}} source={require("../Resources/Images/thermometer.png")}/>
+                </View>                
             </View>
         )
     }
