@@ -60,6 +60,7 @@
 		8D6858CAA683404DA456A0A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0DACDDFCFA6E49808599DE23 /* Zocial.ttf */; };
 		B1559B6991BB41E3A383D956 /* Billabong.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 364B7F629BEB4B748CCB6132 /* Billabong.ttf */; };
 		AFD7BA942E264F829CCA611E /* libRangeSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 084FE22181724FCF9CACCCB3 /* libRangeSlider.a */; };
+		FC8FAE767998461B80564D56 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -392,6 +393,8 @@
 		364B7F629BEB4B748CCB6132 /* Billabong.ttf */ = {isa = PBXFileReference; name = "Billabong.ttf"; path = "../Resources/Fonts/Billabong.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9DC52246303D4CA7B2A4EC55 /* RangeSlider.xcodeproj */ = {isa = PBXFileReference; name = "RangeSlider.xcodeproj"; path = "../node_modules/react-native-range-slider/ios/RangeSlider.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		084FE22181724FCF9CACCCB3 /* libRangeSlider.a */ = {isa = PBXFileReference; name = "libRangeSlider.a"; path = "libRangeSlider.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		7F7EC539C7C1490EB1016336 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; name = "RNFetchBlob.xcodeproj"; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -424,6 +427,7 @@
 				8CF2E3B9EB164BC2982A4107 /* libAirMaps.a in Frameworks */,
 				8BEBC1DA0DB44940A01EA3A9 /* libRNVectorIcons.a in Frameworks */,
 				AFD7BA942E264F829CCA611E /* libRangeSlider.a in Frameworks */,
+				FC8FAE767998461B80564D56 /* libRNFetchBlob.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +622,7 @@
 				038C761E3AA045738BD51CDF /* AirMaps.xcodeproj */,
 				4B02B66297414D1382CC3FFB /* RNVectorIcons.xcodeproj */,
 				9DC52246303D4CA7B2A4EC55 /* RangeSlider.xcodeproj */,
+				7F7EC539C7C1490EB1016336 /* RNFetchBlob.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1294,6 +1299,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Debug;
@@ -1323,6 +1329,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Release;
@@ -1349,6 +1356,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Debug;
@@ -1374,6 +1382,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Release;
@@ -1411,6 +1420,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Debug;
@@ -1448,6 +1458,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Release;
@@ -1484,6 +1495,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Debug;
@@ -1520,6 +1532,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
+					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
 				);
 			};
 			name = Release;
