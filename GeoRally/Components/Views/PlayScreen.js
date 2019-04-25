@@ -34,9 +34,10 @@ class PlayScreen extends React.Component
             answeredQuestions: 0,
             showDescription: true,
             userLat: 0,
-            userLng: 0
+            userLng: 0,
+            chrono:0
         };
-        this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));        
+        this.circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         this.requests = [];
     }
 
@@ -53,8 +54,16 @@ class PlayScreen extends React.Component
             }
         );
         if (this.getAnsweredQuestions())
-        {            
+        {
             this.setState({ currentTransitIndex: this.state.currentTransitIndex + 1 })
+        }
+
+        if(this.circuit.progress)
+        {
+            this.setState({
+                chrono:Math.floor(this.circuit.progress.time/1000),
+                score:this.circuit.progress.score
+            })
         }
 
         this.trackPosition(this.state.inTransit);
@@ -76,7 +85,7 @@ class PlayScreen extends React.Component
                             this.setState({
                                 userLat: infos.coords.latitude,
                                 userLng: infos.coords.longitude
-                            }, () => this.checkPosition())                            
+                            }, () => this.checkPosition())
                         }
                     }
                 },
@@ -96,7 +105,7 @@ class PlayScreen extends React.Component
         if (circuit.progress && circuit.progress.step)
         {
             let stepId = circuit.progress.step.id;
-            let transit = circuit.transits.find(transit => transit.step.id === stepId);            
+            let transit = circuit.transits.find(transit => transit.step.id === stepId);
             return transit.transitIndex;
         }
         else
@@ -107,7 +116,7 @@ class PlayScreen extends React.Component
 
     getAnsweredQuestions()
     {
-        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));        
+        let circuit = this.props.offlineReducer.circuits.find(item => item.id === this.props.navigation.getParam("id"));
         return circuit.transits[this.state.currentTransitIndex].step.questions.length > 0 && circuit.transits[this.state.currentTransitIndex].step.questions.filter(question => question.questionProgress).length === this.circuit.transits[this.state.currentTransitIndex].step.questions.length
     }
 
@@ -115,21 +124,22 @@ class PlayScreen extends React.Component
     {
         if (this.circuit.transits[this.state.currentTransitIndex].step)
         {
-            distance = GeoLocTools.distanceBetween(this.state.userLat, this.state.userLng, this.circuit.transits[this.state.currentTransitIndex].step.latitude, this.circuit.transits[this.state.currentTransitIndex].step.longitude)            
-            if (distance<=GeoLocTools.delta) this.setState({okGeoLoc: true});
-            else if (this.state.okGeoLoc) this.setState({okGeoLoc: false});
+            distance = GeoLocTools.distanceBetween(this.state.userLat, this.state.userLng, this.circuit.transits[this.state.currentTransitIndex].step.latitude, this.circuit.transits[this.state.currentTransitIndex].step.longitude)
+            if (distance <= GeoLocTools.delta) this.setState({ okGeoLoc: true });
+            else if (this.state.okGeoLoc) this.setState({ okGeoLoc: false });
         }
     }
 
 
     componentWillUnmount()
     {
+        clearInterval(this.chrono);
         this.requests.forEach(req => req.abort());
         navigator.geolocation.clearWatch(this.tracker)
     }
 
     _validTransit = (over) =>
-    {        
+    {
         if (over)
         {
             this.props.navigation.navigate('MainScreen')
@@ -140,7 +150,15 @@ class PlayScreen extends React.Component
                 inTransit: false
             })
             this.trackPosition(false);
-            if(!this.state.startTime) this.setState({startTime:Date.now()})
+            if (!this.state.startTime)
+            {
+                this.setState({ startTime: Date.now() })
+                this.chrono = setInterval(() => {
+                    this.setState({
+                        chrono:this.state.chrono+1
+                    })
+                }, 1000)
+            }
 
         }
     }
@@ -268,6 +286,27 @@ class PlayScreen extends React.Component
         }
     }
 
+    _formatChrono()
+    {
+        if(this.state.chrono < 60)
+        {
+            if(this.state.chrono < 10) return "00:0" + this.state.chrono;
+            return "00:" + this.state.chrono;
+        } 
+        
+        let minutes = Math.floor(this.state.chrono/60);
+        let seconds = this.state.chrono%60;
+        if(minutes < 10)
+        {
+            minutes = "0" + minutes;
+        }
+        if(seconds < 10)
+        {
+            seconds = "0" + seconds;
+        }
+        return minutes + ":" + seconds;
+    }
+
 
 
     render()
@@ -278,10 +317,15 @@ class PlayScreen extends React.Component
                     {this.state.inTransit ? <TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} userLat={this.state.userLat} userLng={this.state.userLng} validTransit={(over) => this._validTransit(over)} /> : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
                 <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ color: Colors.primary, fontSize: 16, flex: 1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>
+                    <View style={{paddingRight:20}}>
+                        <Text>{"Score : " + this.state.score}</Text>
+                        <Text>{"Chrono : " + this._formatChrono()}</Text>
+                    </View>
+
+                    {/*<Text style={{ color: Colors.primary, fontSize: 16, flex: 1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>*/}
                     {
                         !this.state.inTransit ?
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <View style={{ flexDirection: "row", alignItems: "center", flex:1 }}>
                                 <TouchableOpacity style={{ width: 32 }} onPress={this._previousQuestion} disabled={this.state.currentQuestionIndex <= 0}>
                                     <Icon name="navigate-before" size={32} color={this.state.currentQuestionIndex <= 0 ? "rgba(0,0,0,0)" : "grey"} />
                                 </TouchableOpacity>
@@ -295,7 +339,7 @@ class PlayScreen extends React.Component
                             null
                     }
                     {
-                        this.state.currentTransitIndex === this.circuit.transits.length -1 ?
+                        this.state.currentTransitIndex === this.circuit.transits.length - 1 ?
                             <View>
                             </View>
                             :
