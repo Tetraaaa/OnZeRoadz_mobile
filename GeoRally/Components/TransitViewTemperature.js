@@ -33,8 +33,13 @@ class TransitViewTemperature extends React.Component
 
     render()
     {        
-        let currentDistance = GeoLocTools.distanceBetween(this.props.userLat, this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude);
+        let currentDistance = Math.abs(GeoLocTools.distanceBetween(this.props.userLat, this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude));
         let ratioDistance = currentDistance/this.state.originalDistance;
+        if(currentDistance - GeoLocTools.delta < 0)
+        {
+            ratioDistance = 0;
+        }
+        
 
         let thermo =[];
         let red = 255;
@@ -59,9 +64,9 @@ class TransitViewTemperature extends React.Component
                     <Text>Distance cible: {currentDistance - GeoLocTools.delta} </Text>                
                 </View>
                 <View style={{flex:1}}>
-                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
+                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
                     <Icon name="arrow-up" color="red" size={50}/></>}
-                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
+                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
                     <Icon name="arrow-down" color="blue" size={50}/></>}
                 </View>
                 <View style={{flex:5}}>
