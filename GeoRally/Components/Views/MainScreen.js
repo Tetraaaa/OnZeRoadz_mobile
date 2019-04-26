@@ -81,6 +81,28 @@ class MainScreen extends React.Component
         }
     }
 
+    _fetchCircuits = (northeast, southwest) =>
+    {
+        let body = {
+            "NElongitude": northeast.longitude,
+            "NElatitude": northeast.latitude,
+            "SOlongitude": southwest.longitude,
+            "SOlatitude": southwest.latitude,
+        }
+        new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json().then(json =>
+                    {
+                        let action = { type: "SET_CIRCUITS", value: json }
+                        this.props.dispatch(action)
+                    })
+                }
+            })
+    }
+
     _downloadCircuit = (item) =>
     {
         this.setState({ downloadingCircuit: true })
@@ -187,6 +209,21 @@ class MainScreen extends React.Component
                 }
             })
     }
+    onRegionChangeComplete = (region) =>
+    {
+        let northeast = {
+            latitude: region.latitude + region.latitudeDelta / 2,
+            longitude: region.longitude + region.longitudeDelta / 2,
+        };
+        let southwest = {
+            latitude: region.latitude - region.latitudeDelta / 2,
+            longitude: region.longitude - region.longitudeDelta / 2,
+        };
+
+
+        this._fetchCircuits(northeast, southwest);
+        this.setState({region});
+    }
 
 
     render()
@@ -219,7 +256,7 @@ class MainScreen extends React.Component
                         style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
-                        onRegionChangeComplete={(region) => {this.setState({region})}}
+                        onRegionChangeComplete={this.onRegionChangeComplete}
                         customMapStyle={this._getMapStyleDependingOnCurrentTime()}
                         showsUserLocation={true}
                         loadingEnabled={true}

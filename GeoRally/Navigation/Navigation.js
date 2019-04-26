@@ -15,8 +15,8 @@ class Navigation extends React.Component
     {
         super(props)
         this.state = {
-            permissionsAsked:false,
-            permissionsGranted:false
+            permissionsAsked: false,
+            permissionsGranted: false
         }
     }
 
@@ -28,13 +28,23 @@ class Navigation extends React.Component
                 if (granted === "granted")
                 {
                     this.setState({
-                        permissionsAsked:true,
-                        permissionsGranted:true
+                        permissionsAsked: true,
+                        permissionsGranted: true
                     })
                     navigator.geolocation.getCurrentPosition(
                         (position) =>
                         {
-                            this._fetchCircuits(position.coords.longitude, position.coords.latitude);
+                            let northeast = {
+                                latitude: position.coords.latitude + 0.005 / 2,
+                                longitude: position.coords.longitude + 0.005 / 2,
+                            };
+                            let southwest = {
+                                latitude: position.coords.latitude - 0.005 / 2,
+                                longitude: position.coords.longitude - 0.005 / 2,
+                            };
+
+
+                            this._fetchCircuits(northeast, southwest);
                             this._whoami();
                             this._fetchMyCircuits();
                         }
@@ -43,8 +53,8 @@ class Navigation extends React.Component
                 else
                 {
                     this.setState({
-                        permissionsAsked:true,
-                        permissionsGranted:false
+                        permissionsAsked: true,
+                        permissionsGranted: false
                     })
                 }
             })
@@ -52,7 +62,7 @@ class Navigation extends React.Component
 
     _whoami = () =>
     {
-        if(!this.props.connectionReducer.lastConnectedUser) return;
+        if (!this.props.connectionReducer.lastConnectedUser) return;
 
         new FetchRequest(Url.whoami).open()
             .then(response =>
@@ -78,11 +88,13 @@ class Navigation extends React.Component
             })
     }
 
-    _fetchCircuits = (longitude, latitude) =>
+    _fetchCircuits = (northeast, southwest) =>
     {
         let body = {
-            longitude:longitude,
-            latitude:latitude
+            "NElongitude": northeast.longitude,
+            "NElatitude": northeast.latitude,
+            "SOlongitude": southwest.longitude,
+            "SOlatitude": southwest.latitude,
         }
         new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
             .then(response =>
@@ -96,7 +108,6 @@ class Navigation extends React.Component
                     })
                 }
             })
-
     }
 
     _fetchMyCircuits = () =>
@@ -130,17 +141,17 @@ class Navigation extends React.Component
 
     render()
     {
-        if(!this.state.permissionsAsked)
+        if (!this.state.permissionsAsked)
         {
             return <View>
-                <ActivityIndicator color={Colors.primary} size="large"/>
+                <ActivityIndicator color={Colors.primary} size="large" />
             </View>;
         }
         else if (!this.state.permissionsGranted)
         {
             return (
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                    <Image style={{width:64, height:64, margin:5}} source={require("../Resources/Images/sad.png")}/>
+                    <Image style={{ width: 64, height: 64, margin: 5 }} source={require("../Resources/Images/sad.png")} />
                     <Text style={{ textAlign: "center", color: "black", fontSize: 16 }}>{Strings("init", "allow")}</Text>
                 </View>
             )
