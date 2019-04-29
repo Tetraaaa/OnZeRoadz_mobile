@@ -196,7 +196,27 @@ class MainScreen extends React.Component
     }
     _filterSelection = (filters) =>
     {
-        new FetchRequest(Url.filterCircuits, "POST", JSON.stringify(filters)).open()
+        let region = this.state.region;
+        let northeast = {
+            latitude: region.latitude + region.latitudeDelta / 2,
+            longitude: region.longitude + region.longitudeDelta / 2,
+        };
+        let southwest = {
+            latitude: region.latitude - region.latitudeDelta / 2,
+            longitude: region.longitude - region.longitudeDelta / 2,
+        };
+        let body = {
+            "distanceMin": filters.distanceMin,
+            "distanceMax": filters.distanceMax,
+            "note": filters.note,
+            "durationMax": filters.durationMax,
+            "durationMin": filters.durationMin,
+            "NElongitude": northeast.longitude,
+            "NElatitude": northeast.latitude,
+            "SOlongitude": southwest.longitude,
+            "SOlatitude": southwest.latitude,
+        }
+        new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
             .then(response =>
             {
                 if (response.ok)
@@ -265,7 +285,12 @@ class MainScreen extends React.Component
                     >
                     {
                         markers.map(item => 
-                            <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
+                            {
+                                if(item.transits[0] && item.transits[0].step)
+                                {
+                                    return <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
+                                }
+                            }
                         )
                     }
                         
