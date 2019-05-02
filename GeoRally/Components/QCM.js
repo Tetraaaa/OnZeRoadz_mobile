@@ -20,6 +20,7 @@ class QCM extends React.Component
 
     _checkAnswer = () =>
     {
+        let falseAnswers = this.props.question.answers.filter(answer => !answer.isTrue)
         if (this.state.selectedAnswers.length === 0) 
         {
             this.props.sendScore(0);
@@ -29,7 +30,7 @@ class QCM extends React.Component
         let correct = true;
         this.state.selectedAnswers.forEach(answer =>
         {
-            if (this.props.question.falseAnswers.includes(answer))
+            if (falseAnswers.includes(answer))
             {
                 correct = false;
             }
@@ -67,8 +68,9 @@ class QCM extends React.Component
 
     _renderButtons = () =>
     {
+        let rightAnswers = this.props.question.answers.filter(answer => answer.isTrue);
         let answers = [];
-        answers = answers.concat(this.props.question.falseAnswers, this.props.question.rightAnswers)
+        answers = this.props.question.answers;
         let jsx = [];
         let i = 0;
         while (i < answers.length)
@@ -78,8 +80,8 @@ class QCM extends React.Component
 
             jsx.push(
                 <View key={i} style={{ flexDirection: "row", flex: 1 }}>
-                    <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer1) ? Colors.primaryLight : Colors.primaryDark} title={answer1.toString()} key={i} onPress={() => this._selectUnselect(answer1)} />
-                    {answer2 ? <Button disabledColor={this.props.question.rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
+                    <Button disabledColor={rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer1) ? Colors.primaryLight : Colors.primaryDark} title={answer1.value.toString()} key={i} onPress={() => this._selectUnselect(answer1)} />
+                    {answer2 ? <Button disabledColor={rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.value.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
                 </View>
             )
             i += 2;
