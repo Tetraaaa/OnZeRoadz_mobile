@@ -51,11 +51,10 @@ class StepView extends React.Component
                                 <HTML
                                     containerStyle={{ margin: 5 }}
                                     imagesMaxWidth={Dimensions.get('window').width * 0.95}
-                                    html={this.props.step.description}
+                                    html={this.props.step.description || "<p>" + Strings("playScreen", "noDescription") + "</p>"}
                                 />
-                                <Button title={this.props.step.questions.length > 0 ? Strings("playScreen", "goToQuestions") : Strings("playScreen", "nextStep")} onPress={() => { this.props.goToQuestions() }} />
                             </ScrollView>
-
+                            <Button title={this.props.step.questions.length > 0 ? Strings("playScreen", "goToQuestions") : Strings("playScreen", "nextStep")} onPress={() => { this.props.goToQuestions() }} />
                         </View>
 
                         :

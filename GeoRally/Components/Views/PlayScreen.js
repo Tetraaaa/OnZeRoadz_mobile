@@ -231,7 +231,10 @@ class PlayScreen extends React.Component
                     {
                         totalScore += question.questionProgress.score
                     })
-                    this._validStep(totalScore);
+                    setTimeout(() => {
+                        this._validStep(totalScore);
+                    }, 2000)
+                    
                 }
             })
     }

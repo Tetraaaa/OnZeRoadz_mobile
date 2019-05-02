@@ -5,6 +5,7 @@ import Colors from '../Colors';
 import Button from "../Components/Button";
 import TransitViewTemperature from './TransitViewTemperature';
 import TransitViewCompass from './TransitViewCompass';
+import Strings from '../Resources/i18n';
 
 class TransitView extends React.Component
 {
@@ -15,16 +16,16 @@ class TransitView extends React.Component
         let okGeoLoc = this.props.okGeoLoc;
 
         let over = false;
-        let title = "Valider le transit";
+        let title = Strings("playScreen", "validateTransit");
 
         if (this.props.transit.transitIndex == 0)
         {
-            title = "Valider le transit et commencer le circuit";
+            title = Strings("playScreen", "validateAndBegin");
         }
         if (this.props.transit.step === null)
         {
             over = true;
-            title = "Terminer le circuit et retourner au menu principal";
+            title = Strings("playScreen", "validateCircuit");
         } else if (!okGeoLoc && !this.props.transit.step.geoLoc)
         {            
             okGeoLoc = true;

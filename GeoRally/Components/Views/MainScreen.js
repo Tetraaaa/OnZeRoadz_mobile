@@ -26,7 +26,8 @@ class MainScreen extends React.Component
             followingCurrentPosition: true,
             selectedMarker: null,
             loading: true,
-            loadingCircuit: false
+            loadingCircuit: false,
+            fetchingCircuits: false
         };
     }
 
@@ -79,6 +80,30 @@ class MainScreen extends React.Component
         {
             return MapStyles.day;
         }
+    }
+
+    _fetchCircuits = (northeast, southwest) =>
+    {
+        this.setState({ fetchingCircuits: true })
+        let body = {
+            "NElongitude": northeast.longitude,
+            "NElatitude": northeast.latitude,
+            "SOlongitude": southwest.longitude,
+            "SOlatitude": southwest.latitude,
+        }
+        new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json().then(json =>
+                    {
+                        let action = { type: "SET_CIRCUITS", value: json }
+                        this.props.dispatch(action);
+                        this.setState({ fetchingCircuits: false })
+                    })
+                }
+            })
     }
 
     _downloadCircuit = (item) =>
@@ -138,43 +163,65 @@ class MainScreen extends React.Component
 
     _unselectCircuit = () => 
     {
-        this.setState({selectedMarker:null})
+        this.setState({ selectedMarker: null })
     }
 
-    _checkDownloadedCircuitsVersion = () => {
+    _checkDownloadedCircuitsVersion = () =>
+    {
         circuits = [];
         this.props.offlineReducer.circuits.map((circuit) => circuits.push({
             "circuitId": circuit.id,
             "version": circuit.versionId
         }))
-        let body = {"circuits" : circuits};
-        let f = new FetchRequest(Url.checkCircuitsVersion,"POST",JSON.stringify(body));
+        let body = { "circuits": circuits };
+        let f = new FetchRequest(Url.checkCircuitsVersion, "POST", JSON.stringify(body));
         f.open()
-        .then(response =>
-        {
-            if (response.ok)
+            .then(response =>
             {
-                response.json()
-                    .then(json =>
-                    {
-                        let action = { type: "CHECK_UPDATE", value: json }
-                        this.props.dispatch(action);
-                    })
-            }
-            else
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "CHECK_UPDATE", value: json }
+                            this.props.dispatch(action);
+                        })
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la vérification des mises à jour")
+                }
+            })
+            .catch(error =>
             {
-                throw new Error("Erreur lors de la vérification des mises à jour")
-            }
-        })
-        .catch(error =>
-        {
-            Alert.alert("Erreur lors de la récupération des mises à jour des circuits", "Il est possible que certains de vos circuits ne soient pas à jour.")
-            this.setState({ downloadingCircuit: false })
-        })
+                Alert.alert("Erreur lors de la récupération des mises à jour des circuits", "Il est possible que certains de vos circuits ne soient pas à jour.")
+                this.setState({ downloadingCircuit: false })
+            })
     }
     _filterSelection = (filters) =>
     {
-        new FetchRequest(Url.filterCircuits, "POST", JSON.stringify(filters)).open()
+        this.setState({ fetchingCircuits: true })
+        let region = this.state.region;
+        let northeast = {
+            latitude: region.latitude + region.latitudeDelta / 2,
+            longitude: region.longitude + region.longitudeDelta / 2,
+        };
+        let southwest = {
+            latitude: region.latitude - region.latitudeDelta / 2,
+            longitude: region.longitude - region.longitudeDelta / 2,
+        };
+        let body = {
+            "distanceMin": filters.distanceMin,
+            "distanceMax": filters.distanceMax,
+            "note": filters.note,
+            "durationMax": filters.durationMax,
+            "durationMin": filters.durationMin,
+            "NElongitude": northeast.longitude,
+            "NElatitude": northeast.latitude,
+            "SOlongitude": southwest.longitude,
+            "SOlatitude": southwest.latitude,
+        }
+        new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
             .then(response =>
             {
                 if (response.ok)
@@ -183,22 +230,38 @@ class MainScreen extends React.Component
                     {
                         let action = { type: "SET_CIRCUITS", value: json }
                         this.props.dispatch(action)
+                        this.setState({ fetchingCircuits: false })
                     })
                 }
             })
+    }
+    onRegionChangeComplete = (region) =>
+    {
+        let northeast = {
+            latitude: region.latitude + region.latitudeDelta / 2,
+            longitude: region.longitude + region.longitudeDelta / 2,
+        };
+        let southwest = {
+            latitude: region.latitude - region.latitudeDelta / 2,
+            longitude: region.longitude - region.longitudeDelta / 2,
+        };
+
+
+        this._fetchCircuits(northeast, southwest);
+        this.setState({ region });
     }
 
 
     render()
     {
         let markers = [];
-        if(this.props.connectionReducer.connected)
+        if (this.props.connectionReducer.connected)
         {
-            markers = markers.concat(this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map(item =>  Object.assign(item, {color:Colors.secondary})), this.props.offlineReducer.circuits.map(item =>  Object.assign(item, {color:Colors.primary})))
+            markers = markers.concat(this.props.circuitsReducer.circuits.filter(item => !this.props.offlineReducer.circuits.map(i => i.id).includes(item.id)).map(item => Object.assign(item, { color: Colors.secondary })), this.props.offlineReducer.circuits.map(item => Object.assign(item, { color: Colors.primary })))
         }
         else
         {
-            markers = markers.concat(this.props.circuitsReducer.circuits.map(item => Object.assign(item, {color:Colors.secondary})))
+            markers = markers.concat(this.props.circuitsReducer.circuits.map(item => Object.assign(item, { color: Colors.secondary })))
         }
 
 
@@ -219,24 +282,36 @@ class MainScreen extends React.Component
                         style={{ flex: 1 }}
                         provider={PROVIDER_GOOGLE}
                         initialRegion={this.state.region}
-                        onRegionChangeComplete={(region) => {this.setState({region})}}
+                        onRegionChangeComplete={this.onRegionChangeComplete}
                         customMapStyle={this._getMapStyleDependingOnCurrentTime()}
                         showsUserLocation={true}
                         loadingEnabled={true}
                         onPanDrag={() => { if (this.state.followingCurrentPosition) this.setState({ followingCurrentPosition: false }) }}
                         ref={component => this.map = component}
                     >
-                    {
-                        markers.map(item => 
-                            <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
-                        )
-                    }
-                        
+                        {
+                            markers.map(item => 
+                            {
+                                if (item.transits[0] && item.transits[0].step)
+                                {
+                                    return <Marker key={item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
+                                }
+                            }
+                            )
+                        }
+
                     </MapView>
                 </ScrollView>
                 <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "rgba(0,0,0,0)", width: "100%", flex: 1, flexDirection: "row" }}>
                     <GooglePlacesSearchBar onFilterSelection={this._filterSelection} onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => { this.setState({ followingCurrentPosition: false }, () => { this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000) }) }} />
                 </View>
+                {
+                    this.state.fetchingCircuits &&
+                    <View style={{ position: "absolute", top: 0, right: 1, marginTop: "16%", flex: 1}}>
+                        <ActivityIndicator size="large" color="gray" />
+                    </View>
+                }
+
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                     <Image style={{ width: 32, height: 32 }} source={require("../../Resources/Images/target.png")} />
                 </TouchableOpacity>
