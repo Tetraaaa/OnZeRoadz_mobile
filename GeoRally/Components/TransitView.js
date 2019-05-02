@@ -4,6 +4,7 @@ import HTML from "react-native-render-html";
 import Colors from '../Colors';
 import Button from "../Components/Button";
 import TransitViewTemperature from './TransitViewTemperature';
+import TransitViewCompass from './TransitViewCompass';
 
 class TransitView extends React.Component
 {
@@ -39,6 +40,9 @@ class TransitView extends React.Component
                     html={this.props.transit.description}
                 />
             </ScrollView>                   
+        }else if (this.props.transit.transitType.id ===2)//boussole
+        {
+            view = <TransitViewCompass />
         }
         else if(this.props.transit.transitType.id === 3)//température
         {
