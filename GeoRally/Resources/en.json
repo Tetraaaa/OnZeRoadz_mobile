@@ -52,6 +52,12 @@
     },
     "playScreen":{
         "goToQuestions":"Answer the questions",
-        "nextStep":"Next step"
+        "nextStep":"Next step",
+        "noDescription":"The author didn't write a description for this step",
+        "validateAnswer":"Validate answer",
+        "response":"Answer",
+        "validateTransit":"Validate transit",
+        "validateAndBegin":"Validate transit and begin the circuit",
+        "validateAndFinish":"Finish circuit and go back to map"
     }
 }

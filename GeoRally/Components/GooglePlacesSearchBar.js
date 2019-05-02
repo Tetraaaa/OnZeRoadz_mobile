@@ -126,7 +126,7 @@ class GooglePlacesSearchBar extends React.Component
                         <Text> {Strings("texts", "meters")} </Text>
                     </View>
 
-                    <Text style={{ color: "black", fontWeight: "bold", margin: 5 }}>Durée</Text>
+                    <Text style={{ color: "black", fontWeight: "bold", margin: 5 }}>{Strings("texts", "duration")}</Text>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <Text>{Strings("texts", "between")}</Text>
                         <TextInput style={{ width: "20%" }} keyboardType={"decimal-pad"} underlineColorAndroid={"black"} maxLength={4} value={this.state.minDuration.toString()} onChangeText={(minDuration) => this.setState({ minDuration })} />

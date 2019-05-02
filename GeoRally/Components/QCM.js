@@ -3,6 +3,7 @@ import { ScrollView, View, Dimensions } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from './../Colors';
 import Button from './Button';
+import Strings from '../Resources/i18n';
 
 class QCM extends React.Component
 {
@@ -104,7 +105,7 @@ class QCM extends React.Component
                     {this._renderButtons()}
                 </ScrollView>
                 <View>
-                    <Button color={Colors.primary} disabledColor={this.props.score === 0 ? Colors.error : "green"} disabled={this.props.question.questionProgress ? true : false} title="Valider la réponse" onPress={this._checkAnswer} />
+                    <Button color={Colors.primary} disabledColor={this.props.score === 0 ? Colors.error : "green"} disabled={this.props.question.questionProgress ? true : false} title={Strings("playScreen", "validateAnswer")} onPress={this._checkAnswer} />
                 </View>
             </View>
 

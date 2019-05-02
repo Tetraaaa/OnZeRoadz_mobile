@@ -113,7 +113,7 @@ class Circuits extends React.Component
                     }
 
                 </View>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1}}>
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "downloaded")}</Text>
                     <FlatList
                         data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}

@@ -52,6 +52,12 @@
     },
     "playScreen":{
         "goToQuestions":"Répondre aux questions",
-        "nextStep":"Étape suivante"
+        "nextStep":"Étape suivante",
+        "noDescription":"L'auteur n'a pas saisi de description pour cette étape",
+        "validateAnswer":"Valider la réponse",
+        "response":"Réponse",
+        "validateTransit":"Valider le transit",
+        "validateAndBegin":"Valider le transit et commencer le circuit",
+        "validateAndFinish":"Terminer le circuit et retourner au menu principal"
     }
 }
