@@ -81,7 +81,7 @@ class QCM extends React.Component
             jsx.push(
                 <View key={i} style={{ flexDirection: "row", flex: 1 }}>
                     <Button disabledColor={rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer1) ? Colors.primaryLight : Colors.primaryDark} title={answer1.value.toString()} key={i} onPress={() => this._selectUnselect(answer1)} />
-                    {answer2 ? <Button disabledColor={rightAnswers.includes(answer1) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.value.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
+                    {answer2 ? <Button disabledColor={rightAnswers.includes(answer2) ? "green" : Colors.error} style={{ flex: 1, margin: 3 }} disabled={this.props.question.questionProgress ? true : false} color={this.state.selectedAnswers.includes(answer2) ? Colors.primaryLight : Colors.primaryDark} title={answer2.value.toString()} key={i + 1} onPress={() => this._selectUnselect(answer2)} /> : <View style={{ flex: 1, margin: 3, padding: 7 }} />}
                 </View>
             )
             i += 2;
