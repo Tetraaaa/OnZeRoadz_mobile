@@ -66,7 +66,7 @@ class TransitViewTemperature extends React.Component
                 </View>
 
 
-                <View style={{flex:1, flexDirection:"column-reverse", position:"absolute", top:0, bottom:0, left:0, right:0, justifyContent:"center", marginLeft:"40%"}}>
+                <View style={{flex:1, flexDirection:"column-reverse", position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, marginLeft:"40%", marginBottom:"29%"}}>
                         {thermo.reverse()}
                 </View>
                 <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
