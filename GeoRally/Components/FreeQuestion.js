@@ -87,30 +87,30 @@ class FreeQuestion extends React.Component
         let normalizedKeywords = this._normalize(this.props.question.keywords)
         let normalizedAnswer = this._banalizeString(this.state.userAnswer)
 
-        let rightAnswer = false;
+        this.rightAnswer = false;
         normalizedKeywords.forEach(keyword =>
         {
             if (this._matchWithTolerance(keyword, normalizedAnswer))
             {
-                rightAnswer = true;
+                this.rightAnswer = true;
                 return;
             }
         })
 
-        if (rightAnswer)
+        if (this.rightAnswer)
         {
             color = "green";
-            score = this.props.question.points;
+            this.score = this.props.question.points;
         } else
         {
             color = Colors.error;
-            score = 0;
+            this.score = 0;
         }
         this.setState({
             borderColor: color,
             disabled: true
         })
-        this.props.sendScore(score)
+        this.props.sendScore(this.score)
     }
 
     render()
@@ -126,7 +126,7 @@ class FreeQuestion extends React.Component
                 </ScrollView>
                 <View>
                     <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder={Strings("playScreen", "response")} editable={this.props.question.questionProgress ? false : true}/>
-                    <Button color={Colors.primary} disabled={this.props.question.questionProgress ? true : false} disabledColor={this.score >= 0 ? "green" : Colors.error} title={Strings("playScreen", "validateAnswer")} onPress={this._checkAnswer} />
+                    <Button color={Colors.primary} disabled={this.props.question.questionProgress ? true : false} disabledColor={this.rightAnswer ? "green" : Colors.error} title={Strings("playScreen", "validateAnswer")} onPress={this._checkAnswer} />
                 </View>
 
 
