@@ -16,7 +16,8 @@ class Circuits extends React.Component
         super(props);
         this.state = {
             isLoadingCircuits: false,
-            downloadingCircuit:false,
+            isLoadingDownloadedCircuits: false,
+            downloadingCircuit: false,
             selectedCircuit: null
         }
     }
@@ -50,16 +51,52 @@ class Circuits extends React.Component
             })
     }
 
+    _checkDownloadedCircuitsVersion = () =>
+    {
+        this.setState({ isLoadingDownloadedCircuits: true })
+        circuits = [];
+        this.props.offlineReducer.circuits.map((circuit) => circuits.push({
+            "circuitId": circuit.id,
+            "version": circuit.versionId
+        }))
+        let body = { "circuits": circuits };
+        let f = new FetchRequest(Url.checkCircuitsVersion, "POST", JSON.stringify(body));
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "CHECK_UPDATE", value: json }
+                            this.props.dispatch(action);
+                            this.setState({ isLoadingDownloadedCircuits: false })
+                        })
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la vérification des mises à jour")
+                }
+            })
+            .catch(error =>
+            {
+                Alert.alert("Erreur lors de la récupération des mises à jour des circuits", "Il est possible que certains de vos circuits ne soient pas à jour.")
+                this.setState({ downloadingCircuit: false })
+            })
+    }
+
     _playCircuit = (id) =>
     {
         this.setState({
             selectedCircuit: null
         }, () => this.props.navigation.navigate("PlayScreen", { id: id }))
-        
+
     }
 
     _downloadCircuit = (id, type) =>
     {
+        if(this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
         this.setState({ downloadingCircuit: true })
         let f = new FetchRequest(Url.circuit + id);
         f.open()
@@ -93,7 +130,7 @@ class Circuits extends React.Component
     render()
     {
         return (
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "myCircuits")}</Text>
                     {this.state.isLoadingCircuits ?
@@ -107,23 +144,35 @@ class Circuits extends React.Component
                             refreshing={this.state.isLoadingCircuits}
                             data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")}/>}
-                            ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>{Strings("circuits", "noCircuits")}</Text>}
-                             />
+                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")} />}
+                            ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
+                        />
                     }
 
                 </View>
-                <View style={{ flex: 1}}>
+                <View style={{ flex: 1 }}>
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "downloaded")}</Text>
-                    <FlatList
-                        data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({selectedCircuit: id})} play={(id) => this._playCircuit(id)} />} 
-                        ListEmptyComponent={<Text style={{textAlign:"center", color:"black"}}>{Strings("circuits", "noCircuits")}</Text>}
-                        />
-                        
+                    {
+                        this.state.isLoadingDownloadedCircuits ?
+                            <View style={{ alignItems: "center", justifyContent: "center" }}>
+                                <Text>{Strings("circuits", "loading")}</Text>
+                                <ActivityIndicator size="large" color={Colors.primary} />
+                            </View>
+                            :
+                            <FlatList
+                                onRefresh={this._checkDownloadedCircuitsVersion}
+                                refreshing={this.state.isLoadingDownloadedCircuits}
+                                data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />}
+                                ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
+                            />
+
+                    }
+
+
                 </View>
-                <UpdateModal open={this.state.selectedCircuit !== null} circuitId = {this.state.selectedCircuit} wantUpdate={(choice) => choice ? this._downloadCircuit(this.state.selectedCircuit, "UPDATE_CIRCUIT") : this._playCircuit(this.state.selectedCircuit)}/>
+                <UpdateModal open={this.state.selectedCircuit !== null} circuitId={this.state.selectedCircuit} wantUpdate={(choice) => choice ? this._downloadCircuit(this.state.selectedCircuit, "UPDATE_CIRCUIT") : this._playCircuit(this.state.selectedCircuit)} />
             </View>
         );
     }
