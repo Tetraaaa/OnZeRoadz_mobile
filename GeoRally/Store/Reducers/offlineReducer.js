@@ -14,6 +14,12 @@ function offlineReducer(state = initialState, action) {
                 circuits:[...state.circuits, action.value]
             }
             return nextState;
+        case 'REMOVE_CIRCUIT':
+            nextState = {
+                ...state,
+                circuits:state.circuits.filter(circuit => circuit.id !== action.value)
+            }
+            return nextState;
         case 'UPDATE_CIRCUIT':
             dc = state.circuits.filter((circuit) => circuit.id != action.value.id)
             nextState = {

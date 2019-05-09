@@ -7,6 +7,7 @@ import CircuitListItem from './../../Components/CircuitListItem';
 import UpdateModal from './../UpdateModal';
 import Colors from "../../Colors";
 import Strings from "../../Resources/i18n";
+import Swipeable from "../Swipeable";
 
 class Circuits extends React.Component
 {
@@ -94,6 +95,12 @@ class Circuits extends React.Component
 
     }
 
+    _deleteCircuit = (circuit) => 
+    {
+        let action = { type: "REMOVE_CIRCUIT", value: circuit.id }
+        this.props.dispatch(action);
+    }
+
     _downloadCircuit = (id, type) =>
     {
         if(this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
@@ -164,7 +171,7 @@ class Circuits extends React.Component
                                 refreshing={this.state.isLoadingDownloadedCircuits}
                                 data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
                                 keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />}
+                                renderItem={({ item }) => <Swipeable onSwipeComplete={this._deleteCircuit} item={item}><CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} /></Swipeable>}
                                 ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
                             />
 
