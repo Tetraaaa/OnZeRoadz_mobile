@@ -37,17 +37,17 @@ class CircuitModal extends React.Component
             {
                 if (rating >= 1)
                 {
-                    starGauge.push(<IconM key={i} name="star" size={24} />);
+                    starGauge.push(<IconM key={i} color={Colors.secondary} name="star" size={24} />);
                     rating--;
                 }
                 else if (rating >= 0.5)
                 {
-                    starGauge.push(<IconM key={i} name="star-half" size={24} />)
+                    starGauge.push(<IconM key={i} color={Colors.secondary} name="star-half" size={24} />)
                     rating -= 0.5;
                 }
                 else
                 {
-                    starGauge.push(<IconM key={i} name="star-border" size={24} />)
+                    starGauge.push(<IconM key={i} color={Colors.secondary} name="star-border" size={24} />)
                 }
             }
 
@@ -119,7 +119,7 @@ class CircuitModal extends React.Component
                         </View>
                         <View style={{ flex: 1, flexDirection: "row" }}>
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Text style={{ color: Colors.secondaryLight, fontSize: 15, marginLeft: 5 }}>{Strings("circuitModal", "createdBy") + this.props.marker.creator.username}</Text>
+                                <Text style={{ color: Colors.secondary, fontSize: 15, marginLeft: 5 }}>{Strings("circuitModal", "createdBy") + this.props.marker.creator.username}</Text>
                             </View>
                             <View style={{ flex: 1 }}>
                                 {
