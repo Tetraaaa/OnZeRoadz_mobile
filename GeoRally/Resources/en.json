@@ -59,5 +59,14 @@
         "validateTransit":"Validate transit",
         "validateAndBegin":"Validate transit and begin the circuit",
         "validateAndFinish":"Finish circuit and go back to map"
+    },
+    "transitFinal":{
+        "score":"Score: ",
+        "time":"Time: ",
+        "evaluate":"Evaluate the circuit: ",
+        "grade":"Grade: ",
+        "comment":"Comment",
+        "backToMap":"Back to the map",
+        "send":"Send"
     }
 }

@@ -16,5 +16,6 @@ export default URL = {
     myCircuits: user+"myCircuits",
     updateProgress: circuit+"{idCircuit}/progress/",
     googlePlaces:"https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
-    googleAutocompletion:"https://maps.googleapis.com/maps/api/place/autocomplete/json?&input="
+    googleAutocompletion:"https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=",
+    addRating: domain+ "rate/circuit/{idCircuit}"
 }
