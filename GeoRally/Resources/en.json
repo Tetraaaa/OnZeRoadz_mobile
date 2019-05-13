@@ -40,7 +40,12 @@
     "account":{
         "logout":"Logout",
         "account":"My account",
-        "language":"Language: "
+        "language":"Language: ",
+        "privacy":"Profile visibility",
+        "public":"Public",
+        "private":"Private",
+        "friendsOnly":"Friends only",
+        "noDescription":"[Insert profile description]"
     },
     "circuitModal":{
         "play":"Play",

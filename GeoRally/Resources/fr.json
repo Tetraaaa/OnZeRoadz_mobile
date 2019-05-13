@@ -40,7 +40,12 @@
     "account":{
         "logout":"Déconnexion",
         "account":"Mon compte",
-        "language":"Langue de l'application : "
+        "language":"Langue de l'application : ",
+        "privacy":"Visibilité du profil",
+        "public":"Public",
+        "private":"Privé",
+        "friendsOnly":"Amis uniquement",
+        "noDescription":"[Insérer description]"
     },
     "circuitModal":{
         "play":"Jouer",
