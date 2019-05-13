@@ -31,7 +31,7 @@ class BetterPicker extends React.Component
         height = 120 + (this.props.items.length * 41)
         if (height > Dimensions.get('window').height * 0.75) height = Dimensions.get('window').height * 0.75
         return (
-            <View style={[{flex: 1, justifyContent: 'center'}, this.props.style]} onLayout={this.onLayout}>
+            <View style={[{flex: 1}, this.props.style]} onLayout={this.onLayout}>
                 <TouchableOpacity disabled={this.props.disabled} style={[styles.textInput, this.props.textStyles]} onPress={() => this.setState({modalOpen: true})}>
                     {this.props.selected !== undefined ?
                         <Text style={[styles.selectedText, this.props.style, {color: this.props.disabled ? 'lightgrey' : 'black'}]} numberOfLines={1} ellipsizeMode={"tail"}>{this.props.selected[this.props.displayMember]}</Text>
