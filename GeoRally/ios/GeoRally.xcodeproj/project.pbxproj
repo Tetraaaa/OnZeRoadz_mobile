@@ -61,6 +61,7 @@
 		B1559B6991BB41E3A383D956 /* Billabong.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 364B7F629BEB4B748CCB6132 /* Billabong.ttf */; };
 		AFD7BA942E264F829CCA611E /* libRangeSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 084FE22181724FCF9CACCCB3 /* libRangeSlider.a */; };
 		FC8FAE767998461B80564D56 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */; };
+		2C1A79C882044BCCB4AD239A /* HeavyTrip.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -395,6 +396,7 @@
 		084FE22181724FCF9CACCCB3 /* libRangeSlider.a */ = {isa = PBXFileReference; name = "libRangeSlider.a"; path = "libRangeSlider.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		7F7EC539C7C1490EB1016336 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; name = "RNFetchBlob.xcodeproj"; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */ = {isa = PBXFileReference; name = "HeavyTrip.ttf"; path = "../Resources/Fonts/HeavyTrip.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -690,6 +692,7 @@
 				D53980340E494CE5BBA0F1DD /* SimpleLineIcons.ttf */,
 				0DACDDFCFA6E49808599DE23 /* Zocial.ttf */,
 				364B7F629BEB4B748CCB6132 /* Billabong.ttf */,
+				746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1157,6 +1160,7 @@
 				5E85383379DE4700B20EF1C5 /* SimpleLineIcons.ttf in Resources */,
 				8D6858CAA683404DA456A0A3 /* Zocial.ttf in Resources */,
 				B1559B6991BB41E3A383D956 /* Billabong.ttf in Resources */,
+				2C1A79C882044BCCB4AD239A /* HeavyTrip.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

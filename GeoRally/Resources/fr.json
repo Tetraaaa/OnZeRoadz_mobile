@@ -64,5 +64,14 @@
         "validateTransit":"Valider le transit",
         "validateAndBegin":"Valider le transit et commencer le circuit",
         "validateAndFinish":"Terminer le circuit et retourner au menu principal"
+    },
+    "transitFinal":{
+        "score":"Score: ",
+        "time":"Temps: ",
+        "evaluate":"Evaluez le circuit: ",
+        "grade":"Note: ",
+        "comment":"Commentaire",
+        "backToMap":"Retourner à la carte",
+        "send":"Envoyer"
     }
 }
