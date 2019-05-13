@@ -71,7 +71,7 @@ class Navigation extends React.Component
                 {
                     response.json().then(json =>
                     {
-                        let action = { type: "LOGIN", value: json.username }
+                        let action = { type: "LOGIN", value: json.user }
                         this.props.dispatch(action)
                     })
                 }
