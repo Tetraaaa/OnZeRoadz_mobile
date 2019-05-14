@@ -103,7 +103,7 @@ class Circuits extends React.Component
 
     _downloadCircuit = (id, type) =>
     {
-        if(this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
+        if(type !== "UPDATE_CIRCUIT" && this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
         this.setState({ downloadingCircuit: true })
         let f = new FetchRequest(Url.circuit + id);
         f.open()
