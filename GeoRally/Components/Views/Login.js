@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, Image } from "react-native";
 import TextInput from "../../Components/TextInput";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../../Colors';
@@ -76,8 +76,10 @@ class Login extends React.Component
 
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>
-                    <Icon size={48} name="near-me" color={Colors.secondary} />
-                    <Text style={{ fontSize: 48, textAlign: "center", color: Colors.secondary, fontFamily: "Billabong", marginTop: 5 }}>OnZeRoadz</Text>
+                {
+                    <Image source={require("../../Resources/Images/logo.png")} style={{height:192, width:192}}/>
+                }
+                    
                 </View>
 
 
