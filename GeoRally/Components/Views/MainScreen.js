@@ -106,10 +106,10 @@ class MainScreen extends React.Component
             })
     }
 
-    _downloadCircuit = (item) =>
-    {
+    _downloadCircuit = (item, languageId) =>
+    {        
         this.setState({ downloadingCircuit: true })
-        let f = new FetchRequest(Url.circuit + item.id);
+        let f = new FetchRequest(Url.circuit + item.id+'?languageId='+languageId);
         f.open()
             .then(response =>
             {
@@ -315,7 +315,7 @@ class MainScreen extends React.Component
                 <TouchableOpacity onPress={this._centerMapOnSelf} style={{ margin: 10, elevation: 4, alignItems: "center", justifyContent: 'center', position: 'absolute', bottom: 0, right: 1, width: 54, height: 54, borderRadius: 26, backgroundColor: "white" }}>
                     <Image style={{ width: 32, height: 32 }} source={require("../../Resources/Images/target.png")} />
                 </TouchableOpacity>
-                <CircuitModal marker={this.state.selectedMarker} connected={this.props.connectionReducer.connected} downloadingCircuit={this.state.downloadingCircuit} open={this.state.selectedMarker !== null} playable={this.state.selectedMarker && this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id)} onPlay={() => { this.props.navigation.navigate("PlayScreen", { id: this.state.selectedMarker.id }) }} onDownload={() => { this._downloadCircuit(this.state.selectedMarker) }} />
+                <CircuitModal marker={this.state.selectedMarker} connected={this.props.connectionReducer.connected} downloadingCircuit={this.state.downloadingCircuit} open={this.state.selectedMarker !== null} playable={this.state.selectedMarker && this.props.offlineReducer.circuits.map(item => item.id).includes(this.state.selectedMarker.id)} onPlay={() => { this.props.navigation.navigate("PlayScreen", { id: this.state.selectedMarker.id }) }} onDownload={(languageId) => { this._downloadCircuit(this.state.selectedMarker, languageId) }} />
             </View>
 
         );
