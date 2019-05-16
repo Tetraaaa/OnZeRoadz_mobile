@@ -6,7 +6,8 @@ import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from "../Colors";
 import Strings from "../Resources/i18n";
-
+import BetterBadderPicker from "./BetterBadderPicker";
+import Flag from 'react-native-flags';
 
 class CircuitModal extends React.Component
 {
@@ -14,7 +15,8 @@ class CircuitModal extends React.Component
     {
         super(props);
         this.state = {
-            modalHeight: new Animated.Value(0)
+            modalHeight: new Animated.Value(0),
+            idLanguage: 0
         }
     }
 
@@ -22,7 +24,19 @@ class CircuitModal extends React.Component
     {
         if (prevProps.open !== this.props.open)
         {
-            this.animate();
+            this.animate();            
+        }
+
+        if ((prevProps.marker != null && this.props.marker!= null && prevProps.marker.id != this.props.marker.id) || (!prevProps.marker && this.props.marker)){
+            if(this.props.playable){
+                this.setState({
+                    idLanguage: this.props.marker.language.id
+                })
+            }else{
+                this.setState({
+                    idLanguage: this.props.marker.supportedLanguages[0].id
+                });
+            }            
         }
     }
 
@@ -89,8 +103,7 @@ class CircuitModal extends React.Component
     }
 
     render()
-    {
-
+    {                        
         return (
             this.props.marker ?
                 this.props.downloadingCircuit ?
@@ -103,6 +116,9 @@ class CircuitModal extends React.Component
                         <View style={{ flex: 1 }}>
                             <Text style={{ textAlign: "center", color: Colors.secondaryDark, fontSize: 18, margin: 3, borderWidth: 0, borderBottomWidth: 1, borderColor: Colors.secondaryLight }}>{this.props.marker.name}</Text>
                         </View >
+                        <View style={{flex:1}}>
+                            
+                        </View>                        
                         <View style={{ flex: 2, flexDirection: "row", borderColor: "black", justifyContent: "center" }}>
                             <View style={{ flexDirection: "row", flex: 1, margin: 3, alignItems: "center", justifyContent: "center" }}>
                                 <IconMC name="map-marker-distance" size={22} color={Colors.secondary} style={{ marginRight: 3 }} />
@@ -132,7 +148,10 @@ class CircuitModal extends React.Component
 
                         {
                             this.props.connected ?
-                                <Button color={Colors.secondary} style={{ margin: 5 }} title={this.props.playable ? this.props.marker.progress ? Strings("circuitModal", "resume")  : Strings("circuitModal", "play")  : Strings("circuitModal", "download") } onPress={this.props.playable ? this.props.onPlay : this.props.onDownload} />
+                                <View style={{flexDirection:'row'}}>
+                                    <BetterBadderPicker onValueChange={(item) => this.setState({idLanguage: item.id})} style={{ flex: 4, margin: 5 }} keyMember="id" displayMember="label" selected={this.props.marker.supportedLanguages.find(item => item.id === this.state.idLanguage)} items={this.props.marker.supportedLanguages} title="Langage" />
+                                    <Button color={Colors.secondary} style={{ margin: 5, flex:15}} title={this.props.playable ? this.props.marker.progress ? Strings("circuitModal", "resume")  : Strings("circuitModal", "play")  : Strings("circuitModal", "download") } onPress={this.props.playable ? this.props.onPlay : () => this.props.onDownload(this.state.idLanguage)} />
+                                </View>
                                 :
                                 null
                         }
