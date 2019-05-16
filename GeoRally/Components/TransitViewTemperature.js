@@ -73,9 +73,9 @@ class TransitViewTemperature extends React.Component
         return(
             <View style={{flex:1}}>
                 <View style={{flex:1}}>
-                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
+                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50}/>
                     <Icon name="arrow-up" color="red" size={50}/></>}
-                    {this.state.previousDistance > currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
+                    {this.state.previousDistance < currentDistance && <><Icon name="temperature-low" color="blue" size={50}/>
                     <Icon name="arrow-down" color="blue" size={50}/></>}
                 </View>
                 <View style={{flex:1, flexDirection:"column-reverse", position:"absolute", top:0, bottom:0, left:0, right:0, marginLeft:"40%", marginBottom:"29%"}}>
@@ -84,7 +84,7 @@ class TransitViewTemperature extends React.Component
                 <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={require("../Resources/Images/thermometer.png")}/> 
                 </View>
-                <Text style={{color:"rgb("+ 2.55*i  + ", 0, " + (255 - 2.55*i) + ")", fontSize:16, textAlign:"center"}}>{"Température : " + i}</Text>
+                <Text style={{color:"rgb("+ Math.round(2.55*i)  + ", 0, " + Math.round(255 - 2.55*i) + ")", fontSize:20, textAlign:"center"}}>{"Température : " + i + "°C"}</Text>
                             
             </View>
         )
