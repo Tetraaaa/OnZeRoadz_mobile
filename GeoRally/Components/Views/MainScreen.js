@@ -27,7 +27,12 @@ class MainScreen extends React.Component
             selectedMarker: null,
             loading: true,
             loadingCircuit: false,
-            fetchingCircuits: false
+            fetchingCircuits: false,
+            minDistance: 0,
+            maxDistance: 0,
+            minDuration: 0,
+            maxDuration: 0,
+            minNote: 0
         };
     }
 
@@ -90,6 +95,11 @@ class MainScreen extends React.Component
             "NElatitude": northeast.latitude,
             "SOlongitude": southwest.longitude,
             "SOlatitude": southwest.latitude,
+            "distanceMin": this.state.minDistance,
+            "distanceMax": this.state.maxDistance,
+            "note": this.state.minNote,
+            "durationMax": this.state.maxDuration,
+            "durationMin": this.state.minDuration,
         }
         new FetchRequest(Url.publishedCircuits, "POST", JSON.stringify(body)).open()
             .then(response =>
@@ -200,7 +210,14 @@ class MainScreen extends React.Component
     }
     _filterSelection = (filters) =>
     {
-        this.setState({ fetchingCircuits: true })
+        this.setState({
+            fetchingCircuits: true,
+            minDistance: filters.distanceMin,
+            maxDistance: filters.distanceMax,
+            minDuration: filters.durationMin,
+            maxDuration: filters.durationMax,
+            minNote: filters.note
+        })
         let region = this.state.region;
         let northeast = {
             latitude: region.latitude + region.latitudeDelta / 2,
@@ -303,7 +320,7 @@ class MainScreen extends React.Component
                     </MapView>
                 </ScrollView>
                 <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: "rgba(0,0,0,0)", width: "100%", flex: 1, flexDirection: "row" }}>
-                    <GooglePlacesSearchBar onFilterSelection={this._filterSelection} onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => { this.setState({ followingCurrentPosition: false }, () => { this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000) }) }} />
+                    <GooglePlacesSearchBar minDistance={this.state.minDistance} maxDistance={this.state.maxDistance} minDuration={this.state.minDuration} maxDuration={this.state.maxDuration} minNote={this.state.minNote} onFilterSelection={this._filterSelection} onChangeText={(search) => this.setState({ search })} value={this.state.search} onSearch={(searchInfos) => { this.setState({ followingCurrentPosition: false }, () => { this.map.animateToRegion({ latitude: searchInfos.result.geometry.location.lat, longitude: searchInfos.result.geometry.location.lng, longitudeDelta: 0.005, latitudeDelta: 0.005 }, 1000) }) }} />
                 </View>
                 {
                     this.state.fetchingCircuits &&
