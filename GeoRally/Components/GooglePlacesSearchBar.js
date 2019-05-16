@@ -16,13 +16,12 @@ class GooglePlacesSearchBar extends React.Component
             predictions: [],
             focusOnBar: false,
             filtering: false,
-            rating: 0,
-            minDistance: 0,
-            maxDistance: 0,
-            minDuration: 0,
-            maxDuration: 0,
-            minNote: 0,
-            height: new Animated.Value(0)
+            height: new Animated.Value(0),
+            minDistance: this.props.minDistance,
+            maxDistance: this.props.maxDistance,
+            minDuration: this.props.minDuration,
+            maxDuration: this.props.maxDuration,
+            minNote: this.props.minNote,
         }
         this.requests = []
     }
