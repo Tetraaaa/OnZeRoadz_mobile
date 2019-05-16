@@ -39,8 +39,8 @@ class Accounts extends React.Component
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 
                     <View style={{ flexDirection: "row", flex: 1 }}>
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <Image style={{ width: 96, height: 96, margin: 5 }} source={this.props.connectionReducer.lastConnectedUser.profilePicture ? { uri: this.props.connectionReducer.lastConnectedUser.profilePicture } : require("../../Resources/Images/user.png")} />
+                        <View style={{ flex: 1, margin: 8, marginRight:25 }}>
+                            <Image style={{ width: 96, height: 96, margin: 5, borderRadius:48 }} source={this.props.connectionReducer.lastConnectedUser.profilePicture ? { uri: this.props.connectionReducer.lastConnectedUser.profilePicture } : require("../../Resources/Images/user.png")} />
                         </View>
                         <View style={{ flex: 3, alignItems: "flex-start", justifyContent: "flex-start", margin: 15 }}>
                             <Text style={{ color: "black", fontSize: 24, textAlign: "left" }}>{this.props.connectionReducer.lastConnectedUser.username}</Text>
@@ -49,19 +49,19 @@ class Accounts extends React.Component
                                 <Text style={{ color: "black", fontSize: 16 }}>{this.props.connectionReducer.lastConnectedUser.lastname}</Text>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Text style={{ color: "black", flex: 1 }}>{"Inscrit depuis le " + this.props.connectionReducer.lastConnectedUser.creationDate}</Text>
+                                <Text style={{ flex: 1 }}>{"Inscrit depuis le " + this.props.connectionReducer.lastConnectedUser.creationDate}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={{ color: "black", textAlign: "left", alignItems: "flex-start", justifyContent: "flex-start" }}>{this.props.connectionReducer.lastConnectedUser.description || Strings("account", "noDescription")}</Text>
                     </View>
-                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-start" }}>
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems:"center" }}>
                         <Text>{Strings("account", "privacy")}</Text>
-                        <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={items.find(item => item.id === this.props.connectionReducer.locale)} items={privacy} title={Strings("account", "privacy")} />
+                        <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.locale)} items={privacy} title={Strings("account", "privacy")} />
                     </View>
 
-                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-start" }}>
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems:"center" }}>
                         <Text>{Strings("account", "language")}</Text>
                         <BetterPicker onValueChange={this._changeLanguage} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={items.find(item => item.id === this.props.connectionReducer.locale)} items={items} title={Strings("account", "language")} />
                     </View>
