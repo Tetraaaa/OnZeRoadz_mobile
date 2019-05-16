@@ -27,7 +27,7 @@ class CircuitModal extends React.Component
             this.animate();            
         }
 
-        if ((prevProps.marker != null && this.props.marker!= null && prevProps.marker.id != this.props.marker.id) || (!prevProps.marker && this.props.marker)){
+        if ((prevProps.marker != null && this.props.marker!= null && prevProps.marker.id != this.props.marker.id) || (!prevProps.marker && this.props.marker)){            
             if(this.props.playable){
                 this.setState({
                     idLanguage: this.props.marker.language.id
@@ -146,10 +146,10 @@ class CircuitModal extends React.Component
 
 
 
-                        {
+                        {                            
                             this.props.connected ?
                                 <View style={{flexDirection:'row'}}>
-                                    <BetterBadderPicker onValueChange={(item) => this.setState({idLanguage: item.id})} style={{ flex: 4, margin: 5 }} keyMember="id" displayMember="label" selected={this.props.marker.supportedLanguages.find(item => item.id === this.state.idLanguage)} items={this.props.marker.supportedLanguages} title="Langage" />
+                                    {this.props.playable ? <Flag style={{ flex: 2, margin: 5, padding:5 }} size={32} code={this.props.marker.language.code.toString().toUpperCase()} />  : <BetterBadderPicker onValueChange={(item) => this.setState({idLanguage: item.id})} style={{ flex: 4, margin: 5 }} keyMember="id" displayMember="label" selected={this.props.marker.supportedLanguages.find(item => item.id === this.state.idLanguage)} items={this.props.marker.supportedLanguages.filter((language) => language.supportedPercentage == 100)} title="Langage" />}
                                     <Button color={Colors.secondary} style={{ margin: 5, flex:15}} title={this.props.playable ? this.props.marker.progress ? Strings("circuitModal", "resume")  : Strings("circuitModal", "play")  : Strings("circuitModal", "download") } onPress={this.props.playable ? this.props.onPlay : () => this.props.onDownload(this.state.idLanguage)} />
                                 </View>
                                 :

@@ -256,9 +256,9 @@ class PlayScreen extends React.Component
     {
         let action = { type: "REMOVE_PROGRESS", value: { id: this.circuit.id } };
         this.props.dispatch(action);
-        let f = new FetchRequest(Url.updateProgress.slice(0, -1).replace('{idCircuit}', this.circuit.id), "DELETE");
-        this.requests.push(f);
-        f.open();
+        //let f = new FetchRequest(Url.updateProgress.slice(0, -1).replace('{idCircuit}', this.circuit.id), "DELETE");
+        //this.requests.push(f);
+        //f.open();
         this.props.navigation.navigate("MainScreen");
     }
 
