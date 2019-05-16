@@ -70,7 +70,7 @@ class QCM extends React.Component
     {
         let rightAnswers = this.props.question.answers.filter(answer => answer.isTrue);
         let answers = [];
-        answers = this.props.question.answers;
+        answers = this.shuffle(this.props.question.answers);
         let jsx = [];
         let i = 0;
         while (i < answers.length)
