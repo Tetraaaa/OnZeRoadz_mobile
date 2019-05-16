@@ -60,8 +60,6 @@ class PlayScreen extends React.Component
 
         if(this.circuit.progress)
         {
-            console.log(this.circuit.progress.time)
-            console.log("reset from progress")
             this.setState({
                 startTime: new Date().getTime() - this.circuit.progress.time,
                 score:this.circuit.progress.score
