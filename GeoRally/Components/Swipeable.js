@@ -12,8 +12,14 @@ class Swipeable extends React.PureComponent
             selected: false
         };
         this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (evt, gestureState) => true,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+            onStartShouldSetPanResponder:(evt, gestureState) => false,
+            onStartShouldSetPanResponderCapture:(evt, gestureState) => false,
+            onMoveShouldSetPanResponder: (evt, gestureState) => {
+                return !(gestureState.dx === 0 && gestureState.dy === 0)     
+            },
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+                return !(gestureState.dx === 0 && gestureState.dy === 0)
+            },
 
             onPanResponderGrant: (evt, gestureState) =>
             {
@@ -31,7 +37,7 @@ class Swipeable extends React.PureComponent
 
             onPanResponderTerminationRequest: (evt, gestureState) =>
             {
-                return false;
+                return true;
             },
 
             onPanResponderRelease: (evt, gestureState) =>
@@ -60,24 +66,10 @@ class Swipeable extends React.PureComponent
                 }
                 else
                 {
-                    if (gestureState.dx === 0)
-                    {
-                        Animated.timing(this.state.x, {
-                            toValue: Dimensions.get("window").width,
-                            duration: 200
-                        }).start(() =>
-                        {
-                            this.onSwipeComplete(this.props.item)
-                        });
-
-                    }
-                    else
-                    {
-                        Animated.timing(this.state.x, {
-                            toValue: 0,
-                            duration: 200
-                        }).start();
-                    }
+                    Animated.timing(this.state.x, {
+                        toValue: 0,
+                        duration: 200
+                    }).start();
 
                 }
 
@@ -100,7 +92,7 @@ class Swipeable extends React.PureComponent
     render()
     {
         return (
-            <Animated.View {...this.panResponder.panHandlers} ref={this.props.item.id} style={{ transform: [{ translateX: this.state.x }], backgroundColor: "white", flexDirection: "row" }}>
+            <Animated.View {...this.panResponder.panHandlers} ref={this.props.item.id} style={{ transform: [{ translateX: this.state.x }], backgroundColor: "white", flexDirection: "row", flex:1 }}>
                 <View style={{ flex: 1 }}>
                     {this.props.children}
                 </View>
