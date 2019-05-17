@@ -81,12 +81,12 @@ class TransitFinal extends React.Component
                 <View style={{flex:1, alignItems: "center", justifyContent: "center"}} >
                     <Image source={getImage()}/>
                     <View style={{ flexDirection: 'row'}} >
-                        <Text style={{flex:1, color:"black", fontSize:20, textAlign:"center", fontFamily: 'HeavyTrip'}}>{Strings("transitFinal", "score") } {this.props.score} pts</Text>
-                        <Text style={{flex:1, color:"black", fontSize:20, textAlign:"center", fontFamily: 'HeavyTrip'}}>{Strings("transitFinal", "time") } {this.props.chrono}</Text>
+                        <Text style={{flex:1, color:"black", fontSize:22, textAlign:"center", fontFamily: 'WelixBrush'}}>{Strings("transitFinal", "score") } {this.props.score} pts</Text>
+                        <Text style={{flex:1, color:"black", fontSize:22, textAlign:"center", fontFamily: 'WelixBrush'}}>{Strings("transitFinal", "time") } {this.props.chrono}</Text>
                     </View>
                 </View>
                 <View style={{flex:1, margin:5, padding:5, borderWidth: 2, borderRadius:5, borderColor:Colors.secondary, backgroundColor:Colors.accent2}}>
-                    <Text style={{flex:1, marginBottom:10, color:"black", fontSize:20,justifyContent:"center", textAlign:"center", fontFamily: 'HeavyTrip'}}>{Strings("transitFinal", "evaluate") }</Text>
+                    <Text style={{flex:1, marginBottom:10, color:"black", fontSize:22,justifyContent:"center", textAlign:"center", fontFamily: 'WelixBrush'}}>{Strings("transitFinal", "evaluate") }</Text>
                     {this._renderRating()}
                     <TextInput style={{flex:5, marginVertical:5, backgroundColor: "white", borderColor: Colors.secondaryLight, borderWidth:1, borderRadius:5}} placeholder={Strings("transitFinal", "comment") } value={this.state.comment} multiline={true} onChangeText={(text) => this.setState({comment: text})} />
                     <Button color={Colors.secondary} style={{ borderRadius:5}} onPress={() => this._sendRating() } title={Strings("transitFinal", "send") }/>
