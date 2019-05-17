@@ -176,7 +176,8 @@ class PlayScreen extends React.Component
             over,
             score: score + this.state.score,
             answeredQuestions: 0,
-            currentQuestionIndex: 0,            
+            currentQuestionIndex: 0,    
+            showDescription: true        
         }, () => this._sendProgress())
         this.trackPosition(true);
     }
@@ -239,7 +240,6 @@ class PlayScreen extends React.Component
 
     _nextQuestion = () =>
     {
-
         let maxIndex = this.circuit.transits[this.state.currentTransitIndex].step.questions.length - 1;
         if (this.state.currentQuestionIndex < maxIndex)
         {
@@ -308,8 +308,7 @@ class PlayScreen extends React.Component
 
 
     render()
-    {        
-        
+    {                
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
