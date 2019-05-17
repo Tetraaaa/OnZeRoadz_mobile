@@ -42,12 +42,7 @@ class Login extends React.Component
             {
                 response.json().then(json =>
                 {
-                    this.setState({
-                        loading: false
-                    })
-                    this.props.navigation.navigate("MainScreen")
-                    let action = { type: "LOGIN", value: json.username }
-                    this.props.dispatch(action)
+                    this._whoami();
                 })
             }
             else
@@ -67,6 +62,36 @@ class Login extends React.Component
             }
         })
 
+    }
+
+    _whoami = () =>
+    {
+        new FetchRequest(Url.whoami).open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json().then(json =>
+                    {
+                        let action = { type: "LOGIN", value: json.user }
+                        this.props.dispatch(action)
+                        this.setState({
+                            loading: false
+                        })
+                        this.props.navigation.navigate("MainScreen")
+                    })
+                }
+                else
+                {
+                    let action = { type: "LOGOUT" }
+                    this.props.dispatch(action)
+                }
+            })
+            .catch(error =>
+            {
+                let action = { type: "LOGOUT" }
+                this.props.dispatch(action)
+            })
     }
 
     render()
