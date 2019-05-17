@@ -16,6 +16,7 @@ class QCM extends React.Component
             selectedAnswers: [],
             disabled: this.props.question.questionProgress ? true : false
         }
+        this.answers = this.shuffle(this.props.question.answers)
     }
 
     _checkAnswer = () =>
@@ -50,6 +51,11 @@ class QCM extends React.Component
 
     }
 
+    shuffle = (array) =>
+    {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
     _selectUnselect = (answer) =>
     {
         if (this.state.selectedAnswers.includes(answer))
@@ -70,7 +76,7 @@ class QCM extends React.Component
     {
         let rightAnswers = this.props.question.answers.filter(answer => answer.isTrue);
         let answers = [];
-        answers = this.shuffle(this.props.question.answers);
+        answers = this.answers
         let jsx = [];
         let i = 0;
         while (i < answers.length)
