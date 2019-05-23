@@ -344,7 +344,7 @@ class PlayScreen extends React.Component
                                     <Icon name="pause" size={32} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={this._removeCircuit} >
-                                    <Icon name="flag" size={32} />
+                                    <Icon name="exit-to-app" size={32} />
                                 </TouchableOpacity>
                             </View>
                     }
