@@ -10,6 +10,7 @@ import CircuitModal from "../../Components/CircuitModal";
 import Colors from '../../Colors';
 import Strings from '../../Resources/i18n';
 
+
 class MainScreen extends React.Component
 {
     constructor(props)
@@ -117,7 +118,8 @@ class MainScreen extends React.Component
     }
 
     _downloadCircuit = (item, languageId) =>
-    {        
+    {
+        
         this.setState({ downloadingCircuit: true })
         let f = new FetchRequest(Url.circuit + item.id+'?languageId='+languageId);
         f.open()
@@ -133,7 +135,7 @@ class MainScreen extends React.Component
                             Object.assign(circuit, progress);
                             let action = { type: "DOWNLOAD_CIRCUIT", value: circuit }
                             this.props.dispatch(action);
-                            this.setState({ downloadingCircuit: false })
+                            this.setState({ downloadingCircuit: false, selectedMarker:circuit})
                         })
                 }
                 else
