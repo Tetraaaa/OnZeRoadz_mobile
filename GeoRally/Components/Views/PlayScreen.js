@@ -254,8 +254,17 @@ class PlayScreen extends React.Component
 
     _removeCircuit = () =>
     {
+        Alert.alert("Abandonner le circuit ?", "Votre progression actuelle sur ce circuit sera perdue.", [
+            {text:"Oui", onPress:this._abandonCircuit, style:"destructive"},
+            {text:"Non", onPress:()=>{}, style:"cancel"}
+        ]);
+    }
+
+    _abandonCircuit = () =>
+    {
         let action = { type: "REMOVE_PROGRESS", value: { id: this.circuit.id } };
         this.props.dispatch(action);
+        //TODO : Décommenter ?
         //let f = new FetchRequest(Url.updateProgress.slice(0, -1).replace('{idCircuit}', this.circuit.id), "DELETE");
         //this.requests.push(f);
         //f.open();
