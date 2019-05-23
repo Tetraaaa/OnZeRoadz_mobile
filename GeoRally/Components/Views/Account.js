@@ -58,7 +58,7 @@ class Accounts extends React.Component
                     </View>
                     <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems:"center" }}>
                         <Text>{Strings("account", "privacy")}</Text>
-                        <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.locale)} items={privacy} title={Strings("account", "privacy")} />
+                        <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.lastConnectedUser.profilVisibility.id)} items={privacy} title={Strings("account", "privacy")} />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems:"center" }}>
