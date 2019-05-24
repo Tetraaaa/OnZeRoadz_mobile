@@ -9,10 +9,12 @@ import Strings from '../Resources/i18n';
 
 class TransitView extends React.Component
 {
-
-
     render()
     {
+        let renderers = {
+            p: { fontSize: 16 }
+        }
+
         let okGeoLoc = this.props.okGeoLoc;
 
         let over = false;
@@ -27,36 +29,40 @@ class TransitView extends React.Component
             over = true;
             title = Strings("playScreen", "validateCircuit");
         } else if (!okGeoLoc && !this.props.transit.step.geoLoc)
-        {            
+        {
             okGeoLoc = true;
         }
 
         let view = null;
         if (this.props.transit.transitType.id === 1)
         {
-            
-            view =             
-            <ScrollView>
-                <HTML
-                    html={this.props.transit.description}
-                />
-            </ScrollView>                   
-        }else if (this.props.transit.transitType.id ===2)//boussole
+
+            view =
+                <ScrollView>
+                    <HTML
+                        containerStyle={{ margin: 5 }}
+                        tagsStyles={renderers}
+                        ignoredTags={["br"]}
+                        ignoredStyles={["display"]}
+                        html={this.props.transit.description}
+                    />
+                </ScrollView>
+        } else if (this.props.transit.transitType.id === 2)//cho froi
         {
             view = <TransitViewCompass />
         }
-        else if(this.props.transit.transitType.id === 3)//température
+        else if (this.props.transit.transitType.id === 3)//température
         {
             view = <TransitViewTemperature transit={this.props.transit} userLat={this.props.userLat} userLng={this.props.userLng} />
         }
         else
-        {            
+        {
             view = <Text>Type de transit invalide</Text>
         }
 
-        return(
-            <View style={{flex:1}}>                
-                <View style={{flex:9}}>
+        return (
+            <View style={{ flex: 1 }}>
+                <View style={{ flex: 9 }}>
                     {view}
                 </View>
                 <View style={{ flex: 1 }}>

@@ -41,14 +41,20 @@ class StepView extends React.Component
     render()
     {
         let question = this.props.step.questions[this.props.currentQuestionIndex]
+        let renderers= {
+            p: {fontSize:16}
+        }
         return (
             <View style={{ flex: 1 }}>
                 {
                     this.props.showDescription || !question ?
                         <View style={{ margin: 5, flex: 9 }}>
-                            <Text style={{ textAlign: "center", fontSize: 16 }}>{this.props.step.name}</Text>
+                            <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark }}>{this.props.step.name}</Text>
                             <ScrollView>
                                 <HTML
+                                    tagsStyles={renderers}
+                                    ignoredTags={["br"]}
+                                    ignoredStyles={["display"]}
                                     containerStyle={{ margin: 5 }}
                                     imagesMaxWidth={Dimensions.get('window').width * 0.95}
                                     html={this.props.step.description || "<p>" + Strings("playScreen", "noDescription") + "</p>"}

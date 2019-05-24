@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Dimensions } from "react-native";
+import { ScrollView, View, Dimensions, Text } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from './../Colors';
 import Button from './Button';
@@ -102,14 +102,21 @@ class QCM extends React.Component
 
     render()
     {
+        let renderers = {
+            p: { fontSize: 16 }
+        }
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <HTML
+                    <Text style={{ fontSize: 16}}>{this.props.question.text}</Text>
+                    {/*<HTML
+                        tagsStyles={renderers}
+                        ignoredTags={["br"]}
+                        ignoredStyles={["display"]}
                         containerStyle={{ margin: 5 }}
                         imagesMaxWidth={Dimensions.get('window').width * 0.95}
                         html={this.props.question.text}
-                    />
+                    />*/}
                     {this._renderButtons()}
                 </ScrollView>
                 <View>

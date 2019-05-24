@@ -60,7 +60,6 @@ class TransitViewTemperature extends React.Component
         i=0;
         for(k=0;k<nbDiv;k++)
         {
-            console.log(ratioDistance)
             rgb = "rgb("+red.toFixed()+",0,"+blue.toFixed()+")";            
             if(ratioDistance <= k/(nbDiv/2)){
                 i++;
