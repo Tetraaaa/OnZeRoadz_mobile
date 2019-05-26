@@ -9,14 +9,21 @@ import {
     setUpdateIntervalForType,
     SensorTypes
   } from "react-native-sensors";
+
+
 class TransitViewCompass extends React.Component
 {
 
     constructor(props)
     {
         super(props);
-        this.state = {
-            region:null
+        this.state = {            
+            text: '',
+            x: null,
+            y: null,
+            heading: null,
+            brng: null,
+            target: 0
         }
     }
 
@@ -34,9 +41,9 @@ class TransitViewCompass extends React.Component
     
         let brng = Math.atan2(y, x);
     
-        brng = Math.toDegrees(brng);
+        brng = brng * (180/Math.PI)
         brng = (brng + 360) % 360;
-        brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
+        //brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
     
         return brng;
     }
@@ -68,26 +75,26 @@ class TransitViewCompass extends React.Component
 
     componentDidMount()
     {
-        navigator.geolocation.getCurrentPosition(
-            (position) =>
-            {
-                this.setState({
-                    region: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: this.state.region.latitudeDelta,
-                        longitudeDelta: this.state.region.longitudeDelta
-                    }
-                });
-            }
-        );
-
-
-
         setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
-        magnetometer.subscribe(data => {
-            console.log(Math.atan2(data.y, data.x) * (180 / Math.PI))
-        })
+        magnetometer.subscribe(data => {            
+            this.setState({
+                text: this.getHeadingFromMeasurements(data.x, data.y),
+                x:data.x,
+                y:data.y,
+                heading: this._computeRealHeading(this.getHeadingFromMeasurements(data.x, data.y)),
+                brng: this.getAngleFromCoordinates(this.props.userLat,this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude)
+            }, () => this.setState({
+                target: (this.state.brng-this.state.heading)%360
+            }))
+        })      
+    }
+
+    _computeRealHeading(h){
+        r = h-90;
+        if(r<0){
+            r = 360+r;
+        }
+        return r;
     }
 
     componentDidUpdate(prevProps)
@@ -96,10 +103,33 @@ class TransitViewCompass extends React.Component
 
     render()
     {
+        let coeff = this.state.brng/360;
         return (
-            <View style={{ flex: 1 }}>
-
-            </View>
+            <View style={{flex:1}}>
+                <View style={{ flex: 2 }}>
+                    <Text>
+                        {this.state.text}
+                    </Text>
+                    <Text>
+                        x: {this.state.x}
+                    </Text>
+                    <Text>
+                        y: {this.state.y}
+                    </Text>
+                    <Text>
+                        heading: {this.state.heading}
+                    </Text>
+                    <Text>
+                        bearing: {this.state.brng}
+                    </Text>
+                    <Text>
+                        bearing - heading: {this.state.target}
+                    </Text>                               
+                </View>
+                <View style={{flex:5, justifyContent:"center", alignItems: "center"}}>
+                    <Image style={{height:200, width:200, transform:[{rotate: this.state.target+'deg'}]}} source={require("../Resources/Images/compass.png")}/>
+                </View>
+            </View>            
         )
     }
 }

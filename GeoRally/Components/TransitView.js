@@ -47,9 +47,9 @@ class TransitView extends React.Component
                         html={this.props.transit.description}
                     />
                 </ScrollView>
-        } else if (this.props.transit.transitType.id === 2)//cho froi
+        } else if (this.props.transit.transitType.id === 2)//boussole
         {
-            view = <TransitViewCompass />
+            view = <TransitViewCompass transit={this.props.transit} userLat={this.props.userLat} userLng={this.props.userLng}/>
         }
         else if (this.props.transit.transitType.id === 3)//température
         {
