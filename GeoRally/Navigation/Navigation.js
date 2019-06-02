@@ -1,5 +1,5 @@
 import React from "react";
-import { PermissionsAndroid, Text, View, Image, ActivityIndicator } from "react-native";
+import { PermissionsAndroid, Text, View, Image } from "react-native";
 import NavigationOffline from "../Navigation/NavigationOffline";
 import NavigationOnline from "../Navigation/NavigationOnline";
 import { connect } from 'react-redux'
@@ -7,6 +7,7 @@ import FetchRequest from "../Tools/FetchRequest";
 import Url from "../Resources/Url";
 import Colors from "../Colors";
 import Strings from "../Resources/i18n";
+import ActivityIndicator from "../Components/ActivityIndicator";
 
 class Navigation extends React.Component
 {
@@ -143,9 +144,7 @@ class Navigation extends React.Component
     {
         if (!this.state.permissionsAsked)
         {
-            return <View>
-                <ActivityIndicator color={Colors.primary} size="large" />
-            </View>;
+            return <View><ActivityIndicator/></View>
         }
         else if (!this.state.permissionsGranted)
         {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert, ScrollView, Dimensions } from "react-native";
 import FreeQuestion from './../Components/FreeQuestion';
 import QCM from './../Components/QCM';
 import Colors from './../Colors';

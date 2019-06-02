@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, View, Text, ActivityIndicator } from 'react-native'
+import { Animated, View, Text } from 'react-native'
 import Button from "../Components/Button";
 import IconF from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';

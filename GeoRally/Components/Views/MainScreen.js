@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ActivityIndicator, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated, PermissionsAndroid } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert, ScrollView, Button, Animated, PermissionsAndroid, ActivityIndicator } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import GooglePlacesSearchBar from '../../Components/GooglePlacesSearchBar';
 import { connect } from 'react-redux'
@@ -9,6 +9,7 @@ import MapStyles from "../../Resources/MapStyles";
 import CircuitModal from "../../Components/CircuitModal";
 import Colors from '../../Colors';
 import Strings from '../../Resources/i18n';
+import ActivityIndicatorLogo from '../ActivityIndicator';
 
 
 class MainScreen extends React.Component
@@ -288,8 +289,7 @@ class MainScreen extends React.Component
         {
             return (
                 <View style={{ alignItems: 'center' }}>
-                    <ActivityIndicator size={"large"} />
-                    <Text>{Strings("map", "loading")}</Text>
+                    <ActivityIndicatorLogo text={Strings("map", "loading")}/>
                 </View>
             );
         }

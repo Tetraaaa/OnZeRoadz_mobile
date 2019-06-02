@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, ScrollView, ActivityIndicator, } from "react-native";
+import { View, Text, FlatList, ScrollView } from "react-native";
 import { connect } from 'react-redux'
 import FetchRequest from "../../Tools/FetchRequest";
 import Url from "../../Resources/Url";
@@ -8,6 +8,7 @@ import UpdateModal from './../UpdateModal';
 import Colors from "../../Colors";
 import Strings from "../../Resources/i18n";
 import Swipeable from "../Swipeable";
+import ActivityIndicator from "../ActivityIndicator";
 
 class Circuits extends React.Component
 {
@@ -103,7 +104,7 @@ class Circuits extends React.Component
 
     _downloadCircuit = (id, type) =>
     {
-        if(type !== "UPDATE_CIRCUIT" && this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
+        if (type !== "UPDATE_CIRCUIT" && this.props.offlineReducer.circuits.find(circuit => circuit.id === id)) return;
         this.setState({ downloadingCircuit: true })
         let f = new FetchRequest(Url.circuit + id);
         f.open()
@@ -141,10 +142,7 @@ class Circuits extends React.Component
                 <View style={{ flex: 1 }}>
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "myCircuits")}</Text>
                     {this.state.isLoadingCircuits ?
-                        <View style={{ alignItems: "center", justifyContent: "center" }}>
-                            <Text>{Strings("circuits", "loading")}</Text>
-                            <ActivityIndicator size="large" color={Colors.primary} />
-                        </View>
+                        <ActivityIndicator text={Strings("circuits", "loading")} />
                         :
                         <FlatList
                             onRefresh={this._fetchMyCircuits}
@@ -161,10 +159,7 @@ class Circuits extends React.Component
                     <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "downloaded")}</Text>
                     {
                         this.state.isLoadingDownloadedCircuits ?
-                            <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                <Text>{Strings("circuits", "loading")}</Text>
-                                <ActivityIndicator size="large" color={Colors.primary} />
-                            </View>
+                            <ActivityIndicator text={Strings("circuits", "loading")} />
                             :
                             <FlatList
                                 onRefresh={this._checkDownloadedCircuitsVersion}

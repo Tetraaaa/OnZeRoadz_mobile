@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ActivityIndicator, Image } from "react-native";
+import { Text, View, Image } from "react-native";
 import TextInput from "../../Components/TextInput";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../../Colors';
@@ -101,10 +101,13 @@ class Login extends React.Component
 
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>
-                {
-                    <Image source={require("../../Resources/Images/logo.png")} style={{height:192, width:192}}/>
-                }
-                    
+                    {
+                        this.state.loading ?
+                            <Image source={require("../../Resources/Images/loading.gif")} style={{ height: 96, width: 96 }} />
+                            :
+                            <Image source={require("../../Resources/Images/logo.png")} style={{ height: 128, width: 128 }} />
+                    }
+
                 </View>
 
 
@@ -114,17 +117,12 @@ class Login extends React.Component
                 <Text style={{ marginLeft: 5, marginTop: 15, fontSize: 16 }}>{Strings("login", "noAcc")}</Text>
                 <Button title={Strings("login", "signup")} onPress={() => { this.props.navigation.navigate("Signup") }} color={Colors.secondaryLight} style={{ margin: 5 }} />
                 {
-                    this.state.loading ?
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: "15%" }}>
-                            <ActivityIndicator size="large" color={Colors.secondary} />
+                    this.state.errMess ?
+                        <View style={{ alignItems: "center", justifyContent: "center", height: "15%" }}>
+                            <Icon name="clear" size={32} color={Colors.error} />
+                            <Text>{this.state.errMess}</Text>
                         </View>
                         :
-                        this.state.errMess ?
-                            <View style={{ alignItems: "center", justifyContent: "center", height: "15%" }}>
-                                <Icon name="clear" size={32} color={Colors.error} />
-                                <Text>{this.state.errMess}</Text>
-                            </View>
-                            :
                         null
                 }
             </View>
