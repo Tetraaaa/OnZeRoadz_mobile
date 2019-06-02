@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, Vibration } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from '../Colors';
 import Button from "../Components/Button";
@@ -9,6 +9,7 @@ import Strings from '../Resources/i18n';
 
 class TransitView extends React.Component
 {
+
     render()
     {
         let renderers = {
@@ -28,10 +29,17 @@ class TransitView extends React.Component
         {
             over = true;
             title = Strings("playScreen", "validateCircuit");
-        } else if (!okGeoLoc && !this.props.transit.step.geoLoc)
+        } 
+        else if (!okGeoLoc && !this.props.transit.step.geoLoc)
         {
             okGeoLoc = true;
         }
+        else if(okGeoLoc && this.props.transit.step.geoLoc)
+        {
+            Vibration.vibrate();
+        }
+
+        
 
         let view = null;
         if (this.props.transit.transitType.id === 1)
