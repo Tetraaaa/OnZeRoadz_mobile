@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, Dimensions } from "react-native";
+import { Text, View, Image, Dimensions, Animated, Easing } from "react-native";
 import GeoLocTools from '../Resources/GeoLoc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
@@ -23,8 +23,9 @@ class TransitViewCompass extends React.Component
             y: null,
             heading: null,
             brng: null,
-            target: 0
+            target: new Animated.Value(0)
         }
+        this.COMPASS_REFRESH_RATE = 1000;
     }
 
     getAngleFromCoordinates = (lat1, long1, lat2, long2) =>
@@ -75,7 +76,7 @@ class TransitViewCompass extends React.Component
 
     componentDidMount()
     {
-        setUpdateIntervalForType(SensorTypes.magnetometer, 1000);
+        setUpdateIntervalForType(SensorTypes.magnetometer, this.COMPASS_REFRESH_RATE);
         magnetometer.subscribe(data => {            
             this.setState({
                 text: this.getHeadingFromMeasurements(data.x, data.y),
@@ -83,11 +84,15 @@ class TransitViewCompass extends React.Component
                 y:data.y,
                 heading: this._computeRealHeading(this.getHeadingFromMeasurements(data.x, data.y)),
                 brng: this.getAngleFromCoordinates(this.props.userLat,this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude)
-            }, () => this.setState({
-                target: (this.state.brng-this.state.heading)%360
-            }))
+            }, () => {Animated.timing(this.state.target, {
+                toValue: (this.state.brng-this.state.heading)%360,
+                easing:Easing.linear,
+                duration:this.COMPASS_REFRESH_RATE
+            }).start()})
         })      
     }
+
+
 
     _computeRealHeading(h){
         r = h-90;
@@ -95,10 +100,6 @@ class TransitViewCompass extends React.Component
             r = 360+r;
         }
         return r;
-    }
-
-    componentDidUpdate(prevProps)
-    {
     }
 
     render()
@@ -121,13 +122,10 @@ class TransitViewCompass extends React.Component
                     </Text>
                     <Text>
                         bearing: {this.state.brng}
-                    </Text>
-                    <Text>
-                        bearing - heading: {this.state.target}
-                    </Text>                               
+                    </Text>                              
                 </View>
                 <View style={{flex:5, justifyContent:"center", alignItems: "center"}}>
-                    <Image style={{height:200, width:200, transform:[{rotate: this.state.target+'deg'}]}} source={require("../Resources/Images/compass.png")}/>
+                    <Animated.Image style={{height:200, width:200, transform:[{rotate:  this.state.target.interpolate({inputRange:[0,360], outputRange:["0deg", "360deg"]})}]}} source={require("../Resources/Images/compass.png")}/>
                 </View>
             </View>            
         )
