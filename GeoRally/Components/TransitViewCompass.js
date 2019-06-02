@@ -30,6 +30,7 @@ class TransitViewCompass extends React.Component
 
     getAngleFromCoordinates = (lat1, long1, lat2, long2) =>
     {
+        /*
         lat1 = lat1*Math.PI/180
         lat2 = lat2*Math.PI/180
         long1 = long1*Math.PI/180
@@ -46,7 +47,8 @@ class TransitViewCompass extends React.Component
         brng = (brng + 360) % 360;
         //brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
     
-        return brng;
+        return brng;*/
+        return 0;
     }
 
     /**
@@ -77,12 +79,12 @@ class TransitViewCompass extends React.Component
     componentDidMount()
     {
         setUpdateIntervalForType(SensorTypes.magnetometer, this.COMPASS_REFRESH_RATE);
-        magnetometer.subscribe(data => {            
+        this.magnetometer = magnetometer.subscribe(data => {            
             this.setState({
                 text: this.getHeadingFromMeasurements(data.x, data.y),
                 x:data.x,
                 y:data.y,
-                heading: this._computeRealHeading(this.getHeadingFromMeasurements(data.x, data.y)),
+                heading: this._computeRealHeading(data.x, data.y),
                 brng: this.getAngleFromCoordinates(this.props.userLat,this.props.userLng, this.props.transit.step.latitude, this.props.transit.step.longitude)
             }, () => {Animated.timing(this.state.target, {
                 toValue: (this.state.brng-this.state.heading)%360,
@@ -92,11 +94,20 @@ class TransitViewCompass extends React.Component
         })      
     }
 
+    componentWillUnmount()
+    {
+        this.magnetometer.unsubscribe();
+    }
 
 
-    _computeRealHeading(h){
-        r = h-90;
-        if(r<0){
+
+    _computeRealHeading(x, y)
+    {
+        let h = this.getHeadingFromMeasurements(x, y);
+
+        let r = h-90;
+        if(r<0)
+        {
             r = 360+r;
         }
         return r;
