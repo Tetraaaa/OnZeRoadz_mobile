@@ -16,7 +16,7 @@ class TransitFinal extends React.Component
         this.state = {
             grade:0,
             comment: '',            
-            open: false
+            newComment: true
         }
         this.requests = [];
     }
@@ -25,28 +25,52 @@ class TransitFinal extends React.Component
     {        
         this.requests.forEach(req => req.abort());
     }     
+
+    componentDidMount(){
+        let f = new FetchRequest(Url.rating.replace('{idCircuit}', this.props.circuit.id));
+        this.requests.push(f);
+        f.open()
+        .then(response =>
+        {            
+            if (response.ok)
+            {
+                response.json().then(json => {         
+                    this.setState({
+                        newComment: false,
+                        grade: json.grade,
+                        comment: json.comment
+                    })
+                })
+            }
+        })
+
+    }
     
     _changeGrade = (grade) => {
         this.setState({grade})
     }
 
-    _sendRating = () => {        
+    _sendRating = () => {
+        let method = 'PUT';
+        if(this.state.newComment){
+            method ='POST';
+        }
         body = {
             comment: this.state.comment,
             grade: this.state.grade
         }
-        let f = new FetchRequest(Url.addRating.replace('{idCircuit}', this.props.circuit.id), 'POST', JSON.stringify(body));
+        let f = new FetchRequest(Url.rating.replace('{idCircuit}', this.props.circuit.id), method, JSON.stringify(body));
         this.requests.push(f);
         f.open()
-            .then(response =>
+        .then(response =>
+        {
+            if (!response.ok)
             {
-                if (!response.ok)
-                {
-                    Alert.alert("Erreur lors l'envoi de l'évaluation", "Impossible d'évaluer le circuit.")
-                }else{
-                    this.props.removeCircuit();
-                }
-            })
+                Alert.alert("Erreur lors l'envoi de l'évaluation", "Impossible d'évaluer le circuit.")
+            }else{
+                this.props.removeCircuit();
+            }
+        })
     }
     
     _renderRating = () => {

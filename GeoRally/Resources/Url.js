@@ -18,5 +18,5 @@ export default URL = {
     updateProgress: circuit+"{idCircuit}/progress/",
     googlePlaces:"https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
     googleAutocompletion:"https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=",
-    addRating: domain+ "rate/circuit/{idCircuit}"
+    rating: domain+ "rate/circuit/{idCircuit}"
 }
