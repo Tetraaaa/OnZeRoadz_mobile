@@ -35,7 +35,8 @@
         "myCircuits":"Mes circuits",
         "downloaded":"Circuits téléchargés",
         "noCircuits":"Aucun circuit !",
-        "loading":"Chargement de vos circuits..."
+        "loading":"Chargement de vos circuits...",
+        "favorites":"Mes favoris"
     },
     "account":{
         "logout":"Déconnexion",
@@ -45,7 +46,8 @@
         "public":"Public",
         "private":"Privé",
         "friendsOnly":"Amis uniquement",
-        "noDescription":"[Insérer description]"
+        "noDescription":"[Insérer description]",
+        "favorites":"Mes favoris"
     },
     "circuitModal":{
         "play":"Jouer",
@@ -63,7 +65,8 @@
         "response":"Réponse",
         "validateTransit":"Valider le transit",
         "validateAndBegin":"Valider le transit et commencer le circuit",
-        "validateAndFinish":"Terminer le circuit et retourner au menu principal"
+        "validateAndFinish":"Terminer le circuit et retourner au menu principal",
+        "instructions":"Instructions pour se rendre à l'étape"
     },
     "transitFinal":{
         "score":"Score: ",

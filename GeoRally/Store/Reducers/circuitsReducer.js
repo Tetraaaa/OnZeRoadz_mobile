@@ -1,6 +1,7 @@
 let initialState = {
     circuits: [],
-    myCircuits: []
+    myCircuits: [],
+    favorites:[]
 }
 
 function circuitsReducer(state = initialState, action)
@@ -18,6 +19,12 @@ function circuitsReducer(state = initialState, action)
             nextState = {
                 ...state,
                 myCircuits: action.value
+            }
+            return nextState;
+        case 'SET_FAVORITES':
+            nextState = {
+                ...state,
+                favorites: action.value
             }
             return nextState;
         default:

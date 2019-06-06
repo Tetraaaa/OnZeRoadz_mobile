@@ -8,6 +8,7 @@ import Friends from "../Components/Views/Friends";
 import Circuits from "../Components/Views/Circuits";
 import MainScreen from '../Components/Views/MainScreen';
 import PlayScreen from "../Components/Views/PlayScreen";
+import Favorites from "../Components/Views/Favorites";
 import Strings from '../Resources/i18n';
 
 
@@ -26,6 +27,24 @@ const MainScreenStackNavigator = createStackNavigator({
             header: null
         }
     }
+})
+
+const AccountStackNavigator = createStackNavigator({
+    Account:
+    {
+        screen: Account,
+        navigationOptions: {
+            header:null
+        }
+    },
+    Favorites:
+    {
+        screen: Favorites,
+        navigationOptions: {
+            header: null
+        }
+    }
+
 })
 
 const MainStackNavigator = createMaterialBottomTabNavigator({
@@ -53,7 +72,7 @@ const MainStackNavigator = createMaterialBottomTabNavigator({
     },
     Friends:
     {
-        screen: Account,
+        screen: AccountStackNavigator,
         navigationOptions: {
             tabBarLabel: Strings("navigation", "account"),
             tabBarIcon: (infos) =>

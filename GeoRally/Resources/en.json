@@ -35,7 +35,8 @@
         "myCircuits":"My circuits",
         "downloaded":"Downloaded circuits",
         "noCircuits":"Nothing to show !",
-        "loading":"Your circuits are loading..."
+        "loading":"Your circuits are loading...",
+        "favorites":"Mes favoris"
     },
     "account":{
         "logout":"Logout",
@@ -45,7 +46,8 @@
         "public":"Public",
         "private":"Private",
         "friendsOnly":"Friends only",
-        "noDescription":"[Insert profile description]"
+        "noDescription":"[Insert profile description]",
+        "favorites":"My favourites"
     },
     "circuitModal":{
         "play":"Play",
@@ -61,9 +63,10 @@
         "noDescription":"The author didn't write a description for this step",
         "validateAnswer":"Validate answer",
         "response":"Answer",
-        "validateTransit":"Validate transit",
-        "validateAndBegin":"Validate transit and begin the circuit",
-        "validateAndFinish":"Finish circuit and go back to map"
+        "validateTransit":"Validate the transit",
+        "validateAndBegin":"Validate the transit and begin the circuit",
+        "validateAndFinish":"Finish the circuit and go back to the map",
+        "instructions":"Follow these instructions"
     },
     "transitFinal":{
         "score":"Score: ",

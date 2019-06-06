@@ -48,6 +48,7 @@ class Navigation extends React.Component
                             this._fetchCircuits(northeast, southwest);
                             this._whoami();
                             this._fetchMyCircuits();
+                            this._fetchFavorites();
                         }
                     );
                 }
@@ -124,6 +125,32 @@ class Navigation extends React.Component
                         .then(json =>
                         {
                             let action = { type: "SET_MY_CIRCUITS", value: json };
+                            this.props.dispatch(action);
+                        });
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+                }
+            })
+            .catch(error =>
+            {
+                throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+            })
+    }
+
+    _fetchFavorites = () => 
+    {
+        let f = new FetchRequest(Url.favorites);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "SET_FAVORITES", value: json };
                             this.props.dispatch(action);
                         });
                 }

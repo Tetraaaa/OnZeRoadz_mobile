@@ -14,6 +14,7 @@ export default URL = {
     filterCircuits:circuit + "published",
     publishedCircuits:circuit + "published/area",
     myCircuits: user+"myCircuits",
+    favorites: user+"favourites",
     updateProgress: circuit+"{idCircuit}/progress/",
     googlePlaces:"https://maps.googleapis.com/maps/api/place/details/json?&placeid=",
     googleAutocompletion:"https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=",
