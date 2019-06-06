@@ -30,7 +30,7 @@ class TransitViewCompass extends React.Component
 
     getAngleFromCoordinates = (lat1, long1, lat2, long2) =>
     {
-        /*
+        
         lat1 = lat1*Math.PI/180
         lat2 = lat2*Math.PI/180
         long1 = long1*Math.PI/180
@@ -47,8 +47,7 @@ class TransitViewCompass extends React.Component
         brng = (brng + 360) % 360;
         //brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
     
-        return brng;*/
-        return 0;
+        return brng;
     }
 
     /**
