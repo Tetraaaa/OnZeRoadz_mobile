@@ -70,6 +70,7 @@ class TransitView extends React.Component
 
         return (
             <View style={{ flex: 1 }}>
+                <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark }}>{Strings("playScreen", "instructions")}</Text>
                 <View style={{ flex: 9 }}>
                     {view}
                 </View>
