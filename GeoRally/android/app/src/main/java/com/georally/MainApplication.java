@@ -1,4 +1,4 @@
-package com.georally;
+package com.onzeroadz.onzeroadz;
 
 import android.app.Application;
 
