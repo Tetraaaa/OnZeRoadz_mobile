@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux"
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import BetterPicker from "../BetterPicker";
 import { StackActions, NavigationActions } from "react-navigation";
 import Button from "../Button"
@@ -36,13 +36,12 @@ class Accounts extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("account", "account")}</Text>
-                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-
+                <View style={{ flex: 1, margin:5 }}>
                     <View style={{ flexDirection: "row", flex: 1 }}>
-                        <View style={{ flex: 1, margin: 8, marginRight:25 }}>
-                            <Image style={{ width: 96, height: 96, margin: 5, borderRadius:48 }} source={this.props.connectionReducer.lastConnectedUser.profilePicture ? { uri: this.props.connectionReducer.lastConnectedUser.profilePicture } : require("../../Resources/Images/user.png")} />
+                        <View style={{ flex: 1, margin: 8, marginRight: 25 }}>
+                            <Image style={{ width: 96, height: 96, margin: 5, borderRadius: 48 }} source={this.props.connectionReducer.lastConnectedUser.profilePicture ? { uri: this.props.connectionReducer.lastConnectedUser.profilePicture } : require("../../Resources/Images/user.png")} />
                         </View>
-                        <View style={{ flex: 3, alignItems: "flex-start", justifyContent: "flex-start", margin: 15 }}>
+                        <View style={{ flex: 3, margin: 15 }}>
                             <Text style={{ color: "black", fontSize: 24, textAlign: "left" }}>{this.props.connectionReducer.lastConnectedUser.username}</Text>
                             <View style={{ flex: 1, flexDirection: "row" }}>
                                 <Text style={{ color: "black", fontSize: 16 }}>{this.props.connectionReducer.lastConnectedUser.firstname + " "}</Text>
@@ -54,16 +53,20 @@ class Accounts extends React.Component
                         </View>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Text style={{ color: "black", textAlign: "left", alignItems: "flex-start", justifyContent: "flex-start" }}>{this.props.connectionReducer.lastConnectedUser.description || Strings("account", "noDescription")}</Text>
+                        <Text style={{ color: "black", textAlign: "left" }}>{this.props.connectionReducer.lastConnectedUser.description || Strings("account", "noDescription")}</Text>
                     </View>
-                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems:"center" }}>
-                        <Text>{Strings("account", "privacy")}</Text>
-                        <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.lastConnectedUser.profilVisibility.id)} items={privacy} title={Strings("account", "privacy")} />
-                    </View>
-
-                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems:"center" }}>
-                        <Text>{Strings("account", "language")}</Text>
-                        <BetterPicker onValueChange={this._changeLanguage} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={items.find(item => item.id === this.props.connectionReducer.locale)} items={items} title={Strings("account", "language")} />
+                    <TouchableOpacity style={{ borderRadius: 3, backgroundColor: Colors.primaryLight, padding: 10, elevation:4 }} onPress={() => { this.props.navigation.navigate("Favorites") }}>
+                        <Text style={{ color: "white", fontSize: 16 }}>{Strings("account", "favorites")}</Text>
+                    </TouchableOpacity>
+                    <View style={{flex:1}}>
+                        <View style={{ flex: 1 }}>
+                            <Text>{Strings("account", "privacy")}</Text>
+                            <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.lastConnectedUser.profilVisibility.id)} items={privacy} title={Strings("account", "privacy")} />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text>{Strings("account", "language")}</Text>
+                            <BetterPicker onValueChange={this._changeLanguage} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={items.find(item => item.id === this.props.connectionReducer.locale)} items={items} title={Strings("account", "language")} />
+                        </View>
                     </View>
                 </View>
 
