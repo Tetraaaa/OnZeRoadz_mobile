@@ -313,7 +313,7 @@ class MainScreen extends React.Component
                             {
                                 if (item.transits[0] && item.transits[0].step)
                                 {
-                                    return <Marker key={item.color} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
+                                    return <Marker key={item.color + item.id} coordinate={{ longitude: item.transits[0].step.longitude, latitude: item.transits[0].step.latitude }} pinColor={item.color} onPress={() => { this._selectCircuit(item) }} />
                                 }
                             }
                             )
