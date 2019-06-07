@@ -252,12 +252,16 @@ class PlayScreen extends React.Component
         this.props.navigation.navigate("MainScreen");
     }
 
-    _removeCircuit = () =>
-    {
-        Alert.alert("Abandonner le circuit ?", "Votre progression actuelle sur ce circuit sera perdue.", [
-            {text:"Oui", onPress:this._abandonCircuit, style:"destructive"},
-            {text:"Non", onPress:()=>{}, style:"cancel"}
-        ]);
+    _removeCircuit = (force) =>
+    {        
+        if(force){
+            this._abandonCircuit();
+        }else{
+            Alert.alert("Abandonner le circuit ?", "Votre progression actuelle sur ce circuit sera perdue.", [
+                {text:"Oui", onPress:this._abandonCircuit, style:"destructive"},
+                {text:"Non", onPress:()=>{}, style:"cancel"}
+            ]);
+        }        
     }
 
     _abandonCircuit = () =>
@@ -321,7 +325,7 @@ class PlayScreen extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 11 }}>
-                    {this.state.inTransit ? ( this.circuit.transits.length-1 === this.state.currentTransitIndex ? <TransitFinal circuit={this.circuit} score={this.state.score} chrono={this._formatChrono()} removeCircuit={this._removeCircuit} /> :<TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} userLat={this.state.userLat} userLng={this.state.userLng} validTransit={(over) => this._validTransit(over)} />) : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
+                    {this.state.inTransit ? ( this.circuit.transits.length-1 === this.state.currentTransitIndex ? <TransitFinal circuit={this.circuit} score={this.state.score} chrono={this._formatChrono()} removeCircuit={(force) => this._removeCircuit(force)} /> :<TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} userLat={this.state.userLat} userLng={this.state.userLng} validTransit={(over) => this._validTransit(over)} />) : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
                 { this.state.currentTransitIndex !== this.circuit.transits.length -1 && <View style={{ flex: 1, borderColor: Colors.primaryLight, borderWidth: 1, justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
                     <View style={{paddingRight:20}}>
@@ -352,7 +356,7 @@ class PlayScreen extends React.Component
                                 <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={this._pauseCircuit}>
                                     <Icon name="pause" size={32} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={this._removeCircuit} >
+                                <TouchableOpacity style={{ width: 32, borderWidth: 1, borderColor: "black", borderRadius: 2, marginRight: 5 }} onPress={() => this._removeCircuit(false)} >
                                     <Icon name="exit-to-app" size={32} />
                                 </TouchableOpacity>
                             </View>
