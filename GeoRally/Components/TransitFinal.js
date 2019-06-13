@@ -68,7 +68,7 @@ class TransitFinal extends React.Component
             {
                 Alert.alert("Erreur lors l'envoi de l'évaluation", "Impossible d'évaluer le circuit.")
             }else{
-                this.props.removeCircuit();
+                this.props.removeCircuit(true);
             }
         })
     }
@@ -115,7 +115,7 @@ class TransitFinal extends React.Component
                     <TextInput style={{flex:5, marginVertical:5, backgroundColor: "white", borderColor: Colors.secondaryLight, borderWidth:1, borderRadius:5}} placeholder={Strings("transitFinal", "comment") } value={this.state.comment} multiline={true} onChangeText={(text) => this.setState({comment: text})} />
                     <Button color={Colors.secondary} style={{ borderRadius:5}} onPress={() => this._sendRating() } title={Strings("transitFinal", "send") }/>
                 </View>
-                <Button color={Colors.secondary} onPress={() => this.props.removeCircuit()} title={Strings("transitFinal", "backToMap") } />                
+                <Button color={Colors.secondary} onPress={() => this.props.removeCircuit(true)} title={Strings("transitFinal", "backToMap") } />                
             </View>
         )
     }
