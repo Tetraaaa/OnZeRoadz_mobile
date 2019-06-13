@@ -62,6 +62,9 @@
 		AFD7BA942E264F829CCA611E /* libRangeSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 084FE22181724FCF9CACCCB3 /* libRangeSlider.a */; };
 		FC8FAE767998461B80564D56 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */; };
 		2C1A79C882044BCCB4AD239A /* HeavyTrip.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */; };
+		5C04FD8A98424FA08A4C030B /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 840F2FDA73F14D15B4B30294 /* libSplashScreen.a */; };
+		EA05AFC9578041A5B02AA050 /* WelixBrush.otf in Resources */ = {isa = PBXBuildFile; fileRef = 740EAACF6A2648F2B311756C /* WelixBrush.otf */; };
+		6F929AE540664C34B9525A7F /* libRNSensors.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C25FF82C2C4438A00AD4E4 /* libRNSensors.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -397,6 +400,11 @@
 		7F7EC539C7C1490EB1016336 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; name = "RNFetchBlob.xcodeproj"; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		9426360B7F45431E9A5874D5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */ = {isa = PBXFileReference; name = "HeavyTrip.ttf"; path = "../Resources/Fonts/HeavyTrip.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4828F97F1926472D9546D23E /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; name = "SplashScreen.xcodeproj"; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		840F2FDA73F14D15B4B30294 /* libSplashScreen.a */ = {isa = PBXFileReference; name = "libSplashScreen.a"; path = "libSplashScreen.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		740EAACF6A2648F2B311756C /* WelixBrush.otf */ = {isa = PBXFileReference; name = "WelixBrush.otf"; path = "../Resources/Fonts/WelixBrush.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		661BE9F11ADF40A4984EE195 /* RNSensors.xcodeproj */ = {isa = PBXFileReference; name = "RNSensors.xcodeproj"; path = "../node_modules/react-native-sensors/ios/RNSensors.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		62C25FF82C2C4438A00AD4E4 /* libRNSensors.a */ = {isa = PBXFileReference; name = "libRNSensors.a"; path = "libRNSensors.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,6 +438,8 @@
 				8BEBC1DA0DB44940A01EA3A9 /* libRNVectorIcons.a in Frameworks */,
 				AFD7BA942E264F829CCA611E /* libRangeSlider.a in Frameworks */,
 				FC8FAE767998461B80564D56 /* libRNFetchBlob.a in Frameworks */,
+				5C04FD8A98424FA08A4C030B /* libSplashScreen.a in Frameworks */,
+				6F929AE540664C34B9525A7F /* libRNSensors.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,6 +635,8 @@
 				4B02B66297414D1382CC3FFB /* RNVectorIcons.xcodeproj */,
 				9DC52246303D4CA7B2A4EC55 /* RangeSlider.xcodeproj */,
 				7F7EC539C7C1490EB1016336 /* RNFetchBlob.xcodeproj */,
+				4828F97F1926472D9546D23E /* SplashScreen.xcodeproj */,
+				661BE9F11ADF40A4984EE195 /* RNSensors.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -693,6 +705,7 @@
 				0DACDDFCFA6E49808599DE23 /* Zocial.ttf */,
 				364B7F629BEB4B748CCB6132 /* Billabong.ttf */,
 				746DCDD9FC1C411D88575E49 /* HeavyTrip.ttf */,
+				740EAACF6A2648F2B311756C /* WelixBrush.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1161,6 +1174,7 @@
 				8D6858CAA683404DA456A0A3 /* Zocial.ttf in Resources */,
 				B1559B6991BB41E3A383D956 /* Billabong.ttf in Resources */,
 				2C1A79C882044BCCB4AD239A /* HeavyTrip.ttf in Resources */,
+				EA05AFC9578041A5B02AA050 /* WelixBrush.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,6 +1310,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1304,6 +1320,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Debug;
@@ -1326,6 +1344,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1334,6 +1354,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Release;
@@ -1361,6 +1383,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Debug;
@@ -1387,6 +1411,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Release;
@@ -1417,6 +1443,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1425,6 +1453,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Debug;
@@ -1455,6 +1485,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1463,6 +1495,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Release;
@@ -1492,6 +1526,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1500,6 +1536,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Debug;
@@ -1529,6 +1567,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1537,6 +1577,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-range-slider\ios/**",
 					"$(SRCROOT)\..\node_modules\rn-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-splash-screen\ios",
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios/**",
 				);
 			};
 			name = Release;
