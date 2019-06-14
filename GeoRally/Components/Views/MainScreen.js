@@ -10,7 +10,7 @@ import CircuitModal from "../../Components/CircuitModal";
 import Colors from '../../Colors';
 import Strings from '../../Resources/i18n';
 import ActivityIndicatorLogo from '../ActivityIndicator';
-
+import GeoSpy from '../../Tools/GeoSpy';
 
 class MainScreen extends React.Component
 {
@@ -34,8 +34,9 @@ class MainScreen extends React.Component
             maxDistance: 0,
             minDuration: 0,
             maxDuration: 0,
-            minNote: 0
+            minNote: 0            
         };
+        socketOpen = false;
     }
 
     componentDidMount()
@@ -43,6 +44,11 @@ class MainScreen extends React.Component
         this.tracker = navigator.geolocation.watchPosition(
             (infos) =>
             {
+                console.log("TICK Main");
+                if(this.socketOpen){                        
+                    GeoSpy.send(this.ws,infos.coords.longitude, infos.coords.latitude);
+                }
+
                 if (this.map && this.state.followingCurrentPosition)
                 {
                     this._centerMapOnPoint(infos.coords.latitude, infos.coords.longitude)
@@ -51,6 +57,8 @@ class MainScreen extends React.Component
             () => { },
             { enableHighAccuracy: true, distanceFilter: 1, timeout: 20000 }
         )
+
+        this.ws = GeoSpy.create("MainScreen", (value) => this.socketOpen = value);
 
         navigator.geolocation.getCurrentPosition(
             (position) =>
@@ -71,8 +79,9 @@ class MainScreen extends React.Component
     }
 
     componentWillUnmount()
-    {
-        navigator.geolocation.clearWatch(this.tracker)
+    {        
+        this.ws.close();
+        navigator.geolocation.clearWatch(this.tracker)        
     }
 
 
