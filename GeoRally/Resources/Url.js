@@ -1,11 +1,13 @@
 let test = "https://www.api.onzeroadz.fr/index.php/"
 
+let socket = "ws://51.77.244.23:8080/"
 
 let domain = test;
 let circuit = domain + "circuit/"
 let user = domain + "user/"
 
 export default URL = {
+    socket: socket,
     signup:domain + "signup",
     login:domain + "login",
     whoami:domain + "whoami",
