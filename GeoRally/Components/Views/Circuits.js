@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList, ScrollView, Alert } from "react-native";
 import { connect } from 'react-redux'
 import FetchRequest from "../../Tools/FetchRequest";
 import Url from "../../Resources/Url";
@@ -96,10 +96,19 @@ class Circuits extends React.Component
 
     }
 
-    _deleteCircuit = (circuit) => 
+    _deleteCircuit = (id) => 
     {
-        let action = { type: "REMOVE_CIRCUIT", value: circuit.id }
-        this.props.dispatch(action);
+        Alert.alert("Supprimer ce circuit ?", "Votre classement sera conservé mais vous devrez le télécharger à nouveau si vous voulez y rejouer.", [
+            {
+                text: "Oui", onPress: () =>
+                {
+                    let action = { type: "REMOVE_CIRCUIT", value: id }
+                    this.props.dispatch(action);
+                }, style: "destructive"
+            },
+            { text: "Non", onPress: () => { }, style: "cancel" }
+        ]);
+
     }
 
     _downloadCircuit = (id, type) =>
@@ -149,7 +158,7 @@ class Circuits extends React.Component
                             refreshing={this.state.isLoadingCircuits}
                             data={this.props.circuitsReducer.myCircuits}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item }) => <CircuitListItem data={item} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")} />}
+                            renderItem={({ item }) => <CircuitListItem data={item} delete={() => { }} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")} />}
                             ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
                         />
                     }
@@ -166,7 +175,7 @@ class Circuits extends React.Component
                                 refreshing={this.state.isLoadingDownloadedCircuits}
                                 data={this.props.offlineReducer.circuits.filter(circuit => !this.props.circuitsReducer.circuits.includes(circuit))}
                                 keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <Swipeable onSwipeComplete={this._deleteCircuit} item={item}><CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} /></Swipeable>}
+                                renderItem={({ item }) => <CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} delete={this._deleteCircuit} />}
                                 ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
                             />
 
