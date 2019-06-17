@@ -121,15 +121,15 @@ class FreeQuestion extends React.Component
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <Text style={{fontSize:16}}>{this.props.question.text}</Text>
-                    {/*<HTML
+                    {/*<Text style={{fontSize:16}}>{this.props.question.text}</Text>*/}
+                    {<HTML
                         tagsStyles={renderers}
                         ignoredTags={["br"]}
                         ignoredStyles={["display"]}
                         containerStyle={{ margin: 5 }}
                         imagesMaxWidth={Dimensions.get('window').width * 0.95}
                         html={this.props.question.text}
-                    />*/}
+                    />}
                 </ScrollView>
                 <View>
                     <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder={Strings("playScreen", "response")} editable={this.props.question.questionProgress ? false : true} />
