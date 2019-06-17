@@ -52,10 +52,10 @@ class Accounts extends React.Component
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, borderColor:Colors.primary, borderWidth:1, borderRadius:3, margin:5 }}>
                         <Text style={{ color: "black", textAlign: "left" }}>{this.props.connectionReducer.lastConnectedUser.description || Strings("account", "noDescription")}</Text>
                     </View>
-                    <TouchableOpacity style={{ borderRadius: 3, backgroundColor: Colors.primaryLight, padding: 10, elevation:4 }} onPress={() => { this.props.navigation.navigate("Favorites") }}>
+                    <TouchableOpacity style={{ borderRadius: 3, backgroundColor: Colors.primary, padding: 8, elevation:4, margin:5 }} onPress={() => { this.props.navigation.navigate("Favorites") }}>
                         <Text style={{ color: "white", fontSize: 16 }}>{Strings("account", "favorites")}</Text>
                     </TouchableOpacity>
                     <View style={{flex:1}}>

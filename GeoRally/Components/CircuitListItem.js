@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import IconF from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,9 +8,16 @@ import Colors from "../Colors";
 
 class CircuitListItem extends React.Component{
 
-    render(){
-        return(
-            <View style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1, margin:5}}>
+    constructor(props)
+    {
+        super(props);
+    }
+
+
+    render()
+    {
+        return (
+            <TouchableOpacity onLongPress={() => this.props.delete(this.props.data.id)} style={{borderRadius:3, borderColor:'black', borderStyle:'solid', borderWidth:1, padding: 5, flexDirection:'row', marginBottom:1, margin:5}}>
                 <View style={{flex:6}}>
                     <Text style={{color:Colors.secondary, fontWeight:"bold"}}>{this.props.data.name}</Text>
 
@@ -53,7 +60,7 @@ class CircuitListItem extends React.Component{
                         </Button>
                     }
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }

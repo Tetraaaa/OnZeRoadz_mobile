@@ -79,7 +79,7 @@ class Favorites extends React.Component
                     data={this.props.circuitsReducer.favorites}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        <Swipeable onSwipeComplete={this._deleteCircuit} item={item}><CircuitListItem data={item} downloaded={true} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} /></Swipeable>
+                        <CircuitListItem data={item} downloaded={true} delete={() => {}} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />
                     )}
                     ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
                 />
