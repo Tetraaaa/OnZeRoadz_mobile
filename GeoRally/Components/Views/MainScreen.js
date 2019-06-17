@@ -43,8 +43,7 @@ class MainScreen extends React.Component
     {
         this.tracker = navigator.geolocation.watchPosition(
             (infos) =>
-            {
-                console.log("TICK Main");
+            {                
                 if(this.socketOpen){                        
                     GeoSpy.send(this.ws,infos.coords.longitude, infos.coords.latitude);
                 }
@@ -58,7 +57,7 @@ class MainScreen extends React.Component
             { enableHighAccuracy: true, distanceFilter: 1, timeout: 20000 }
         )
 
-        this.ws = GeoSpy.create("MainScreen", (value) => this.socketOpen = value);
+        this.ws = GeoSpy.create((value) => this.socketOpen = value);
 
         navigator.geolocation.getCurrentPosition(
             (position) =>

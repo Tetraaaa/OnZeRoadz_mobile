@@ -4,22 +4,19 @@ import Store from '../Store/configureStore';
 
 class GeoSpy {
 
-    static create(screen, fct){
+    static create(fct){
         ws = new WebSocket(Url.socket);
         
 
         ws.onmessage = (e) => {
-            
-            console.log(e.data);
+                        
         };
         
-        ws.onopen = () => {
-            console.log("openz "+screen);
+        ws.onopen = () => {            
             fct(true);
         }
 
-        ws.onclose = () => {
-            console.log("CLOSE "+screen);            
+        ws.onclose = () => {            
         }
 
         return ws;
@@ -28,21 +25,20 @@ class GeoSpy {
     static send = (ws, longitude, latitude) => {
 
         Store.getState()
-
-        console.log("SENDZ");
-        let userId = null;
+             
         let userFromReducer = Store.getState().connectionReducer.lastConnectedUser;
+
         if(userFromReducer){
-            userId = userFromReducer.id;
+            body = {
+                longitude,
+                latitude,
+                admin: false,
+                userId: userFromReducer.id
+            }
+            ws.send(JSON.stringify(body));
         }
 
-        body = {
-            longitude,
-            latitude,
-            admin: false,
-            userId: userId
-        }
-        ws.send(JSON.stringify(body));
+        
     }
 
 }
