@@ -117,25 +117,8 @@ class TransitViewCompass extends React.Component
         let coeff = this.state.brng/360;
         return (
             <View style={{flex:1}}>
-                <View style={{ flex: 2 }}>
-                    <Text>
-                        {this.state.text}
-                    </Text>
-                    <Text>
-                        x: {this.state.x}
-                    </Text>
-                    <Text>
-                        y: {this.state.y}
-                    </Text>
-                    <Text>
-                        heading: {this.state.heading}
-                    </Text>
-                    <Text>
-                        bearing: {this.state.brng}
-                    </Text>                              
-                </View>
                 <View style={{flex:5, justifyContent:"center", alignItems: "center"}}>
-                    <Animated.Image style={{height:200, width:200, transform:[{rotate:  this.state.target.interpolate({inputRange:[0,360], outputRange:["0deg", "360deg"]})}]}} source={require("../Resources/Images/compass.png")}/>
+                    <Animated.Image style={{height:300, width:300, transform:[{rotate:  this.state.target.interpolate({inputRange:[0,360], outputRange:["0deg", "360deg"]})}]}} source={require("../Resources/Images/compass.png")}/>
                 </View>
             </View>            
         )
