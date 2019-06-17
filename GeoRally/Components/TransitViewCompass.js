@@ -9,6 +9,7 @@ import {
     setUpdateIntervalForType,
     SensorTypes
   } from "react-native-sensors";
+import Strings from '../Resources/i18n';
 
 
 class TransitViewCompass extends React.Component
@@ -30,7 +31,6 @@ class TransitViewCompass extends React.Component
 
     getAngleFromCoordinates = (lat1, long1, lat2, long2) =>
     {
-        
         lat1 = lat1*Math.PI/180
         lat2 = lat2*Math.PI/180
         long1 = long1*Math.PI/180
@@ -117,6 +117,7 @@ class TransitViewCompass extends React.Component
         let coeff = this.state.brng/360;
         return (
             <View style={{flex:1}}>
+                <Text style={{ textAlign: "center", fontSize: 20, color: Colors.primaryDark }}>{Strings("playScreen", "instructionsCompass")}</Text>
                 <View style={{flex:5, justifyContent:"center", alignItems: "center"}}>
                     <Animated.Image style={{height:300, width:300, transform:[{rotate:  this.state.target.interpolate({inputRange:[0,360], outputRange:["0deg", "360deg"]})}]}} source={require("../Resources/Images/compass.png")}/>
                 </View>

@@ -66,7 +66,9 @@
         "validateTransit":"Valider le transit",
         "validateAndBegin":"Valider le transit et commencer le circuit",
         "validateAndFinish":"Terminer le circuit et retourner au menu principal",
-        "instructions":"Instructions pour se rendre à l'étape"
+        "instructions":"Instructions pour se rendre à l'étape",
+        "instructionsTemperature":"Rapprochez vous de l'étape suivante pour faire monter la température",
+        "instructionsCompass":"Suivez l'aiguille rouge pour vous rendre à la prochaine étape"
     },
     "transitFinal":{
         "score":"Score: ",

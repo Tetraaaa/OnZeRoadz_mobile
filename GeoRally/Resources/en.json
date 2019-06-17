@@ -66,7 +66,9 @@
         "validateTransit":"Validate the transit",
         "validateAndBegin":"Validate the transit and begin the circuit",
         "validateAndFinish":"Finish the circuit and go back to the map",
-        "instructions":"Follow these instructions"
+        "instructions":"Follow these instructions to get to the next step",
+        "instructionsTemperature":"Get closer to the next step and the temperature will increase",
+        "instructionsCompass":"Follow the red needle to get to the next step"
     },
     "transitFinal":{
         "score":"Score: ",

@@ -3,6 +3,7 @@ import { Text, View, Image, Dimensions, ImageBackground } from "react-native";
 import GeoLocTools from "./../Resources/GeoLoc";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import LinearGradient from "react-native-linear-gradient";
+import Strings from "../Resources/i18n";
 
 class TransitViewTemperature extends React.Component
 {
@@ -100,6 +101,7 @@ class TransitViewTemperature extends React.Component
         }
         return (
             <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ textAlign: "center", fontSize: 20, color: Colors.primaryDark }}>{Strings("playScreen", "instructionsTemperature")}</Text>
                 <View style={{flex:1}}>
                     {this.state.previousDistance > currentDistance && <><Icon name="temperature-high" color="red" size={50} />
                         <Icon name="arrow-up" color="red" size={50} /></>}

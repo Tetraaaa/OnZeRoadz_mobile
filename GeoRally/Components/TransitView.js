@@ -29,35 +29,39 @@ class TransitView extends React.Component
         {
             over = true;
             title = Strings("playScreen", "validateCircuit");
-        } 
+        }
         else if (!okGeoLoc && !this.props.transit.step.geoLoc)
         {
             okGeoLoc = true;
         }
-        else if(okGeoLoc && this.props.transit.step.geoLoc)
+        else if (okGeoLoc && this.props.transit.step.geoLoc)
         {
             Vibration.vibrate();
         }
 
-        
+
 
         let view = null;
         if (this.props.transit.transitType.id === 1)
         {
 
             view =
-                <ScrollView>
-                    <HTML
-                        containerStyle={{ margin: 5 }}
-                        tagsStyles={renderers}
-                        ignoredTags={["br"]}
-                        ignoredStyles={["display"]}
-                        html={this.props.transit.description}
-                    />
-                </ScrollView>
+                <View>
+                    <Text style={{ textAlign: "center", fontSize: 20, color: Colors.primaryDark }}>{Strings("playScreen", "instructions")}</Text>
+                    <ScrollView>
+                        <HTML
+                            containerStyle={{ margin: 5 }}
+                            tagsStyles={renderers}
+                            ignoredTags={["br"]}
+                            ignoredStyles={["display"]}
+                            html={this.props.transit.description}
+                        />
+                    </ScrollView>
+                </View>
+
         } else if (this.props.transit.transitType.id === 2)//boussole
         {
-            view = <TransitViewCompass transit={this.props.transit} userLat={this.props.userLat} userLng={this.props.userLng}/>
+            view = <TransitViewCompass transit={this.props.transit} userLat={this.props.userLat} userLng={this.props.userLng} />
         }
         else if (this.props.transit.transitType.id === 3)//température
         {
@@ -70,7 +74,6 @@ class TransitView extends React.Component
 
         return (
             <View style={{ flex: 1 }}>
-                <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark }}>{Strings("playScreen", "instructions")}</Text>
                 <View style={{ flex: 9 }}>
                     {view}
                 </View>
