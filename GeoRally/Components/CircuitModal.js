@@ -113,7 +113,7 @@ class CircuitModal extends React.Component
                         <ActivityIndicator text={Strings("circuitModal", "downloading")}/>
                     </Animated.View>
                     :
-                    <Animated.View style={{ height: this.state.modalHeight.interpolate({ inputRange: [0, 150], outputRange: ["0%", "35%"] }), position: "absolute", bottom: 1, backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, width: "100%", elevation: 4 }}>
+                    <Animated.View style={{ height: this.state.modalHeight.interpolate({ inputRange: [0, 150], outputRange: [0, 175] }), position: "absolute", bottom: 1, backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, width: "100%", elevation: 4 }}>
                         <View style={{ flex: 1 }}>
                             <Text style={{ textAlign: "center", color: Colors.secondaryDark, fontSize: 18, margin: 3, borderWidth: 0, borderBottomWidth: 1, borderColor: Colors.secondaryLight }}>{this.props.marker.name}</Text>
                         </View >
