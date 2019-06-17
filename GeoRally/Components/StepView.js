@@ -49,7 +49,7 @@ class StepView extends React.Component
                 {
                     this.props.showDescription || !question ?
                         <View style={{ margin: 5, flex: 9 }}>
-                            <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark }}>{this.props.step.name}</Text>
+                            <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark, borderColor:Colors.primary, borderBottomWidth:1 }}>{this.props.step.name}</Text>
                             <ScrollView>
                                 <HTML
                                     tagsStyles={renderers}
