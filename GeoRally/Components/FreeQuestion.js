@@ -71,6 +71,7 @@ class FreeQuestion extends React.Component
             s2 = s2.padEnd(string1.length, "a")
         }
         let remainingErrors = tolerance;
+        if(!isNaN(s1)) remainingErrors = 0;
         for (let i = 0; i < s1.length; i++)
         {
             if (s1[i] !== s2[i])

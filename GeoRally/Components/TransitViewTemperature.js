@@ -19,11 +19,7 @@ class TransitViewTemperature extends React.Component
 
     componentDidUpdate(prevProps)
     {
-        if (
-            prevProps.userLat === 0 &&
-            prevProps.userLng === 0 &&
-            this.state.originalDistance === 0
-        )
+        if (this.state.originalDistance === 0)
         {
             originalDistance = GeoLocTools.distanceBetween(
                 this.props.userLat,
@@ -35,6 +31,7 @@ class TransitViewTemperature extends React.Component
                 originalDistance,
                 previousDistance: originalDistance
             });
+        
         } else if (
             this.props.userLat !== 0 &&
             this.props.userLng !== 0 &&
