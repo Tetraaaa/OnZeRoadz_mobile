@@ -7,7 +7,7 @@ class ActivityIndicator extends React.Component
     {
         return (
             <View style={[{flex:1, alignItems:"center"}, this.props.style]}>
-                <Image style={[{height:96, width:96, flex:1}, this.props.style]} source={require("../Resources/Images/loading.gif")}/>
+                <Image style={[{height:96, width:96}, this.props.style]} source={require("../Resources/Images/loading.gif")}/>
                 {this.props.text && <Text style={{flex:1}}>{this.props.text}</Text>}
             </View>
             
