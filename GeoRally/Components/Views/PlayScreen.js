@@ -64,6 +64,9 @@ class PlayScreen extends React.Component
                 startTime: new Date().getTime() - this.circuit.progress.time,
                 score:this.circuit.progress.score
             })
+            this.chrono = setInterval(() => {
+                this.forceUpdate();
+            }, 1000)
         }
 
         this.trackPosition(this.state.inTransit);        
@@ -148,7 +151,7 @@ class PlayScreen extends React.Component
                 inTransit: false
             })
             this.trackPosition(false);
-            if (!this.state.startTime)
+            if (!this.state.startTime && !this.chrono)
             {
                 this.setState({ startTime: Date.now() })
                 this.chrono = setInterval(() => {
