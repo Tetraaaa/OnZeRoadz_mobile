@@ -43,6 +43,8 @@ class Login extends React.Component
                 response.json().then(json =>
                 {
                     this._whoami();
+                    this._fetchFavorites();
+                    this._fetchMyCircuits();
                 })
             }
             else
@@ -91,6 +93,59 @@ class Login extends React.Component
             {
                 let action = { type: "LOGOUT" }
                 this.props.dispatch(action)
+            })
+    }
+
+    _fetchMyCircuits = () =>
+    {
+        this.setState({ isLoadingCircuits: true })
+        let f = new FetchRequest(Url.myCircuits);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "SET_MY_CIRCUITS", value: json };
+                            this.props.dispatch(action);
+                        });
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+                }
+            })
+            .catch(error =>
+            {
+                throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+            })
+    }
+
+    _fetchFavorites = () => 
+    {
+        let f = new FetchRequest(Url.favorites);
+        f.open()
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    response.json()
+                        .then(json =>
+                        {
+                            let action = { type: "SET_FAVORITES", value: json };
+                            this.props.dispatch(action);
+                        });
+                }
+                else
+                {
+                    throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
+                }
+            })
+            .catch(error =>
+            {
+                throw new Error("Erreur lors de la récupération des circuits de l'utilisateur")
             })
     }
 

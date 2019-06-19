@@ -46,9 +46,11 @@ class Navigation extends React.Component
 
 
                             this._fetchCircuits(northeast, southwest);
-                            this._whoami();
-                            this._fetchMyCircuits();
-                            this._fetchFavorites();
+                            if (this._whoami())
+                            {
+                                this._fetchMyCircuits();
+                                this._fetchFavorites();
+                            }
                         }
                     );
                 }
@@ -74,19 +76,22 @@ class Navigation extends React.Component
                     response.json().then(json =>
                     {
                         let action = { type: "LOGIN", value: json.user }
-                        this.props.dispatch(action)
+                        this.props.dispatch(action);
+                        return true;
                     })
                 }
                 else
                 {
                     let action = { type: "LOGOUT" }
                     this.props.dispatch(action)
+                    return false;
                 }
             })
             .catch(error =>
             {
                 let action = { type: "LOGOUT" }
-                this.props.dispatch(action)
+                this.props.dispatch(action);
+                return false;
             })
     }
 
@@ -171,7 +176,7 @@ class Navigation extends React.Component
     {
         if (!this.state.permissionsAsked)
         {
-            return <View><ActivityIndicator/></View>
+            return <View><ActivityIndicator /></View>
         }
         else if (!this.state.permissionsGranted)
         {
