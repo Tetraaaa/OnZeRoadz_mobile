@@ -338,7 +338,7 @@ class PlayScreen extends React.Component
 
                     {/*<Text style={{ color: Colors.primary, fontSize: 16, flex: 1 }}>{(this.state.inTransit ? "Transit n°" : "Étape n°") + (this.state.currentTransitIndex + 1) + "/" + this.circuit.transits.length}</Text>*/}
                     {
-                        !this.state.inTransit ?
+                        !this.state.inTransit && !this.state.showDescription ?
                             <View style={{ flexDirection: "row", alignItems: "center", flex:1 }}>
                                 <TouchableOpacity style={{ width: 32 }} onPress={this._previousQuestion} disabled={this.state.currentQuestionIndex <= 0}>
                                     <Icon name="navigate-before" size={32} color={this.state.currentQuestionIndex <= 0 ? "rgba(0,0,0,0)" : "grey"} />
