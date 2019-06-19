@@ -218,7 +218,7 @@ class PlayScreen extends React.Component
             answeredQuestions: this.state.answeredQuestions + 1
         }, () =>
             {
-                if (this.state.answeredQuestions === this.circuit.transits[this.state.currentTransitIndex].step.questions.length)
+                if (this.state.answeredQuestions >= this.circuit.transits[this.state.currentTransitIndex].step.questions.length)
                 {
                     let totalScore = 0;
                     this.circuit.transits[this.state.currentTransitIndex].step.questions.forEach(question =>
@@ -229,6 +229,12 @@ class PlayScreen extends React.Component
                         this._validStep(totalScore);
                     }, 2000)
                     
+                }
+                else
+                {
+                    setTimeout(() => {
+                        this._nextQuestion();
+                    }, 2000)
                 }
             })
     }
