@@ -29,7 +29,7 @@ class AppTextInput extends React.Component
     render()
     {
         return (
-            <TextInput onFocus={this._onFocus} onBlur={this._onBlur} style={[{borderColor:this.state.focus ? Colors.secondaryDark : Colors.secondaryLight, borderWidth:1, borderRadius:3, margin:5}, this.props.style]} {...this.props}/>
+            <TextInput onFocus={this._onFocus} onBlur={this._onBlur} style={[{borderColor:this.state.focus ? Colors.primaryDark : Colors.primaryLight, borderWidth:1, borderRadius:3, margin:5}, this.props.style]} {...this.props}/>
         )
     }
 }
