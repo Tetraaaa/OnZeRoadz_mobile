@@ -60,10 +60,6 @@ class Accounts extends React.Component
                     </TouchableOpacity>
                     <View style={{flex:1}}>
                         <View style={{ flex: 1 }}>
-                            <Text>{Strings("account", "privacy")}</Text>
-                            <BetterPicker onValueChange={() => { }} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={privacy.find(item => item.id === this.props.connectionReducer.lastConnectedUser.profilVisibility.id)} items={privacy} title={Strings("account", "privacy")} />
-                        </View>
-                        <View style={{ flex: 1 }}>
                             <Text>{Strings("account", "language")}</Text>
                             <BetterPicker onValueChange={this._changeLanguage} style={{ flex: 1, margin: 5 }} keyMember="id" displayMember="value" selected={items.find(item => item.id === this.props.connectionReducer.locale)} items={items} title={Strings("account", "language")} />
                         </View>
