@@ -36,7 +36,7 @@
         "downloaded":"Downloaded circuits",
         "noCircuits":"Nothing to show !",
         "loading":"Your circuits are loading...",
-        "favorites":"Mes favoris"
+        "favorites":"My favourites"
     },
     "account":{
         "logout":"Logout",
@@ -47,7 +47,8 @@
         "private":"Private",
         "friendsOnly":"Friends only",
         "noDescription":"[Insert profile description]",
-        "favorites":"My favourites"
+        "favorites":"My favourites",
+        "registeredDate":"Registered since " 
     },
     "circuitModal":{
         "play":"Play",
@@ -55,13 +56,14 @@
         "resume":"Resume",
         "createdBy":"Created by : ",
         "notRated":"No ratings yet !",
-        "downloading":"Downloading circuit..."
+        "downloading":"Downloading circuit...",
+        "language":"Language"
     },
     "playScreen":{
         "goToQuestions":"Answer the questions",
         "nextStep":"Next step",
         "noDescription":"The author didn't write a description for this step",
-        "validateAnswer":"Validate answer",
+        "validateAnswer":"Submit answer",
         "response":"Answer",
         "validateTransit":"Validate the transit",
         "validateAndBegin":"Validate the transit and begin the circuit",
@@ -78,5 +80,8 @@
         "comment":"Comment",
         "backToMap":"Back to the map",
         "send":"Send"
+    },
+    "pickers":{
+        "cancel":"CANCEL"
     }
 }

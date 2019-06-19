@@ -48,7 +48,7 @@ class Accounts extends React.Component
                                 <Text style={{ color: "black", fontSize: 16 }}>{this.props.connectionReducer.lastConnectedUser.lastname}</Text>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Text style={{ flex: 1 }}>{"Inscrit depuis le " + this.props.connectionReducer.lastConnectedUser.creationDate}</Text>
+                                <Text style={{ flex: 1 }}>{Strings("account","registeredDate") + this.props.connectionReducer.lastConnectedUser.creationDate}</Text>
                             </View>
                         </View>
                     </View>

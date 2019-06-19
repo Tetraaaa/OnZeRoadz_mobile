@@ -3,6 +3,7 @@ import {Text, FlatList, View, TouchableOpacity, StyleSheet, Dimensions, Image, S
 import Modal from 'react-native-modalbox';
 import PropTypes from 'prop-types';
 import Flag from 'react-native-flags';
+import Strings from '../Resources/i18n';
 
 class BetterBadderPicker extends React.Component
 {
@@ -70,7 +71,7 @@ class BetterBadderPicker extends React.Component
                         />
                     </ScrollView>
                     <TouchableOpacity style={styles.cancel} onPress={() => {this.setState({modalOpen: false})}}>
-                        <Text style={{textAlign: 'center', fontSize: 18, color: '#4F8DF4'}}>ANNULER</Text>
+                        <Text style={{textAlign: 'center', fontSize: 18, color: '#4F8DF4'}}>{Strings("pickers", "cancel")}</Text>
                     </TouchableOpacity>
                 </Modal>
             </View>

@@ -69,7 +69,7 @@ class BetterPicker extends React.Component
                         />
                     </ScrollView>
                     <TouchableOpacity style={styles.cancel} onPress={() => {this.setState({modalOpen: false})}}>
-                        <Text style={{textAlign: 'center', fontSize: 18, color: '#4F8DF4'}}>ANNULER</Text>
+                        <Text style={{textAlign: 'center', fontSize: 18, color: '#4F8DF4'}}>{Strings("pickers", "cancel")}</Text>
                     </TouchableOpacity>
                 </Modal>
             </View>

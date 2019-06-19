@@ -47,7 +47,8 @@
         "private":"Privé",
         "friendsOnly":"Amis uniquement",
         "noDescription":"[Insérer description]",
-        "favorites":"Mes favoris"
+        "favorites":"Mes favoris",
+        "registeredDate":"Inscrit depuis le " 
     },
     "circuitModal":{
         "play":"Jouer",
@@ -55,7 +56,8 @@
         "resume":"Reprendre",
         "createdBy":"Créé par : ",
         "notRated":"Pas encore noté !",
-        "downloading":"Téléchargement du circuit..."
+        "downloading":"Téléchargement du circuit...",
+        "language":"Langage"
     },
     "playScreen":{
         "goToQuestions":"Répondre aux questions",
@@ -78,5 +80,8 @@
         "comment":"Commentaire",
         "backToMap":"Retourner à la carte",
         "send":"Envoyer"
+    },
+    "pickers":{
+        "cancel":"ANNULER"
     }
 }
