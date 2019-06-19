@@ -1,8 +1,7 @@
 import React from 'react';
-import { Image, View, Dimensions, ScrollView, Text } from "react-native";
+import { Image, View, Dimensions, ScrollView, Text, TextInput } from "react-native";
 import HTML from "react-native-render-html";
 import Colors from './../Colors';
-import TextInput from "./TextInput";
 import Button from './Button';
 import Strings from '../Resources/i18n';
 
@@ -133,11 +132,9 @@ class FreeQuestion extends React.Component
                     />}
                 </ScrollView>
                 <View>
-                    <TextInput onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder={Strings("playScreen", "response")} editable={this.props.question.questionProgress ? false : true} />
+                    <TextInput style={{borderColor:this.props.question.questionProgress ? this.rightAnswer ? "green" : "red" : Colors.primary, borderWidth:1, borderRadius:3, margin:5}} onChangeText={(userAnswer) => this.setState({ userAnswer })} placeholder={Strings("playScreen", "response")} editable={this.props.question.questionProgress ? false : true} />
                     <Button color={Colors.primary} disabled={this.props.question.questionProgress ? true : false} disabledColor={this.rightAnswer ? "green" : Colors.error} title={Strings("playScreen", "validateAnswer")} onPress={this._checkAnswer} />
                 </View>
-
-
             </View>
         );
     }
