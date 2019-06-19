@@ -35,7 +35,7 @@ class BetterBadderPicker extends React.Component
             <View style={[{flex: 1}, this.props.style]} onLayout={this.onLayout}>
                 <TouchableOpacity disabled={this.props.disabled} style={[styles.textInput, this.props.textStyles]} onPress={() => this.setState({modalOpen: true})}>
                     {this.props.selected !== undefined ?
-                        <Flag style={{flex:1}} size={32} code={this.props.selected.code.toString().toUpperCase()} />
+                        <Flag style={{flex:1}} size={32} code={this.props.selected.language.code.toString().toUpperCase()} />
                         :
                         placeholder
                     }
@@ -60,9 +60,9 @@ class BetterBadderPicker extends React.Component
                             data={this.props.items}
                             renderItem={({item}) =>
                                 <TouchableOpacity style={styles.selectionOptions} onPress={() => {this._select(item)}}>
-                                    <Text style={{textAlignVertical: 'center', margin: 2, color: 'black'}}>{item[this.props.displayMember]}</Text>
+                                    <Text style={{textAlignVertical: 'center', margin: 2, color: 'black'}}>{item.language[this.props.displayMember]}</Text>
                                     <View style={{flex: 1, alignItems: 'flex-end'}}>
-                                        <Image style={{height: 24, width: 24, marginRight: 6}} source={this.props.selected && item[this.props.keyMember] == this.props.selected[this.props.keyMember] ? require('../Resources/Images/dotInCircle.png') : require('../Resources/Images/circle.png')} />
+                                        <Image style={{height: 24, width: 24, marginRight: 6}} source={this.props.selected && item.language[this.props.keyMember] == this.props.selected[this.props.keyMember] ? require('../Resources/Images/dotInCircle.png') : require('../Resources/Images/circle.png')} />
                                     </View>
                                 </TouchableOpacity>
                             }
