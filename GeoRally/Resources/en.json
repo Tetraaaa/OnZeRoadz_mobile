@@ -36,7 +36,9 @@
         "downloaded":"Downloaded circuits",
         "noCircuits":"Nothing to show !",
         "loading":"Your circuits are loading...",
-        "favorites":"My favourites"
+        "favorites":"My favourites",
+        "delete":"Delete this circuit ?",
+        "deleteInfo":"Your ranking will be conserved but you will have to download it again to be able to play it."
     },
     "account":{
         "logout":"Logout",
@@ -70,7 +72,9 @@
         "validateAndFinish":"Finish the circuit and go back to the map",
         "instructions":"Follow these instructions to get to the next step",
         "instructionsTemperature":"Get closer to the next step and the temperature will increase",
-        "instructionsCompass":"Follow the red needle to get to the next step"
+        "instructionsCompass":"Follow the red needle to get to the next step",
+        "abandonCircuit":"Give up on this circuit ?",
+        "abandonInfos":"Your current progress will be lost."
     },
     "transitFinal":{
         "score":"Score: ",

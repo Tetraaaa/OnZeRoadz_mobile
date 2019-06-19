@@ -98,7 +98,7 @@ class Circuits extends React.Component
 
     _deleteCircuit = (id) => 
     {
-        Alert.alert("Supprimer ce circuit ?", "Votre classement sera conservé mais vous devrez le télécharger à nouveau si vous voulez y rejouer.", [
+        Alert.alert(Strings("circuits", "delete"), Strings("circuits", "deleteInfo"), [
             {
                 text: "Oui", onPress: () =>
                 {

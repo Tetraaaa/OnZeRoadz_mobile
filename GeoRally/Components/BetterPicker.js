@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, FlatList, View, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView, Platform} from 'react-native';
 import Modal from 'react-native-modalbox';
 import PropTypes from 'prop-types';
+import Strings from '../Resources/i18n';
 
 class BetterPicker extends React.Component
 {

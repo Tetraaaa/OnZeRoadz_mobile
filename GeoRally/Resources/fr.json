@@ -36,7 +36,9 @@
         "downloaded":"Circuits téléchargés",
         "noCircuits":"Aucun circuit !",
         "loading":"Chargement de vos circuits...",
-        "favorites":"Mes favoris"
+        "favorites":"Mes favoris",
+        "delete":"Supprimer ce circuit ?",
+        "deleteInfo":"Votre classement sera conservé mais vous devrez le télécharger à nouveau si vous voulez y rejouer."
     },
     "account":{
         "logout":"Déconnexion",
@@ -70,7 +72,9 @@
         "validateAndFinish":"Terminer le circuit et retourner au menu principal",
         "instructions":"Instructions pour se rendre à l'étape",
         "instructionsTemperature":"Rapprochez vous de l'étape suivante pour faire monter la température",
-        "instructionsCompass":"Suivez l'aiguille rouge pour vous rendre à la prochaine étape"
+        "instructionsCompass":"Suivez l'aiguille rouge pour vous rendre à la prochaine étape",
+        "abandonCircuit":"Abandonner le circuit ?",
+        "abandonInfos":"Votre progression actuelle sur ce circuit sera perdue."
     },
     "transitFinal":{
         "score":"Score: ",

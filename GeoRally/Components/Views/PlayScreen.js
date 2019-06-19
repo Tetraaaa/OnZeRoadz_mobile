@@ -9,6 +9,7 @@ import StepView from "./../../Components/StepView";
 import TransitView from './../../Components/TransitView';
 import GeoLocTools from './../../Resources/GeoLoc';
 import TransitFinal from "../TransitFinal";
+import Strings from "../../Resources/i18n";
 
 class PlayScreen extends React.Component
 {
@@ -266,7 +267,7 @@ class PlayScreen extends React.Component
         if(force){
             this._abandonCircuit();
         }else{
-            Alert.alert("Abandonner le circuit ?", "Votre progression actuelle sur ce circuit sera perdue.", [
+            Alert.alert(Strings("playScreen", "abandonCircuit"), Strings("playScreen", "abandonInfos"), [
                 {text:"Oui", onPress:this._abandonCircuit, style:"destructive"},
                 {text:"Non", onPress:()=>{}, style:"cancel"}
             ]);
@@ -333,6 +334,13 @@ class PlayScreen extends React.Component
     {                
         return (
             <View style={{ flex: 1 }}>
+                {
+                    !this.state.inTransit && !this.state.showDescription ?
+                    <Text style={{ textAlign: "center", fontSize: 20, color:Colors.primaryDark, borderColor:Colors.primary, borderBottomWidth:1, margin:5}}>{ "Question " + (this.state.currentQuestionIndex + 1)}</Text>
+                    :
+                    null
+                }
+                
                 <View style={{ flex: 11 }}>
                     {this.state.inTransit ? ( this.circuit.transits.length-1 === this.state.currentTransitIndex ? <TransitFinal circuit={this.circuit} score={this.state.score} chrono={this._formatChrono()} removeCircuit={(force) => this._removeCircuit(force)} /> :<TransitView transit={this.circuit.transits[this.state.currentTransitIndex]} okGeoLoc={this.state.okGeoLoc} userLat={this.state.userLat} userLng={this.state.userLng} validTransit={(over) => this._validTransit(over)} />) : <StepView goToQuestions={this._goToQuestions} showDescription={this.state.showDescription} transitId={this.circuit.transits[this.state.currentTransitIndex].id} step={this.circuit.transits[this.state.currentTransitIndex].step} currentQuestionIndex={this.state.currentQuestionIndex} answerQuestion={this._questionProgress} validStep={(score) => this._validStep(score)} />}
                 </View>
