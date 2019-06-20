@@ -78,8 +78,8 @@ class Favorites extends React.Component
                     refreshing={this.state.isLoadingCircuits}
                     data={this.props.circuitsReducer.favorites}
                     keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <CircuitListItem data={item} downloaded={true} delete={() => {}} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />
+                    renderItem={({ item }) => (                                          
+                        <CircuitListItem data={item} downloaded={this.props.offlineReducer.circuits.find((i) => i.id === item.id)} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")}  delete={() => {}} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />
                     )}
                     ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
                 />
