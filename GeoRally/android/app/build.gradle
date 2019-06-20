@@ -101,8 +101,8 @@ android {
         applicationId "com.onzeroadz.onzeroadz"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
-        versionName "1.0.9"
+        versionCode 12
+        versionName "1.0.11"
     }
     signingConfigs {
         release {
