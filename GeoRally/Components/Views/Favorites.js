@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import Strings from '../../Resources/i18n';
 import CircuitListItem from '../CircuitListItem';
 import Swipeable from '../Swipeable';
+import ActivityIndicator from '../ActivityIndicator';
 
 class Favorites extends React.Component
 {
@@ -22,7 +23,8 @@ class Favorites extends React.Component
             loginFocused: false,
             passwordFocused: false,
             loading: false,
-            errMess: ""
+            errMess: "",
+            downloadingCircuit: false
         }
         this.requests = [];
     }
@@ -72,17 +74,23 @@ class Favorites extends React.Component
     {
         return (
             <View style={{ flex: 1 }}>
+                {
+                    this.state.downloadingCircuit ?
+                        <ActivityIndicator />
+                        :
+                        <FlatList
+                            onRefresh={this._fetchMyCircuits}
+                            refreshing={this.state.isLoadingCircuits}
+                            data={this.props.circuitsReducer.favorites}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => (
+                                <CircuitListItem data={item} downloaded={this.props.offlineReducer.circuits.find((i) => i.id === item.id)} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")} delete={() => { }} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />
+                            )}
+                            ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
+                        />
+                }
                 <Text style={{ backgroundColor: Colors.primary, margin: 5, fontSize: 25, borderRadius: 3, color: 'rgba(255,255,255,1)', fontFamily: 'Billabong', textAlign: 'center', textAlignVertical: 'center' }}>{Strings("circuits", "favorites")}</Text>
-                <FlatList
-                    onRefresh={this._fetchMyCircuits}
-                    refreshing={this.state.isLoadingCircuits}
-                    data={this.props.circuitsReducer.favorites}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (                                          
-                        <CircuitListItem data={item} downloaded={this.props.offlineReducer.circuits.find((i) => i.id === item.id)} download={(id) => this._downloadCircuit(id, "DOWNLOAD_CIRCUIT")}  delete={() => {}} update={(id) => this.setState({ selectedCircuit: id })} play={(id) => this._playCircuit(id)} />
-                    )}
-                    ListEmptyComponent={<Text style={{ textAlign: "center", color: "black" }}>{Strings("circuits", "noCircuits")}</Text>}
-                />
+
             </View>
         );
     }
