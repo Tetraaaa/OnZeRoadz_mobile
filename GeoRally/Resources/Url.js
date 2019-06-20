@@ -1,6 +1,6 @@
 let test = "https://www.api.onzeroadz.fr/index.php/"
 
-let socket = "ws://51.77.244.23:8080/"
+let socket = "wss://onzeroadz.fr/wss2/"
 
 let domain = test;
 let circuit = domain + "circuit/"
